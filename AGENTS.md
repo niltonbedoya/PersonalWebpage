@@ -3,12 +3,127 @@
 Contexto mínimo para trabajar en este proyecto sin re-explorar todo. La fuente
 de verdad funcional son `docs/prompt_maestro_de_inicio.md` (SDD/TDD) y
 `docs/especificaci_n_y_resumen_de_arquitectura.md` (visión y fases). Los planes
-de trabajo viven en `odd/` (Organic Driven Development).
+de trabajo viven en `odd/` (Organic Driven Development, ODD).
+
+El proyecto arranca desde cero bajo la metodología **Gentle-AI** como método de
+programación: orquestación ODD + TDD estricto. Los documentos describen el
+objeto a construir, no un estado completado.
 
 ## Qué es este proyecto
 
 **Showcase Platform — Living Technical Portfolio**: portfolio web híbrido
-(SMT/THT industrial + Software/IA) con backend FastAPI multiagente y frontend Astro.
+(SMT/THT industrial + Software/IA) con backend FastAPI multiagente, frontend
+Astro (SSG) e inferencia LLM de costo cero. Objetivo: certificar autoridad
+técnica ante reclutadores, colegas y oportunidades de colaboración.
+
+## REGLA CRÍTICA — Dos jerarquías de agentes, nunca mezclarlas
+
+Este repositorio contiene **dos estructuras de agentes completamente
+distintas**. Confundirlas es el error más grave que un agente puede cometer
+aquí.
+
+### Capa 1 — Metodología (BUILD-TIME): Gentle-AI sobre el desarrollo
+
+Es **cómo se programa este repositorio**, no código del producto. Vive solo en
+la sesión de desarrollo (la conversación con el agente orquestador y sus
+delegados). Nada de esta capa se implementa dentro de `backend/`, y sus nombres
+nunca aparecen como agentes del producto.
+
+Componentes de la orquestación Gentle-AI (ODD):
+
+| Rol | Qué hace | Dónde existe |
+|---|---|---|
+| Orquestador ODD | Autoriza, explora, clasifica tamaño de tarea, escribe inline o delega, verifica, cierra, actualiza feature docs | Sesión de desarrollo (hilo principal) |
+| Agente explorador | Mapea código/flujo y devuelve handoff de ~2k tokens con evidencia `path:line`. Solo lectura | Sub-sesión delegada |
+| Agente worker (writer) | Implementa una unidad acotada con edit surfaces mínimas autorizadas, tests y docs juntos | Sub-sesión delegada |
+| Agente verificador | Verificación independiente de cambios de riesgo alto (junta de verificación), contra specs S# | Sub-sesión delegada |
+
+Reglas de la metodología que todo agente de código debe respetar aquí:
+
+1. **Planificación en `odd/`**: todo trabajo significativo se planifica en un
+   feature document `odd/<feature>.md` con Specs (`S1..Sn`, citas textuales del
+   pedido), Tasks y Log. Se lee el documento antes de tocar código y se reporta
+   qué `S#` se cubrieron.
+2. **TDD obligatorio**: Red → Green → Refactor. Prohibido implementar sin test
+   previo. En v1 no hay APIs vivas expuestas; los tests funcionan offline con
+   **mocks deterministas de LLM** (Groq / Google AI Studio / Cloudflare).
+3. **Commits como work units**: slices revisables (~400 líneas), Conventional
+   Commits, tests y docs junto al código. Push/PR/merge: decisión humana.
+4. **Delegación con superficie mínima**: cada worker recibe solo los archivos
+   exactos que puede editar ("Allowed edit surfaces"). Un worker jamás decide
+   producto; devuelve gaps al orquestador.
+5. Los agentes de esta capa NO tienen memoria del producto ni contratos
+   Pydantic; su "producto" son commits testeados.
+
+### Capa 2 — Producto (RUNTIME): la app funcional desplegada
+
+Es **lo que la web ejecuta en producción** dentro del núcleo FastAPI. Sus
+agentes viven en `backend/app/agents/` y responden a los usuarios reales del
+portfolio. Detalle abajo en "Arquitectura multiagente del runtime".
+
+| | Capa 1 (Gentle-AI, build-time) | Capa 2 (runtime del producto) |
+|---|---|---|
+| Propósito | Construir/verificar el código | Operar la web desplegada |
+| Agentes | Orquestador, explorador, worker, verificador | Nexus, Radarito, Cerebrito, Centinela, Mensajerito, Auditor |
+| Vida | Solo durante el desarrollo | En producción, tráfico de usuarios |
+| Código | Fuera del repo (framework de trabajo) | `backend/app/agents/`, `backend/app/mcp/` |
+| Enrutamiento LLM | N/A (programan con modelos del harness) | Zero-cost routing (Groq/Gemini/Cloudflare/OpenRouter) |
+
+**Nunca** implementes un "agente worker" o "verificador" dentro del backend,
+ni nombres un agente del runtime con nombres de la capa de construcción
+(viceversa incluido).
+
+## Arquitectura multiagente del runtime (el producto)
+
+Sistema multiagente en FastAPI: **un orquestador, cuatro subagentes
+especializados y un auditor transversal**.
+
+**Flujo de despacho**: toda petición entra primero por el guardrail
+(Centinela); lo técnico va al motor RAG (Cerebrito); las noticias las cura
+Radarito (programado); los leads los triá Mensajerito; toda salida pasa por la
+compuerta del Auditor antes de exponerse.
+
+| Agente | Rol | Responsabilidad | Inferencia (costo cero) |
+|---|---|---|---|
+| **Nexus** | Orquestador central & router | FSM asíncrona, ciclo de vida de sesiones, enrutado dinámico a subagentes, selección de proveedor LLM gratuito, estado vía Engram | Selección de proveedor por tarea |
+| **Radarito** | Subagente A — curación de noticias | Feeds RSS/APIs en 3 canales (`THT_SOLDERING`, `SMD_INSPECTION`, `AI_SOFTWARE`), dedupe, síntesis neutral 2-3 líneas | Cloudflare Workers AI / OpenRouter Free |
+| **Cerebrito** | Subagente B — motor RAG | Respuestas técnicas solo sobre el corpus indexado en SQLite-vec, `grounding_score >= 0.85`, citas de fuentes | Google AI Studio (`gemini-flash`) |
+| **Centinela** | Subagente C — guardrail | Intercepción perimetral `< 150 ms`, bloqueo de jailbreak/inyecciones, reconducción de off-topic | Groq (`llama-3.1-8b-instant`) |
+| **Mensajerito** | Subagente D — triage de leads | Extrae oportunidades del chat/formulario, alerta cifrada a correo personal sin exponerlo | Groq (`llama-3.1-8b-instant`) |
+| **Auditor** | Compuerta binaria transversal | QA Pass/Fail sobre TODAS las salidas: esquemas Pydantic, grounding, fuga de PII/credenciales/marcas | Google AI Studio (instrucciones estrictas) |
+
+**Contratos de datos** — 5 modelos Pydantic v2 (`backend/app/models.py`),
+firmas congeladas: `NewsItemPayload`, `RAGResponsePayload`, `GuardrailVerdict`,
+`LeadAlertPayload`, `AuditVerdict`. Cualquier payload nuevo pasa por los tests.
+
+**Adaptadores MCP** (`backend/app/mcp/adapters.py`): Context7, Engram,
+`mcp-server-news` (Radarito), `mcp-server-knowledge` (Cerebrito),
+`mcp-server-security` (Centinela), `mcp-server-notifier` (Mensajerito).
+
+## Layout objetivo
+
+Estructura modular desacoplada (fuente: prompt maestro, sección 6):
+
+```
+├── web/                     # Frontend Astro 4 + Tailwind (SSG + Islands)
+│   ├── src/
+│   │   ├── components/      # UI Islands (Chat, Feeds, ContactForm)
+│   │   ├── layouts/
+│   │   ├── pages/           # index / industrial-smt / software-engineering
+│   │   └── styles/
+├── backend/                 # Runtime multiagente FastAPI
+│   ├── app/
+│   │   ├── agents/          # Nexus, Radarito, Cerebrito, Centinela, Mensajerito, Auditor
+│   │   ├── core/            # Configuración, state FSM, seguridad
+│   │   ├── db/              # SQLite, SQLite-vec y migraciones
+│   │   ├── mcp/             # Servidores y adaptadores MCP
+│   │   ├── models/          # 5 contratos Pydantic v2
+│   │   └── routers/         # /chat /news /contact /health + WebSockets
+│   └── tests/               # Suite TDD (unit, contracts, mocks, integration)
+├── data/                    # Corpus técnico sanitizado y datasets de prueba
+├── docs/                    # Especificaciones fuente del producto
+└── odd/                     # Feature docs ODD (plan, no código)
+```
 
 ## Comandos esenciales
 
@@ -23,113 +138,53 @@ cd web && npx astro build
 python -m pytest backend/tests/ -v
 ```
 
-El backend queda en `http://localhost:8000`; las páginas HTML en
-`/static/pages/{index,industrial-smt,software-engineering}.html`.
-
-## Jerarquía de agentes del runtime
-
-El sistema es una **arquitectura multiagente en dos capas**: en build-time la
-orquestación de código corre bajo el framework JenteL AI (fuera del produto),
-y en runtime la web ejecuta este núcleo FastAPI. Dentro del runtime hay
-**un orquestador, cuatro subagentes especializados y un auditor transversal**.
-
-### Orquestador — Nexus
-
-| Campo | Detalle |
-|---|---|
-| Rol | Orquestador Central & Router (FSM asíncrona) |
-| Responsabilidad | Ciclo de vida de sesiones, enrutamiento dinámico del tráfico hacia los subagentes, balanceo de carga y selección del proveedor LLM gratuito idóneo |
-| Entrada | Eventos web, cron triggers, peticiones de chat |
-| Salida | Despacho tipado a subagentes; respuesta consolidada |
-| Memoria | Sincroniza estado de agentes vía `Engram MCP` (SQLite) |
-| Auditoría | Todos sus logs son auditados por el Auditor |
-
-**Flujo de despacho**: toda petición entrante la recibe primero el guardrail
-(Centinela); las preguntas técnicas van al motor RAG (Cerebrito); el contexto de
-noticias lo cura Radarito (programado); los leads los triá Mensajerito; y toda
-salida pasa por la compuerta del Auditor antes de exponerse.
-
-### Subagentes especializados
-
-**Radarito — Subagente A (Curación Contextual de Noticias)**
-- Entrada: feeds RSS/XML/APIs en 3 canales: `THT_SOLDERING`, `SMD_INSPECTION`, `AI_SOFTWARE`
-- Salida: `NewsItemPayload` validado (deduplicado, filtrado de ruido comercial, síntesis neutral 2-3 líneas)
-- Inferencia: Cloudflare Workers AI / OpenRouter Free (`qwen-2.5-7b`, `deepseek-chat`)
-- Herramientas MCP: `mcp-server-news` (`fetch_rss`, `parse_article`, `cache_news`)
-
-**Cerebrito — Subagente B (Motor RAG Técnico)**
-- Entrada: query del usuario + chunks vectoriales de `SQLite-vec`
-- Salida: `RAGResponsePayload` (grounding_score ≥ 0.85, citas de fuentes)
-- Dominio: maquinaria, procesos térmicos y case studies de software (exclusivamente el corpus indexado)
-- Inferencia: Google AI Studio (`gemini-1.5-flash` / `gemini-2.0-flash`)
-- Herramientas MCP: `mcp-server-knowledge` (`query_sqlite_vec`, `get_equipment_spec`, `get_software_case_study`)
-
-**Centinela — Subagente C (Guardrail & Seguridad)**
-- Entrada: prompt crudo del visitante (intercepción perimetral < 150 ms)
-- Salida: `GuardrailVerdict` (`is_allowed`, `risk_level`, `intent_category`, `redirect_message`)
-- Bloqueos: jailbreak, prompt injection, off-topic (reconducción educada)
-- Inferencia: Groq Cloud (`llama-3.1-8b-instant`)
-- Herramientas MCP: `mcp-server-security` (`evaluate_prompt_safety`, `classify_intent`)
-
-**Mensajerito — Subagente D (Triage & Despacho de Oportunidades)**
-- Entrada: historial de chat y envíos del formulario de contacto
-- Salida: `LeadAlertPayload` (prioridad P1-P3, tipo de oportunidad, contacto)
-- Acción: alerta asíncrona cifrada al correo personal, sin exponer la dirección
-- Inferencia: Groq Cloud (`llama-3.1-8b-instant`)
-- Herramientas MCP: `mcp-server-notifier` (`dispatch_lead_notification`, `validate_contact`)
-
-### Auditor — compuerta transversal (QA binaria)
-
-No es un subagente de Nexus: es el **gatekeeper Pass/Fail** sobre las salidas de
-todos los demás. Audita esquemas Pydantic v2, exige Grounding Score ≥ 0.85 en
-respuestas RAG y previene fuga de datos (PII, credenciales, marcas reales).
-Salida: `AuditVerdict` (`APPROVED` / `REJECTED` + `failure_reasons`).
-Inferencia: Google AI Studio (instrucciones estrictas).
-
-## Layout
-
-- `backend/main.py` — entrada FastAPI (mount estático + routers + WebSockets)
-- `backend/app/models.py` — 5 contratos Pydantic v2. **No romper sus firmas.**
-- `backend/app/agents/__init__.py` — implementación de los 6 agentes
-- `backend/app/mcp/adapters.py` — 6 adaptadores MCP (Context7, Engram, news, knowledge, security, notifier)
-- `backend/app/routers/__init__.py` — `/chat` `/news` `/contact` `/health`
-- `backend/websockets.py` — manager de conexiones y handlers `/ws/{agent_name}`
-- `backend/agent_ops_router.py` — `/api/v1/agents/*` (pendiente de incluir en main.py)
-- `backend/tests/test_agent_contracts.py` — suite de contratos (5 tests, en verde)
-- `web/public/pages/` — páginas HTML (servidas por FastAPI como `/static/pages/`)
-- `docs/` — especificaciones fuente; `odd/` — planes de trabajo SDD/ODD de sesión
+El backend queda en `http://localhost:8000`; páginas servidas por FastAPI.
 
 ## Convenciones obligatorias
 
-1. **Consola Windows cp1252**: los `print()` del backend deben ser solo ASCII
+1. **Consola Windows cp1252**: los `print()` del backend usan solo ASCII
    (nada de emojis ni acentos en logs, o `UnicodeEncodeError`).
-2. **Pydantic v2**: contratos estrictos; cualquier payload nuevo debe pasar los
-   tests de `backend/tests/`.
+2. **Pydantic v2 estricto**: contratos congelados; cualquier payload nuevo pasa
+   los tests de `backend/tests/`.
 3. **TDD (Red → Green → Refactor)**: prohibido implementar sin test previo.
-   Mocks deterministas de LLM (Groq / Gemini / Cloudflare) para tests offline.
-4. **Arranque del servidor**: `python -m backend.main` desde la raíz del
-   repositorio; `__file__`-based absolute paths para recursos estáticos.
-5. **Datos de ejemplo**: contenido actual placeholder. Sin PII, credenciales ni
-   marcas reales en el repo (el Auditor bloquea fuga de datos).
-6. **Alcance del Spoke Industrial**: sin maquinaria Pick & Place (límite explícito
-   de la spec).
-7. **v1 sin APIs vivas expuestas**: los case studies son sanitizados/by design.
-8. **SDD en `odd/`**: todo trabajo significativo se planifica en un feature
-   document (`odd/<nombre>.md`) con Specs/Tasks/Log, y se verifica contra sus S#.
+   Mocks deterministas de LLM para corridas offline y deterministas.
+4. **Arranque**: `python -m backend.main` desde la raíz; paths absolutos
+   basados en `__file__` para recursos estáticos.
+5. **Datos sanitizados**: contenido placeholder y case studies anonimizados;
+   sin PII, credenciales ni marcas reales (el Auditor bloquea fuga de datos).
+6. **Alcance del Spoke Industrial**: sin maquinaria Pick & Place (límite
+   explícito de la spec).
+7. **v1 sin APIs vivas expuestas**: zero-cost routing, corpus local.
+8. **SDD en `odd/`**: todo trabajo significativo se planifica en formato ODD
+   (Specs/Tasks/Log) y se verifica contra sus `S#`. Los agentes delegados
+   reportan qué specs cubrieron.
 
-## Gotchas conocidos
+## Entorno y gotchas (nivel OS/herramienta)
 
-- Se sirven las páginas desde `web/public/` vía `app.mount("/static", ...)` con
-  `BASE_DIR = Path(__file__).resolve().parent.parent` (paths relativos fallan).
-- Astro falla compilando `.astro` en este entorno (esbuild "Expected \";\" but
-  found..."); las páginas viven como HTML plano en `web/public/pages/`.
-- El 404 repetido de `GET /v1/models` en logs viene de un cliente externo de la
-  máquina (no del proyecto); es inofensivo.
-- El python activo es un venv de `hermes-agent` (siempre `python -m pip`):
-  pytest ya instalado; si falta algo, `python -m pip install <paquete>`.
+- Windows: consola cp1252; logs del backend solo ASCII.
+- Python activo es un venv de `hermes-agent`: siempre `python -m pip`.
+- En este entorno Astro falla compilando `.astro` (esbuild parse error). En
+  v1 las páginas viven como **HTML plano** en `web/public/pages/` servidas por
+  FastAPI en `/static/pages/`; si se reintenta Astro, se trata como problema de
+  entorno y exige un repro reproducible documentado antes de decidir.
+- El código usa `BASE_DIR = Path(__file__).resolve().parent.parent`; los paths
+  relativos al cwd fallan (se sirve desde `web/public/` vía `app.mount`).
+- CodeGraph indexado en la raíz del repo (`.codegraph/`); para consultas
+  estructurales usar `codegraph_explore` antes de grep/read loops.
 
-## Pendiente (roadmap corto)
+## Roadmap desde cero (fases bajo Gentle-AI)
 
-1. Integrar `agent_ops_router` en `main.py`.
-2. Probar `/chat`, `/news`, `/contact` y WebSocket con datos reales de request.
-3. Reemplazar datos de ejemplo por reales (fotos, casos, LinkedIn/GitHub/CV PDF).
+1. **F1 — Contratos**: tests Pydantic v2 Red primero, luego los 5 modelos.
+2. **F2 — Agentes con mocks**: Nexus FSM + 4 subagentes + Auditor contra
+   fixtures deterministas (suite offline en verde).
+3. **F3 — API**: routers `/chat` `/news` `/contact` `/health` + WebSockets
+   `/ws/{agent_name}`, integrados en `main.py`.
+4. **F4 — Frontend**: Hub & Spoke (HTML/Islands), feeds dinámicos, drawer RAG.
+5. **F5 — RAG**: corpus sanitizado + indexado SQLite-vec + batería de grounding.
+6. **F6 — Resiliencia**: 50+ vectores anti-inyección para Centinela; tests de
+   veredicto del Auditor (grounding < 0.85 → REJECTED, detección de PII).
+7. **F7 — Deploy**: Cloudflare Pages + backend, CI con la suite offline.
+
+Las fases se planifican como feature docs en `odd/`, una por unidad de
+entrega, y se marcan contra sus `S#` — nunca "completada" sin evidencia de
+tests observados.

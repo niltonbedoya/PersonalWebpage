@@ -26,7 +26,7 @@ S5. All code must be compatible with zero-cost LLM routing:
 
 ## Tasks
 
-T1. Create directory structure — DONE (committed ade990e)
+T1. Create directory structure — CLOSED INCOMPLETE (committed ade990e: agents/, mcp/, routers/, models.py; core/ and db/ were missing vs S1). 2026-11-07: scaffolds backend/app/core/ + backend/app/db/ created (empty packages with docblocks), data/ given placeholder README (population deferred to F5)
 T2. Generate backend/tests/test_agent_contracts.py — DONE (5 contract tests)
 T3. Implement Pydantic models — DONE (backend/app/models.py)
 T4. Write focused tests per model (RED → GREEN → REFACTOR) — DONE (pytest 5 passed)
@@ -42,6 +42,7 @@ L2. 2026-11-06: Directory structure initialized per specification
 L3. 2026-11-06: First TDD test file to be generated
 L4. 2026-11-07: Static serving fixed (StaticFiles mount points to web/public via absolute Path); server verified: /health 200, 3 HTML pages 200
 L5. 2026-11-07: README.md and AGENTS.md created at repo root; git baseline commit ade990e; CodeGraph + skill-registry initialized
+L6. 2026-11-07: SDD audit vs prompt maestro (Paso 1): suite 5 passed; 6 MCP adapters verified. Gaps found and fixed same day: backend/app/core/ and backend/app/db/ were missing from the T1 "DONE" claim (structure incomplete vs S1) — scaffolds created, data/ empty per F5 (placeholder README added), web/src islands deferred per T5 environment deviation (plain HTML served by FastAPI). Suite re-run green after changes.
 
 ## Delivery Strategy
 
