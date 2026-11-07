@@ -98,6 +98,19 @@ compuerta del Auditor antes de exponerse.
 firmas congeladas: `NewsItemPayload`, `RAGResponsePayload`, `GuardrailVerdict`,
 `LeadAlertPayload`, `AuditVerdict`. Cualquier payload nuevo pasa por los tests.
 
+**Routing de modelos LLM (costo cero)** — `backend/app/core/llm_routing.py`,
+integrado con el plugin `gentle-ai.model-variants` ya registrado en `cli.json`.
+Cada subagente tiene un modelo primario y un fallback zero-cost:
+
+| Agente | Proveedor | Modelo primario | Fallback | Temperatura |
+|---|---|---|---|---|
+| Nexus | dynamic (intent-based) | intent-based | intent-based | 0.0 |
+| Radarito | Cloudflare Workers AI | qwen-2.5-7b | deepseek-chat | 0.2 |
+| Cerebrito | Google AI Studio | gemini-1.5-flash | gemini-2.0-flash | 0.1 |
+| Centinela | Groq | llama-3.1-8b-instant | llama-3.1-70b-instant | 0.0 |
+| Mensajerito | Groq | llama-3.1-8b-instant | llama-3.1-70b-instant | 0.1 |
+| Auditor | Google AI Studio | gemini-1.5-flash | gemini-2.0-flash | 0.0 |
+
 **Adaptadores MCP** (`backend/app/mcp/adapters.py`): Context7, Engram,
 `mcp-server-news` (Radarito), `mcp-server-knowledge` (Cerebrito),
 `mcp-server-security` (Centinela), `mcp-server-notifier` (Mensajerito).
