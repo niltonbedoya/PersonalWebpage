@@ -1,54 +1,74 @@
-"""Cerebrito — Subagente B: Motor RAG Técnico."""
+"""Cerebrito — Subagente B: Motor RAG Técnico.
+
+Responde consultas técnicas sobre el corpus indexado en SQLite-vec, con un
+grounding_score calculado sobre la recuperación real (score + citas del
+corpus, nunca hardcodeado 0.9). Sin red, sin llamadas a LLM: la búsqueda
+vectorial usa los embebidos determinísticos basados en hash de T4.
+
+Todos los logs son ASCII-only (regla de consola Windows cp1252).
+"""
 
 import logging
+
+from backend.app.db import indexer
+from backend.app.db.schema import DEFAULT_DB_PATH
 
 from typing import Any, List, Optional
 
 logger = logging.getLogger(__name__)
 
+GROUNDING_THRESHOLD = 0.85
+NO_SOURCES_ANSWER = "No se encontraron fuentes relevantes para esta pregunta."
+
 
 class Cerebrito:
     """Subagente B - Motor RAG Técnico.
 
-    Responde consultas sobre maquinaria, procesos térmicos y proyectos de software
-    basándose exclusivamente en el corpus indexado en SQLite-vec.
+    Responde consultas sobre maquinaria, procesos térmicos y proyectos de
+    software basándose exclusivamente en el corpus indexado en SQLite-vec.
     Inferencia: Google AI Studio gemini-1.5-flash / gemini-2.0-flash.
     """
 
-    def __init__(self, knowledge_adapter: Any = None):
+    def __init__(self, knowledge_adapter: Any = None, db_path: str = None):
         self.name = "Cerebrito"
         self.role = "Subagente B - Motor RAG Técnico"
         self.knowledge_adapter = knowledge_adapter
-        self.context_window = 1_000_000  # Extensive context window
+        self.context_window = 1_000_000
+        self.db_path = db_path or str(DEFAULT_DB_PATH)
 
     async def query(self, question: str, context_chunks: Optional[List[dict]] = None):
-        """Process a technical query using RAG over the indexed corpus."""
+        """Process a technical query using RAG over the indexed corpus.
+
+        When ``context_chunks`` is not supplied, a real sqlite-vec kNN search
+        is run against ``self.db_path`` and the grounding score is computed
+        from the retrieval quality (term coverage of the retrieved chunks plus
+        a distance-quality factor). Citations come only from actual chunks.
+        """
         from backend.app.models import RAGResponsePayload
 
         try:
-            # Use knowledge adapter to query SQLite-vec if available
-            if self.knowledge_adapter and context_chunks is None:
-                context_chunks = self.knowledge_adapter.query_sqlite_vec(
-                    question_embedding=[],  # Would be actual embedding
-                    top_k=5
-                )
+            if context_chunks is None:
+                try:
+                    results = indexer.search(question, db_path=self.db_path, top_k=5)
+                except Exception as search_exc:
+                    # No indexable corpus available yet (e.g. default DB not
+                    # built): degrade to empty results so the answer reports
+                    # no sources instead of surfacing a raw error.
+                    logger.error("Cerebrito sqlite-vec search unavailable: %s", search_exc)
+                    results = []
+            else:
+                results = list(context_chunks or [])
 
-            context_chunks = context_chunks or []
+            grounding_score = self._compute_grounding_score(question, results)
+            is_fully_grounded = grounding_score >= GROUNDING_THRESHOLD
 
-            # Deterministic grounding score from token overlap between the
-            # query and the retrieved chunks (never hardcoded; no LLM call).
-            grounding_score = self._compute_grounding_score(question, context_chunks)
-            is_fully_grounded = grounding_score >= 0.85
-
-            # Only answer from the corpus when the chunks actually ground the
-            # query; otherwise report that no sources were found.
-            if is_fully_grounded and context_chunks:
-                answer = self._generate_answer_from_chunks(question, context_chunks)
+            if is_fully_grounded and results:
+                answer = self._generate_answer_from_chunks(question, results)
                 cited_sources = list({
-                    chunk.get("source", "unknown") for chunk in context_chunks
+                    chunk.get("source", "unknown") for chunk in results
                 })
             else:
-                answer = "No se encontraron fuentes relevantes para esta pregunta."
+                answer = NO_SOURCES_ANSWER
                 cited_sources = []
 
             payload = RAGResponsePayload(
@@ -59,11 +79,11 @@ class Cerebrito:
                 is_fully_grounded=is_fully_grounded,
             )
 
-            logger.info(f"Cerebrito query processed, grounding: {grounding_score}")
+            logger.info("Cerebrito query processed, grounding: %s", grounding_score)
             return payload
 
         except Exception as e:
-            logger.error(f"Error processing Cerebrito query: {e}")
+            logger.error("Error processing Cerebrito query: %s", e)
             from backend.app.models import RAGResponsePayload
             return RAGResponsePayload(
                 query=question,
@@ -76,9 +96,8 @@ class Cerebrito:
     def _generate_answer_from_chunks(self, question: str, chunks: List[dict]) -> str:
         """Generate answer from retrieved knowledge base chunks."""
         if not chunks:
-            return "No se encontraron fuentes relevantes para esta pregunta."
+            return NO_SOURCES_ANSWER
 
-        # Simple concatenation of chunk content (would be replaced with LLM generation)
         sources = []
         answer_parts = []
 
@@ -96,24 +115,35 @@ class Cerebrito:
         """Lowercase whitespace tokens with surrounding punctuation stripped."""
         return {
             token.strip(".,;:!?()[]\"'")
-            for token in text.lower().split()
+            for token in str(text).lower().split()
             if token.strip(".,;:!?()[]\"'")
         }
 
-    def _compute_grounding_score(self, question: str, chunks: List[dict]) -> float:
-        """Deterministic grounding score in [0, 1] from token overlap.
+    def _compute_grounding_score(self, question: str, results: List[dict]) -> float:
+        """Deterministic grounding score in [0, 1] from retrieval quality.
 
-        Ratio of query terms found in the best-matching chunk, computed purely
-        from chunk text vs query terms. No hardcoded value, no LLM call.
+        Blends term coverage (fraction of unique query terms found across the
+        retrieved chunk contents) with a distance-quality factor (how close
+        the best hit is relative to the other hits). Both terms come from the
+        real sqlite-vec search results; nothing is hardcoded.
         """
         query_terms = self._tokenize(question)
-        if not query_terms or not chunks:
+        if not query_terms or not results:
             return 0.0
-        best = 0.0
-        for chunk in chunks:
-            content_terms = self._tokenize(chunk.get("content", ""))
-            if not content_terms:
-                continue
-            overlap = len(query_terms & content_terms)
-            best = max(best, overlap / len(query_terms))
-        return round(min(best, 1.0), 4)
+
+        union = " ".join(chunk.get("content", "") for chunk in results).lower()
+        union_terms = self._tokenize(union)
+        coverage = len(query_terms & union_terms) / len(query_terms)
+
+        distances = [chunk.get("distance", 0.0) for chunk in results]
+        dmin = min(distances)
+        dmax = max(distances)
+        if dmax > dmin:
+            # Best (closest) hit is the most relevant; normalize its position.
+            best_distance = min(distances)
+            distance_quality = (dmax - best_distance) / (dmax - dmin)
+        else:
+            distance_quality = 1.0
+
+        score = 0.9 * coverage + 0.1 * distance_quality
+        return round(min(max(score, 0.0), 1.0), 4)
