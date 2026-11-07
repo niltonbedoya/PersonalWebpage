@@ -77,7 +77,7 @@ gate del Auditor operando completamente offline con fixtures.
 por el Auditor (assert `AuditVerdict.status == "APPROVED"` o bloqueo visible).
 Coverage sobre `backend/app/agents/` sobre clean import sin red.
 
-**Estado:** 🔴 no iniciada (scaffolds `core/`/`db/` vacíos).
+**Estado:** 🟡 EN PROGRESO — T2 (Centinela battery), T3 (Radarito), T4 (Auditor binary gate) cerrados 2026-11-07, 67 tests en verde. T5 Cerebrito, T6 Mensajerito, T7 Nexus FSM + full mock dispatch pendientes (wave 2).
 
 **Criterio de salida:** despacho completo (guardrail→agente→auditor) verde en
 suite offline; FSM cubre transiciones y errores.
