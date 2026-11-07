@@ -1,8 +1,8 @@
 """TDD: Agent Contract Tests - Pydantic v2 Models Validation
 
-This test suite validates that all subagent payloads conform to the
-specified Pydantic v2 contracts. Initially, this suite should FAIL (Red Phase)
-because the models haven't been implemented yet.
+Happy-path smoke tests: each of the 5 contracts constructs successfully
+with all required fields. Negative/boundary/round-trip coverage lives in
+test_contracts_hardening.py (F1 exit criteria, see docs/plan_de_fases_verificacion.md).
 
 Method: Red → Green → Refactor
 - Red: Run tests, observe failures due to missing models

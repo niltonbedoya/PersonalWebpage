@@ -34,6 +34,7 @@ T5. Create initial pages for hub and spokes — DONE (plain HTML in web/public/p
 T6. Set up FastAPI backend with routers — DONE (`python -m backend.main`, /static/pages serving verified 200)
 T7. Configure MCP server adapters — DONE (backend/app/mcp/adapters.py)
 T8. Implement multi-agent framework — DONE (backend/app/agents/__init__.py)
+T9. F1 hardening: negative/boundary contract tests for all 5 models (round-trip, missing fields, invalid literals, HttpUrl rejection, grounding 0-1 bounds, summary 300 limit) — DONE (2026-11-07: backend/tests/test_contracts_hardening.py, 27 assertions, 32 passed total; no RED step because the models already enforced the spec constraints — tests pin existing frozen behavior; legacy suite docstring corrected to happy-path smoke)
 
 ## Log
 
@@ -43,6 +44,7 @@ L3. 2026-11-06: First TDD test file to be generated
 L4. 2026-11-07: Static serving fixed (StaticFiles mount points to web/public via absolute Path); server verified: /health 200, 3 HTML pages 200
 L5. 2026-11-07: README.md and AGENTS.md created at repo root; git baseline commit ade990e; CodeGraph + skill-registry initialized
 L6. 2026-11-07: SDD audit vs prompt maestro (Paso 1): suite 5 passed; 6 MCP adapters verified. Gaps found and fixed same day: backend/app/core/ and backend/app/db/ were missing from the T1 "DONE" claim (structure incomplete vs S1) — scaffolds created, data/ empty per F5 (placeholder README added), web/src islands deferred per T5 environment deviation (plain HTML served by FastAPI). Suite re-run green after changes.
+L7. 2026-11-07: Roadmap audit: existing 5 contract tests are happy-path only (names say "invalid_missing_fields" but no negative/boundary case is asserted; except-ValidationError converts rejection into failure) — F1 REOPENED as T9. Full per-phase test/audit requirements persisted in docs/plan_de_fases_verificacion.md (F1-F7 with exit criteria + cross-cutting rules).
 
 ## Delivery Strategy
 

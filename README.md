@@ -134,6 +134,8 @@ completada con tests observados en verde.
   contratos y estructura de directorios.
 - `docs/especificaci_n_y_resumen_de_arquitectura.md` — visión del producto,
   alcance funcional, stack y estrategia TDD.
+- `docs/plan_de_fases_verificacion.md` — matriz F1–F7: tests y auditorías
+  obligatorias por fase, estado y criterios de salida.
 - `AGENTS.md` — contexto obligatorio para agentes de código (separación
   build-time/runtime, convenciones y roadmap).
 - `odd/` — feature docs ODD de cada fase.

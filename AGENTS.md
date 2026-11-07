@@ -1,9 +1,11 @@
 # AGENTS.md — Guía para agentes de código que trabajen en este repositorio
 
 Contexto mínimo para trabajar en este proyecto sin re-explorar todo. La fuente
-de verdad funcional son `docs/prompt_maestro_de_inicio.md` (SDD/TDD) y
-`docs/especificaci_n_y_resumen_de_arquitectura.md` (visión y fases). Los planes
-de trabajo viven en `odd/` (Organic Driven Development, ODD).
+de verdad funcional son `docs/prompt_maestro_de_inicio.md` (SDD/TDD),
+`docs/especificaci_n_y_resumen_de_arquitectura.md` (visión y fases) y
+`docs/plan_de_fases_verificacion.md` (matriz de fases F1–F7 con tests y
+auditorías por fase, y criterios de salida). Los planes de trabajo viven en
+`odd/` (Organic Driven Development, ODD).
 
 El proyecto arranca desde cero bajo la metodología **Gentle-AI** como método de
 programación: orquestación ODD + TDD estricto. Los documentos describen el
