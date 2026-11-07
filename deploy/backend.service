@@ -1,0 +1,18 @@
+[Unit]
+Description=Showcase Platform - FastAPI Multiagent Backend
+After=network.target
+
+[Service]
+Type=simple
+User=nilto
+WorkingDirectory=/home/nilto/showcase-platform
+ExecStart=/usr/bin/python3 -m backend.main
+Restart=always
+RestartSec=5
+Environment=PYTHONPATH=/home/nilto/showcase-platform
+Environment=PYTHONUNBUFFERED=1
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
