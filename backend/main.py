@@ -6,7 +6,8 @@ Main application assembling all routers, WebSocket support, and the multi-agent 
 import os
 from pathlib import Path
 
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+import asyncio
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -14,6 +15,7 @@ from backend.app.routers import router, news_router, contact_router, health_rout
 from backend.app.mcp.adapters import MCPRegistry
 from backend.app import models  # noqa: F401
 from backend.websockets import manager, websocket_route, websocket_status
+from backend.agent_ops_router import agent_ops_router
 
 # Create FastAPI app
 app = FastAPI(
@@ -51,6 +53,9 @@ app.include_router(news_router, prefix="/news", tags=["news"])
 app.include_router(contact_router, prefix="/contact", tags=["contact"])
 app.include_router(health_router, prefix="/health", tags=["health"])
 
+# Agent operations endpoints under /api/v1/agents/* (F3, S6/S7)
+app.include_router(agent_ops_router)
+
 # WebSocket endpoint - routed by agent name
 @app.websocket("/ws/{agent_name}")
 async def websocket_endpoint(websocket: WebSocket, agent_name: str):
@@ -60,9 +65,8 @@ async def websocket_endpoint(websocket: WebSocket, agent_name: str):
 @app.websocket("/ws/status")
 async def websocket_status_endpoint(websocket: WebSocket):
     await websocket.accept()
-    status = websocket_status()
+    status = await websocket_status()
     await websocket.send_json(status)
-    await websocket.close()
 
 # Root endpoint
 @app.get("/")
