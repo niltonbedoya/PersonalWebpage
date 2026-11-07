@@ -26,20 +26,22 @@ S5. All code must be compatible with zero-cost LLM routing:
 
 ## Tasks
 
-T1. Create directory structure (completed in Step 1)
-T2. Generate backend/tests/test_agent_contracts.py with Pydantic model validation tests
-T3. Implement Pydantic models in backend/app/models/
-T4. Write focused tests for each model (RED → GREEN → REFACTOR)
-T5. Create initial Astro 4+ page skeleton for hub and spokes
-T6. Set up FastAPI backend with router stubs
-T7. Configure MCP server adapters (Context7, Engram, news, knowledge, security, notifier)
-T8. Implement multi-agent framework (Nexus, Radarito, Cerebrito, Centinela, Mensajerito, Auditor)
+T1. Create directory structure — DONE (committed ade990e)
+T2. Generate backend/tests/test_agent_contracts.py — DONE (5 contract tests)
+T3. Implement Pydantic models — DONE (backend/app/models.py)
+T4. Write focused tests per model (RED → GREEN → REFACTOR) — DONE (pytest 5 passed)
+T5. Create initial pages for hub and spokes — DONE (plain HTML in web/public/pages/, deviation: .astro fails via esbuild in this environment)
+T6. Set up FastAPI backend with routers — DONE (`python -m backend.main`, /static/pages serving verified 200)
+T7. Configure MCP server adapters — DONE (backend/app/mcp/adapters.py)
+T8. Implement multi-agent framework — DONE (backend/app/agents/__init__.py)
 
 ## Log
 
 L1. 2026-11-06: Feature document created - showcase-platform.md
 L2. 2026-11-06: Directory structure initialized per specification
 L3. 2026-11-06: First TDD test file to be generated
+L4. 2026-11-07: Static serving fixed (StaticFiles mount points to web/public via absolute Path); server verified: /health 200, 3 HTML pages 200
+L5. 2026-11-07: README.md and AGENTS.md created at repo root; git baseline commit ade990e; CodeGraph + skill-registry initialized
 
 ## Delivery Strategy
 

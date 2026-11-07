@@ -24,3 +24,5 @@ data/*.db
 # OS / editor
 Thumbs.db
 .DS_Store
+# Local AI runtime state
+.atl/

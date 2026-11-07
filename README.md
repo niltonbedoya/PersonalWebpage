@@ -73,6 +73,12 @@ data/                     # Corpus técnico y datasets de prueba
 Astro 4 + Tailwind (frontend SSG) · Python 3.12 + FastAPI + Pydantic v2 (backend) ·
 SQLite + SQLite-vec (RAG local) · Engram MCP (memoria de agentes) · Context7 MCP (docs dinámica)
 
+## Estado y progresión del proyecto (SDD)
+
+- `docs/` — especificaciones fuente del producto (prompt maestro + arquitectura)
+- `odd/showcase-platform.md` — plan de construcción (8 tareas, completadas)
+- `odd/new-feature-api-integration.md` — extensión API/WebSockets (parcial: falta integrar `/api/v1/agents/*` en el backend)
+
 ## Referencias
 
 - `docs/prompt_maestro_de_inicio.md` — specs SDD/TDD y topología multiagente

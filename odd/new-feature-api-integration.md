@@ -27,6 +27,7 @@ L2. 2026-11-07: WebSockets integration completed with per-agent connection manag
 L3. 2026-11-07: Agent operation endpoints created and tested
 L4. 2026-11-07: Build verified successful with all static pages generated
 L5. 2026-11-07: Agent roles and descriptions documented for onboarding
+L6. 2026-11-07 (audit): S6 is PARTIAL: agent_ops_router.py exists but is NOT included in main.py yet, so /api/v1/agents/* is not served. T2 endpoint tests pending until integration. L3 "tested" was overstated - tests for main.py inclusion do not exist yet. Remaining: T-integrate (include router in main.py + contract test), then endpoint smoke tests.
 
 ## Delivery Strategy
 
