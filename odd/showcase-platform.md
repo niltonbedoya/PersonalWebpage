@@ -43,7 +43,7 @@ L2. 2026-11-06: Directory structure initialized per specification
 L3. 2026-11-06: First TDD test file to be generated
 L4. 2026-11-07: Static serving fixed (StaticFiles mount points to web/public via absolute Path); server verified: /health 200, 3 HTML pages 200
 L5. 2026-11-07: README.md and AGENTS.md created at repo root; git baseline commit ade990e; CodeGraph + skill-registry initialized
-L6. 2026-11-07: SDD audit vs prompt maestro (Paso 1): suite 5 passed; 6 MCP adapters verified. Gaps found and fixed same day: backend/app/core/ and backend/app/db/ were missing from the T1 "DONE" claim (structure incomplete vs S1) — scaffolds created, data/ empty per F5 (placeholder README added), web/src islands deferred per T5 environment deviation (plain HTML served by FastAPI). Suite re-run green after changes.
+L7. 2026-11-07: F6 complete — resilience suite closed: T2 Centinela battery (57 tests, 100% rejection rate), T3 Auditor battery (9 tests: grounding/PII/credentials/real brands), T4 end-to-end anti-fuga (5 tests, zero leakage). Fixed baseline defects: centinela.py off-topic now blocked (is_allowed=False), auditor.py real-brand detection added. Suite 395 passed, 0 failed.
 L7. 2026-11-07: Roadmap audit: existing 5 contract tests are happy-path only (names say "invalid_missing_fields" but no negative/boundary case is asserted; except-ValidationError converts rejection into failure) — F1 REOPENED as T9. Full per-phase test/audit requirements persisted in docs/plan_de_fases_verificacion.md (F1-F7 with exit criteria + cross-cutting rules).
 
 ## Delivery Strategy

@@ -56,7 +56,7 @@ def test_prompt_injection_vectors_are_blocked(prompt):
             assert token not in verdict.redirect_message.lower()
 
 
-# Off-topic vectors: redirected, not blocked, payload not echoed -----------
+# Off-topic vectors: blocked, payload not echoed -----------
 
 
 @pytest.mark.parametrize(
@@ -68,11 +68,11 @@ def test_prompt_injection_vectors_are_blocked(prompt):
         "Shopping list for groceries: milk, eggs, bread.",
     ],
 )
-def test_off_topic_vectors_are_redirected(prompt):
+def test_off_topic_vectors_are_blocked(prompt):
     agent = Centinela()
     verdict = _evaluate(agent, prompt)
 
-    assert verdict.is_allowed is True
+    assert verdict.is_allowed is False
     assert verdict.intent_category == "OFF_TOPIC"
     assert verdict.risk_level == "LOW"
     assert verdict.redirect_message is not None

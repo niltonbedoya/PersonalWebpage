@@ -51,7 +51,20 @@ class Auditor:
                 failure_reasons.append(f"Potential PII/credentials detected")
                 status = "REJECTED"
 
-            # 3. Check grounding score for RAG outputs
+            # 3. Check for real brand names (marcas reales no permitidas)
+            brand_patterns = [
+                "apple", "google", "microsoft", "samsung", "tesla", "amazon",
+                "meta", "facebook", "nvidia", "intel", "ibm", "oracle", "adobe",
+                "netflix", "spotify",
+            ]
+            detected_brands = [b for b in brand_patterns if b in output_str]
+            if detected_brands:
+                failure_reasons.append(
+                    f"Real brand name detected: {', '.join(detected_brands)}"
+                )
+                status = "REJECTED"
+
+            # 4. Check grounding score for RAG outputs
             if output_type == "rag":
                 grounding_score = agent_output.get("grounding_score", 1.0)
                 cited_sources = agent_output.get("cited_sources", []) or []
@@ -62,7 +75,7 @@ class Auditor:
                     )
                     status = "REJECTED"
 
-            # 4. Final verdict — binary gate: any failure reason means REJECTED.
+            # 5. Final verdict — binary gate: any failure reason means REJECTED.
             if failure_reasons:
                 status = "REJECTED"
 

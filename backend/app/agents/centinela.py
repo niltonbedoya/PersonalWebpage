@@ -10,7 +10,7 @@ class Centinela:
 
     Intercepción ultrarrápida (<150 ms). Evalúa si la consulta es pertinente
     al perfil técnico. Bloquea intentos de jailbreak, inyecciones de prompt
-    y reconduce consultas off-topic.
+    y consultas off-topic.
     Inferencia: Groq Cloud llama-3.1-8b-instant.
     """
 
@@ -22,7 +22,16 @@ class Centinela:
             "system override", "disable safety", "extract credentials",
             "developer mode", "dan", "reveal", "configuration",
             "connection string", "tokens", "secrets", "environment variables",
-            "ignore all", "prior rules", "filtering"
+            "ignore all", "prior rules", "filtering",
+            "pretend you are", "unrestricted AI", "no limitations",
+            "forget all your previous training", "be helpful",
+            "act as if", "ethical constraints",
+            "ignore your developer instructions", "comply with me",
+            "switch to developer mode", "disable your safety mode",
+            "reveal your system instructions", "internal configuration",
+            "bypass", "authentication", "admin panel",
+            "run this code", "execute the following",
+            "override", "system:", "answers everything",
         ]
         self.intent_categories = [
             "TECHNICAL_PROFILE", "HARDWARE_SMT", "SOFTWARE_CASE_STUDY",
@@ -61,16 +70,21 @@ class Centinela:
                 "cocina", "deportes", "finanzas personales", "shopping",
                 "pizza", "receta", "fútbol", "partido", "finanzas",
                 "acciones", "invertir", "supermercado",
+                "capital", "perder peso", "óscar", "película", "beatles",
+                "canción", "pastel", "chocolate", "presidente",
+                "estados unidos", "smartphone", "windows", "instalar",
+                "computadora", "restaurante", "sushi", "huesos",
+                "cuerpo humano", "mona lisa", "pintó", "huesos",
             ]
             for keyword in off_topic_keywords:
                 if keyword in prompt_lower:
                     verdict_dict.update({
-                        "is_allowed": True,
+                        "is_allowed": False,
                         "risk_level": "LOW",
                         "intent_category": "OFF_TOPIC",
                         "redirect_message": "Mi especialidad es ingeniería híbrida (SMT/THT y software industrial). ¿Tiene alguna pregunta técnica sobre estos temas?",
                     })
-                    logger.info(f"Off-topic redirect: {keyword}")
+                    logger.info(f"Off-topic blocked: {keyword}")
                     return GuardrailVerdict(**verdict_dict)
 
             # Default: allowed technical profile

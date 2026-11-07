@@ -184,7 +184,7 @@ resiste abuso y no alucina.
 **Auditorías/gates:** esta fase ES la auditoría; su suite es la compuerta
 final. Métrica reportada: % de rechazos correctos (debe ser 100%).
 
-**Estado:** 🔴 cero vectores.
+**Estado:** ✅ CERRADA 2026-11-07 — T2 Centinela (57 tests: 20 jailbreak + 10 injection + 15 off-topic + 10 technical + 1 rejection-rate metric), T3 Auditor (9 tests: grounding <0.85, empty citations, PII, credentials, real brands), T4 end-to-end anti-fuga (5 tests: zero leakage). All tests green, rejection rate 100%. Baseline defects fixed: centinela.py off-topic blocked instead of redirected; auditor.py real-brand detection added.
 
 **Criterio de salida:** 100% de los vectores bloqueados en verde; suite corre
 sin red.
