@@ -40,7 +40,22 @@ Componentes de la orquestación Gentle-AI (ODD):
 | Agente worker (writer) | Implementa una unidad acotada con edit surfaces mínimas autorizadas, tests y docs juntos | Sub-sesión delegada |
 | Agente verificador | Verificación independiente de cambios de riesgo alto (junta de verificación), contra specs S# | Sub-sesión delegada |
 
-Reglas de la metodología que todo agente de código debe respetar aquí:
+**Modelos LLM de los subagentes de Gentle-AI (build-time)** — definidos en
+`config/gentle-ai/subagent-models.json`, integrado con el plugin
+`gentle-ai.model-variants` ya registrado en `cli.json`. Todos los proveedores
+son zero-cost (matriz de arquitectura §4.2). Cada subagente tiene primario y
+fallback:
+
+| Subagente | Proveedor | Modelo primario | Fallback | Temperatura | Rol |
+|---|---|---|---|---|---|
+| gentle-orchestrator | Google AI Studio | gemini-2.0-flash | gemini-1.5-flash | 0.1 | ODD orchestration: authorize, explore, classify, delegate, verify, close |
+| gentle-ai-explore | Groq | llama-3.1-8b-instant | qwen-2.5-7b | 0.0 | Read-only code exploration + mapping, bounded handoffs |
+| gentle-ai-worker | Google AI Studio | gemini-1.5-flash | llama-3.1-70b-instant | 0.1 | Bounded implementation unit, code+tests+docs |
+| gentle-ai-verify | Google AI Studio | gemini-1.5-flash | llama-3.1-8b-instant | 0.0 | Independent verification of named high-risk items |
+
+Fallback strategy: on provider unavailability or rate limit, switch to the
+declared `fallback_model` for that subagent. Never fall back to a paid provider.
+Validated by `tests/test_gentle_ai_subagent_models.py` (19 assertions).
 
 1. **Planificación en `odd/`**: todo trabajo significativo se planifica en un
    feature document `odd/<feature>.md` con Specs (`S1..Sn`, citas textuales del

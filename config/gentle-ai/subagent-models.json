@@ -1,0 +1,42 @@
+{
+  "schema": "gentle-ai.subagent-models/v1",
+  "version": 1,
+  "description": "Model assignment per Gentle-AI ODD subagent (build-time layer). Not product runtime code. All providers zero-cost per project architecture section 4.2. Model names resolve against the gentle-ai.model-variants plugin cache.",
+  "fallback_strategy": "On provider unavailability or rate limit, switch to the declared fallback_model for that subagent. Never fall back to a paid provider.",
+  "providers": {
+    "groq": ["llama-3.1-8b-instant", "llama-3.1-70b-instant"],
+    "google_ai_studio": ["gemini-1.5-flash", "gemini-2.0-flash"],
+    "cloudflare_workers_ai": ["qwen-2.5-7b"],
+    "openrouter": ["deepseek-chat"]
+  },
+  "subagents": {
+    "gentle-orchestrator": {
+      "provider": "google_ai_studio",
+      "primary_model": "gemini-2.0-flash",
+      "fallback_model": "gemini-1.5-flash",
+      "temperature": 0.1,
+      "role": "Orchestrates the ODD workflow: authorizes, explores, classifies task size, delegates workers/verifiers, verifies outcomes, updates feature docs."
+    },
+    "gentle-ai-explore": {
+      "provider": "groq",
+      "primary_model": "llama-3.1-8b-instant",
+      "fallback_model": "qwen-2.5-7b",
+      "temperature": 0.0,
+      "role": "Read-only code exploration and mapping. Returns bounded handoffs (~2k tokens) with path:line evidence; never writes."
+    },
+    "gentle-ai-worker": {
+      "provider": "google_ai_studio",
+      "primary_model": "gemini-1.5-flash",
+      "fallback_model": "llama-3.1-70b-instant",
+      "temperature": 0.1,
+      "role": "Implementation writer. Executes bounded units with declared allowed edit surfaces, writes code+tests+docs together."
+    },
+    "gentle-ai-verify": {
+      "provider": "google_ai_studio",
+      "primary_model": "gemini-1.5-flash",
+      "fallback_model": "llama-3.1-8b-instant",
+      "temperature": 0.0,
+      "role": "Independent technical verification of high-risk changes (named via --escalate-item). Runs focused probes against specs, not full sweeps."
+    }
+  }
+}
