@@ -3,66 +3,100 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vertical Industrial SMT/THT</title>
+  <title>Spoke Industrial — SMT/THT</title>
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-    .card { border: 1px solid #e9ecef; border-left: 4px solid #6c757d; padding: 25px; margin: 20px 0; background: #fff; }
-    .alert { padding: 12px; background: #fff3cd; border: 1px solid #ffeaa7; margin: 20px 0; color: #856404; }
-    h3 { margin-top: 0; color: #212529; }
-  </style>
 </head>
 <body>
 
-  <nav aria-label="Navegación principal">
-    <a href="index.html">Hub Central</a>
-    <a href="industrial-smt.html" aria-current="page">Industrial SMT/THT</a>
-    <a href="software-engineering.html">Ingeniería de Software</a>
-    <button type="button" class="drawer-trigger" aria-expanded="false" aria-controls="drawer-rag" aria-label="Abrir cajón del asistente">Asistente</button>
-  </nav>
+  <div class="container">
+    <nav class="footer" style="margin-bottom: 1rem; border: none; padding: 0;">
+      <a href="index.html" class="btn">Hub Central</a>
+      <a href="industrial-smt.html" class="btn">Industrial SMT/THT</a>
+      <a href="software-engineering.html" class="btn">Software & IA</a>
+    </nav>
 
-  <h2>Vertical Industrial SMT/THT</h2>
+    <div class="hero">
+      <h1>Spoke Industrial</h1>
+      <p>Maquinaria de inspección, sistemas térmicos, soldadura, handling y metalurgia para procesos SMT/THT.</p>
+      <p><em>Límite de alcance: exclusión estricta de maquinaria Pick & Place.</em></p>
+    </div>
 
-  <div class="card card-violet">
-    <h3>Sistemas de Inspección</h3>
-    <ul>
-      <li><strong>Paraming:</strong> 3D SPI (pasta), 3D AOI (componentes/soldadura), 3D PSI (revestimiento conformal)</li>
-      <li><strong>Marantz:</strong> inspección 2D pre-reflujo y post-reflujo (SMD y THT)</li>
-      <li><strong>Ersa VERSAEYE:</strong> inspección óptica de soldadura</li>
-      <li><strong>Matrix:</strong> rayos X en línea (AXI) para soldaduras ocultas (BGA, QFN, vaciado)</li>
-    </ul>
+    <nav class="footer" style="margin-bottom: 1.5rem; border: none; padding: 0;">
+      <a href="index.html" class="btn" style="background: var(--muted);">← Volver al Hub</a>
+    </nav>
+
+    <h2>Sistemas de Inspección</h2>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Parmi</h3>
+        <ul>
+          <li>3D SPI — inspección de pasta de soldar</li>
+          <li>3D AOI — inspección de componentes y soldadura</li>
+          <li>3D PSI — inspección de conformal coating</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Marantz</h3>
+        <p>Inspección 2D pre-reflow y post-reflow (componentes SMD y THT).</p>
+      </div>
+      <div class="card">
+        <h3>Ersa VERSAEYE</h3>
+        <p>Inspección óptica de soldadura.</p>
+      </div>
+      <div class="card">
+        <h3>Matrix</h3>
+        <p>Inspección por Rayos X en línea (AXI) para soldaduras ocultas (BGA, QFN, voiding).</p>
+      </div>
+      <div class="card">
+        <h3>MPM</h3>
+        <p>Impresoras de alta precisión (AccuFlex, Momentum), alineación por visión y control reológico.</p>
+      </div>
+    </div>
+
+    <h2>Sistemas Térmicos y Soldadura</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Ersa</h3>
+        <p>Soldadura selectiva (mini-wave / multi-dip), soldadura por ola (Wave Soldering) y hornos de refusión por convección.</p>
+      </div>
+      <div class="card">
+        <h3>Electrovert</h3>
+        <p>Soldadura por ola (serie Vectra) y hornos de refusión.</p>
+      </div>
+    </div>
+
+    <h2>Metalurgia y Materiales</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <h3>Pasta de soldar</h3>
+        <p>Reología, fluxes no-clean/solubles, granulometría tipo 3/4/5.</p>
+      </div>
+      <div class="card">
+        <h3>Aleaciones</h3>
+        <p>SAC305, SN100C, SnPb. Control de escoria (dross) y atmósfera inerte (N₂).</p>
+      </div>
+      <div class="card">
+        <h3>Perfilado térmico</h3>
+        <p>Hornos de refusión (Ramp-to-Soak, Time Above Liquidus - TAL, enfriamiento controlado).</p>
+      </div>
+    </div>
+
+    <h2>Handling y Automatización</h2>
+    <div class="card">
+      <p>Cargadores, descargadores, buffers, cintas transportadoras, diagnóstico y programación de PLCs.</p>
+    </div>
+
+    <div class="alert">
+      <strong>Límite de Alcance:</strong> Exclusión explícita de máquinas de inserción Pick &amp; Place.
+    </div>
+
+    <button class="btn" aria-controls="drawer-rag" style="margin-top: 1rem;">Asistente RAG</button>
+
+    <footer class="footer">
+      <p>Feed contextual: noticias SMT/THT — <a href="index.html" style="color: var(--accent);">Volver al Hub</a></p>
+    </footer>
   </div>
-
-  <div class="card card-red">
-    <h3>Sistemas Térmicos y Soldadura</h3>
-    <ul>
-      <li><strong>Ersa:</strong> soldadura selectiva, soldadura por ola, hornos por convección</li>
-      <li><strong>Electrovert:</strong> serie Vectra de soldadura por ola, hornos de reflujo</li>
-    </ul>
-  </div>
-
-  <div class="card card-orange">
-    <p><strong>Metalurgia:</strong> soldaduras SAC305, SN100C, SnPb; granulometría tipo 3/4/5</p>
-    <p><strong>Reología de la pasta:</strong> fluxes no-clean/solubles, tamaño de partícula tipo 3/4/5</p>
-  </div>
-
-  <p><strong>Manejo y Automatización:</strong></p>
-  <ul>
-    <li>Cargadores, descargadores, buffers, transportadores de banda</li>
-    <li>Diagnóstico y programación de PLC</li>
-  </ul>
-
-  <div class="alert">
-    <strong>Límite de Alcance:</strong> Exclusión estricta de maquinaria Pick & Place (no se incluyen sistemas de colocación SMT en v1)
-  </div>
-
-  <h3>Noticias SMT/THT</h3>
-  <div id="news-feed-industrial"></div>
-
-  <footer>
-    Feed Contextual: ventana con curación automática de noticias sobre SMT y THT
-  </footer>
 
 </body>
 </html>

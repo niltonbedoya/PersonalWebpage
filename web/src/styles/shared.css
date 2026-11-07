@@ -1,183 +1,158 @@
-/* Shared layout and component styles for the Showcase Hub & Spoke frontend.
-   Matches the visual style of web/public/pages/*.html (system-ui font, card
-   borders, accent colors). All code ASCII-only. */
+/* ============================================================
+   Showcase Platform — Shared Styles
+   Capa base: Industrial Minimal (Skill 1)
+   Capa de sección: Software Portfolio (Skill 2) solo en /software-engineering
+   ============================================================ */
 
-/* Design tokens */
+/* ---------- Tokens de diseño ---------- */
 :root {
-  --color-text: #212529;
-  --color-muted: #6c757d;
-  --color-border: #e9ecef;
-  --color-bg: #ffffff;
-  --color-bg-alt: #f8f9fa;
-  --color-accent: #6c757d;
-  --color-accent-violet: #7f5af0;
-  --color-accent-red: #e83e8c;
-  --color-accent-orange: #fd7e14;
-  --color-accent-teal: #20c997;
-  --color-accent-green: #198754;
-  --color-alert-bg: #fff3cd;
-  --color-alert-border: #ffeaa7;
-  --color-alert-text: #856404;
-  --radius: 8px;
-  --max-width: 800px;
-  --gap: 1rem;
+  /* Colores base (Industrial Minimal) */
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #f59e0b;        /* ámbar: soldadura / ingeniería */
+  --border: #e2e8f0;
+
+  /* Colores de sección (Software Portfolio) */
+  --accent-software: #4f46e5;   /* índigo */
+  --accent-software-hover: #4338ca;
+
+  /* Utilidades */
+  --radius: 6px;
+  --transition: 0.2s ease;
 }
 
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
+/* ---------- Reset y base ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 body {
-  font-family: system-ui, sans-serif;
-  color: var(--color-text);
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
-  margin: 0;
-  padding: 0;
+  color-scheme: light;
 }
 
-/* Layout shell */
-.wrap {
-  max-width: var(--max-width);
-  margin: 0 auto;
-  padding: 20px;
-}
+/* ---------- Layout ---------- */
+.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* Hero */
+/* ---------- Tipografía ---------- */
+h1, h2, h3 { font-weight: 700; line-height: 1.25; }
+h1 { font-size: 2rem; letter-spacing: -0.02em; }
+h2 { font-size: 1.5rem; margin-top: 1.5rem; }
+h3 { font-size: 1.25rem; margin-top: 1rem; }
+p { margin: 0.5rem 0; }
+
+/* ---------- Componentes globales (Industrial Minimal) ---------- */
 .hero {
-  text-align: center;
-  padding: 50px 20px;
-  background: var(--color-bg-alt);
-  margin: -20px -20px 30px;
-  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 3rem 0;
 }
-.hero h1 {
-  font-size: 2.5rem;
-  margin-bottom: 10px;
-  background: var(--color-bg);
-  display: inline-block;
-  padding: 10px;
-}
+.hero h1 { font-size: 2rem; }
+.hero p { color: var(--muted); margin-top: 0.5rem; }
 
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin-top: 40px;
-}
-@media (max-width: 640px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* Cards */
 .card {
-  border: 1px solid var(--color-border);
-  border-left: 4px solid var(--color-accent);
-  padding: 25px;
-  margin: 20px 0;
-  background: var(--color-bg);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: transform var(--transition), box-shadow var(--transition);
 }
-.card-violet { border-left-color: var(--color-accent-violet); }
-.card-red { border-left-color: var(--color-accent-red); }
-.card-orange { border-left-color: var(--color-accent-orange); }
-.card-teal { border-left-color: var(--color-accent-teal); }
-.card-green { border-left-color: var(--color-accent-green); }
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+}
 
-/* Headings */
-h2 { margin-top: 0; color: var(--color-text); }
-h3 { margin-top: 0; color: var(--color-text); }
+.grid { display: grid; gap: 1.5rem; }
+.grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+.grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
 
-/* Alert */
 .alert {
-  padding: 15px;
-  background: var(--color-alert-bg);
-  border: 1px solid var(--color-alert-border);
-  margin: 20px 0;
-  color: var(--color-alert-text);
+  background: #fef3c7;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  margin: 1rem 0;
 }
 
-/* Footer */
-footer {
-  margin-top: 40px;
-  padding-top: 20px;
-  border-top: 1px solid var(--color-border);
-  color: var(--color-muted);
+.footer {
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+  padding: 2rem 0;
+  color: var(--muted);
   font-size: 0.9rem;
 }
 
-/* Drawer (off-canvas panel, toggled by shared-header trigger) */
-.drawer {
-  position: fixed;
-  inset: 0 0 0 auto;
-  z-index: 50;
-  width: min(360px, 85vw);
-  background: var(--color-bg);
-  border-left: 1px solid var(--color-border);
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
-  transform: translateX(100%);
-  transition: transform 0.25s ease;
-  padding: 24px;
-  overflow-y: auto;
-}
-.drawer.open {
-  transform: translateX(0);
-}
-.drawer-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 45;
-  background: rgba(0, 0, 0, 0.35);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-.drawer-backdrop.open {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Form */
-.form {
-  margin: 20px 0;
-}
-.form-group {
-  margin: 0 0 1rem 0;
-}
-.form label {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--color-muted);
-  margin-bottom: 4px;
-}
-.form input,
-.form textarea,
-.form select {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid var(--color-border);
+/* ---------- Botones ---------- */
+.btn {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
   border-radius: var(--radius);
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: 1rem;
-}
-.form button.btn,
-button.btn {
-  display: inline-block;
-  padding: 10px 18px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: inherit;
-  font-size: 0.95rem;
+  font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity var(--transition);
 }
-.form button.btn-primary,
-button.btn-primary {
-  background: var(--color-accent);
-  color: #ffffff;
-  border-color: var(--color-accent);
+.btn:hover { opacity: 0.9; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- Componentes Software Portfolio (Skill 2) ---------- */
+/* Se aplican dentro de /software-engineering para los case studies */
+
+.card-soft {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.card-soft:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--accent-software);
+  border: 1px solid var(--accent-software);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+.btn-outline:hover { background: var(--accent-software); color: #fff; }
+
+.code-tag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85rem;
+  background: #f3f4f6;
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  color: #1f2937;
+}
+
+.fade-in {
+  animation: fadeInUp 0.6s ease-out both;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+  .hero { padding: 2rem 0; }
+  .card, .card-soft { padding: 1rem; }
+  .container { padding: 0 1rem; }
 }

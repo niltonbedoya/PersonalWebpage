@@ -3,63 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Showcase de Ingeniería Híbrida</title>
+  <title>Showcase Platform — Living Technical Portfolio</title>
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
 </head>
 <body>
-  <!-- Shared site navigation (inlined from web/src/components/shared-header.html) -->
-  <nav aria-label="Navegación principal">
-    <a href="index.html">Hub Central</a>
-    <a href="industrial-smt.html">Industrial SMT/THT</a>
-    <a href="software-engineering.html">Ingeniería de Software</a>
-    <button type="button" class="drawer-trigger" aria-expanded="false" aria-controls="drawer-rag" aria-label="Abrir cajón del asistente">Asistente</button>
-  </nav>
 
-  <div class="wrap">
+  <div class="container">
+    <nav class="footer" style="margin-bottom: 1rem; border: none; padding: 0;">
+      <a href="index.html" class="btn">Hub Central</a>
+      <a href="industrial-smt.html" class="btn">Industrial SMT/THT</a>
+      <a href="software-engineering.html" class="btn">Software & IA</a>
+    </nav>
+
     <div class="hero">
-      <h1>Showcase de Ingeniería Híbrida</h1>
-      <p>Autoridad técnica certificada en ingeniería de hardware, SMT/THT y arquitectura de software industrial.</p>
-      <p><em>15+ años de experiencia | Manufactura y Desarrollo de Software | Framework Multiagente</em></p>
+      <h1>Showcase Platform</h1>
+      <p>Portfolio técnico híbrido en vivo para un perfil de doble especialización:</p>
+      <p><strong>Ingeniería SMT/THT</strong> (Inspección Óptica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial & Soluciones IA</strong>.</p>
+      <button class="btn" aria-controls="drawer-rag" style="margin-top: 1rem;">Asistente RAG</button>
     </div>
 
-    <h2>Métricas de ingeniería</h2>
-    <div class="grid">
-      <div class="card card-violet">
-        <h3>Hardware SMT/THT</h3>
-        <p>Inspección 3D (SPI, AOI, PSI), AXI rayos X, soldadura selectiva y de ola, serigrafía y handling.</p>
+    <div class="grid cols-2">
+      <div class="card">
+        <h2>Spoke Industrial</h2>
+        <p>Maquinaria de inspección óptica 3D, rayos X, sistemas térmicos, soldadura, handling y metalurgia.</p>
+        <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
       </div>
-      <div class="card card-teal">
-        <h3>Software e IA</h3>
-        <p>Casos de estudio anonimizados, pipelines de traducción, plataformas IoT de salud y ERP.</p>
-      </div>
-    </div>
-
-    <div class="alert">
-      <strong>Nota v1:</strong> APIs en vivo no expuestas. Demostraciones controladas y grabadas.
-      Enfoque en anonimización por diseño y eliminación de costos y riesgos.
-    </div>
-
-    <h2>Split Cards</h2>
-    <div class="grid">
-      <div class="card card-orange">
-        <h3>Vertical Industrial SMT/THT</h3>
-        <p>Maquinaria de inspección, sistemas térmicos y de soldadura, serigrafía, handling y metalurgia.</p>
-        <a href="industrial-smt.html" class="btn btn-primary">Ir al spoke Industrial</a>
-      </div>
-      <div class="card card-red">
-        <h3>Vertical Software e IA</h3>
-        <p>Casos de estudio, feeds de noticias IA/software y soluciones de ingeniería de software.</p>
-        <a href="software-engineering.html" class="btn btn-primary">Ir al spoke Software</a>
+      <div class="card">
+        <h2>Spoke Software</h2>
+        <p>5 casos de estudio de software e IA, arquitecturas, demostraciones controladas y feeds de noticias tecnológicas.</p>
+        <a href="software-engineering.html" class="btn">Ver Spoke Software &rarr;</a>
       </div>
     </div>
 
-    <h2>Feed de noticias</h2>
-    <div id="news-feed"></div>
+    <div class="grid cols-3">
+      <div class="card">
+        <h3>Métricas de Ingeniería</h3>
+        <p>Plataforma multiagente con enrutamiento LLM de costo cero (Groq, Google AI Studio, Cloudflare, OpenRouter).</p>
+      </div>
+      <div class="card">
+        <h3>Guardrail & Seguridad</h3>
+        <p>Intercepción perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.</p>
+      </div>
+      <div class="card">
+        <h3>RAG con Grounding</h3>
+        <p>Motor RAG sobre corpus local SQLite-vec con score de fundamentación ≥ 0.85.</p>
+      </div>
+    </div>
+
+    <div id="news-feed">
+      <h3>Noticias SMT/THT</h3>
+      <p id="news-feed-content">Cargando noticias...</p>
+    </div>
 
     <footer class="footer">
-      <p><a href="https://linkedin.com" target="_blank">LinkedIn</a> | <a href="https://github.com" target="_blank">GitHub</a> | <a href="/static/cv.pdf" target="_blank">Descargar CV (PDF)</a></p>
+      <p>Feeds contextuales: SMT/THT · IA/Software &nbsp;|&nbsp;
+      <a href="https://linkedin.com" target="_blank">LinkedIn</a> &nbsp;|&nbsp;
+      <a href="https://github.com" target="_blank">GitHub</a> &nbsp;|&nbsp;
+      <a href="#">Descargar CV (PDF)</a></p>
     </footer>
   </div>
+
 </body>
 </html>
