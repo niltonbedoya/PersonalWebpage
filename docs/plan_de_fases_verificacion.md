@@ -77,7 +77,7 @@ gate del Auditor operando completamente offline con fixtures.
 por el Auditor (assert `AuditVerdict.status == "APPROVED"` o bloqueo visible).
 Coverage sobre `backend/app/agents/` sobre clean import sin red.
 
-**Estado:** 🟡 EN PROGRESO — T2 (Centinela battery), T3 (Radarito), T4 (Auditor binary gate) cerrados 2026-11-07, 67 tests en verde. T5 Cerebrito, T6 Mensajerito, T7 Nexus FSM + full mock dispatch pendientes (wave 2).
+**Estado:** ✅ CERRADA 2026-11-07 — T2 Centinela (10 injection + 4 off-topic + 5 technical + latency), T3 Radarito (dedup/noise/truncation), T4 Auditor (binary gate, PII/credentials, grounding), T5 Cerebrito (grounding-from-chunks), T6 Mensajerito (lead battery + notifier dispatch), T7 Nexus (FSM + routing), T8 LLM model routing (zero-cost fallback). Suite 131 passed, 0 failed. Baseline defects fixed: centinela.py risk_keywords, radarito.py dedup str() comparison, auditor.py APPROVED_WITH_SANITIZATION removed + rag citation check, cerebrito.py hardcoded 0.9 removed, mensajerito.py dispatch stub replaced with live call. Wave 2 closed via subagent delegation (gentle-ai-worker) for T5/T6/T7 with parent diff review.
 
 **Criterio de salida:** despacho completo (guardrail→agente→auditor) verde en
 suite offline; FSM cubre transiciones y errores.

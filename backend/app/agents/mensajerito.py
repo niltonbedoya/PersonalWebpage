@@ -85,7 +85,7 @@ class Mensajerito:
 
             # Dispatch notification if we have contact info
             if sender_contact and self.notifier_adapter:
-                pass  # Dispatch would happen here
+                self.notifier_adapter.dispatch_lead_notification(payload)
 
             logger.info(f"Lead evaluated: {opportunity_type} priority={priority}")
             return payload
