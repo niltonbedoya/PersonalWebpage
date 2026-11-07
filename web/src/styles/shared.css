@@ -6,19 +6,12 @@
 
 /* ---------- Tokens de diseño ---------- */
 :root {
-  /* Colores extraídos de tu logo (Nilton Logo.png) */
-  --color-logo-negro: #000000;
-  --color-logo-blanco: #ffffff;
-  --color-logo-amarillo: #ffff00;      /* Amarillo puro de tu logo */
-  --color-logo-amarillo-oscuro: #e6e600;
-
   /* Colores base (Industrial Minimal) */
   --bg: #f8fafc;
   --surface: #ffffff;
   --text: #0f172a;
   --muted: #64748b;
-  --accent: var(--color-logo-amarillo);        /* ← Amarillo de tu logo */
-  --accent-hover: var(--color-logo-amarillo-oscuro);
+  --accent: #f59e0b;        /* ámbar: soldadura / ingeniería */
   --border: #e2e8f0;
 
   /* Colores de sección (Software Portfolio) */
@@ -39,46 +32,6 @@ body {
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   color-scheme: light;
-}
-
-/* ---------- Logo de Nilton Bedoya ---------- */
-.logo {
-  display: inline-block;
-  max-width: 200px;
-  height: auto;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15));
-}
-
-/* Logo animado: giro suave al pasar el mouse */
-.logo-animated {
-  transition: transform var(--transition);
-}
-.logo-animated:hover {
-  transform: rotateY(180deg);
-}
-
-/* Animación de brillo/pulso para el amarillo del logo */
-.logo-glow {
-  animation: logo-glow 3s ease-in-out infinite;
-}
-@keyframes logo-glow {
-  0%, 100% { box-shadow: 0 0 5px var(--color-logo-amarillo); }
-  50% { box-shadow: 0 0 20px var(--color-logo-amarillo), 0 0 30px var(--color-logo-amarillo); }
-}
-
-/* Simulación 3D con text-shadow para el texto del logo */
-.logo-text-3d {
-  color: var(--color-logo-negro);
-  text-shadow: 
-    1px 1px 0 var(--color-logo-amarillo),
-    2px 2px 0 var(--color-logo-amarillo-oscuro),
-    3px 3px 0 #cccc00,
-    4px 4px 0 #b3b300;
-  display: inline-block;
-  padding: 2px 4px;
-  border-radius: var(--radius);
-  font-weight: 800;
-  letter-spacing: 1px;
 }
 
 /* ---------- Layout ---------- */
