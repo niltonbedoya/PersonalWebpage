@@ -1,0 +1,19 @@
+<!-- Drawer RAG modal fragment for the Hub & Spoke frontend.
+     HTML fragment: no document or body tags. Uses shared.css drawer classes. -->
+<div class="drawer-backdrop" id="drawer-rag-backdrop"></div>
+<div class="drawer" id="drawer-rag" aria-modal="true" role="dialog" aria-labelledby="drawer-rag-title">
+  <button type="button" class="btn drawer-close" id="drawer-rag-close" aria-label="Close drawer" aria-controls="drawer-rag">Close</button>
+  <div class="drawer-header">
+    <h3 id="drawer-rag-title">Asistente Tecnico</h3>
+  </div>
+  <div class="drawer-messages" id="drawer-rag-messages" aria-live="polite"></div>
+  <div class="drawer-loading" id="drawer-rag-loading" hidden>Loading...</div>
+  <div class="drawer-error" id="drawer-rag-error" hidden></div>
+  <form class="form" id="drawer-rag-form">
+    <div class="form-group">
+      <label for="drawer-rag-input">Message</label>
+      <input type="text" id="drawer-rag-input" name="message" placeholder="Type your question..." />
+    </div>
+    <button type="submit" class="btn btn-primary" id="drawer-rag-send">Send</button>
+  </form>
+</div>

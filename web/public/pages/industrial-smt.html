@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Industrial SMT/THT</title>
+  <title>Vertical Industrial SMT/THT</title>
+  <link rel="stylesheet" href="/static/src/styles/shared.css">
+  <script src="/static/src/js/shared.js" defer></script>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
     .card { border: 1px solid #e9ecef; border-left: 4px solid #6c757d; padding: 25px; margin: 20px 0; background: #fff; }
@@ -13,43 +15,53 @@
 </head>
 <body>
 
-  <h2>Industrial SMT/THT</h2>
+  <nav aria-label="Navegación principal">
+    <a href="index.html">Hub Central</a>
+    <a href="industrial-smt.html" aria-current="page">Industrial SMT/THT</a>
+    <a href="software-engineering.html">Ingeniería de Software</a>
+    <button type="button" class="drawer-trigger" aria-expanded="false" aria-controls="drawer-rag" aria-label="Abrir cajón del asistente">Asistente</button>
+  </nav>
+
+  <h2>Vertical Industrial SMT/THT</h2>
 
   <div class="card card-violet">
-    <h3>Systems of Inspection</h3>
+    <h3>Sistemas de Inspección</h3>
     <ul>
-      <li><strong>Paraming:</strong> 3D SPI (paste), 3D AOI (components/soldering), 3D PSI (conformal coating)</li>
-      <li><strong>Marantz:</strong> 2D inspection pre-reflow and post-reflow (SMD and THT)</li>
-      <li><strong>Ersa VERSAEYE:</strong> Optical inspection of soldering</li>
-      <li><strong>Matrix:</strong> In-line X-ray (AXI) for hidden solderings (BGA, QFN, voiding)</li>
+      <li><strong>Paraming:</strong> 3D SPI (pasta), 3D AOI (componentes/soldadura), 3D PSI (revestimiento conformal)</li>
+      <li><strong>Marantz:</strong> inspección 2D pre-reflujo y post-reflujo (SMD y THT)</li>
+      <li><strong>Ersa VERSAEYE:</strong> inspección óptica de soldadura</li>
+      <li><strong>Matrix:</strong> rayos X en línea (AXI) para soldaduras ocultas (BGA, QFN, vaciado)</li>
     </ul>
   </div>
 
   <div class="card card-red">
-    <h3>Thermal Systems & Soldering</h3>
+    <h3>Sistemas Térmicos y Soldadura</h3>
     <ul>
-      <li><strong>Ersa:</strong> Selective soldering, wave soldering, convection ovens</li>
-      <li><strong>Electrovert:</strong> Vectra wave series, reflow ovens</li>
+      <li><strong>Ersa:</strong> soldadura selectiva, soldadura por ola, hornos por convección</li>
+      <li><strong>Electrovert:</strong> serie Vectra de soldadura por ola, hornos de reflujo</li>
     </ul>
   </div>
 
   <div class="card card-orange">
-    <p><strong>Metallurgy:</strong> Solders SAC305, SN100C, SnPb; Granulometry type 3/4/5</p>
-    <p><strong>Paste reology:</strong> No-clean/soluble fluxes, type 3/4/5 particle size</p>
+    <p><strong>Metalurgia:</strong> soldaduras SAC305, SN100C, SnPb; granulometría tipo 3/4/5</p>
+    <p><strong>Reología de la pasta:</strong> fluxes no-clean/solubles, tamaño de partícula tipo 3/4/5</p>
   </div>
 
-  <p><strong>Handling & Automation:</strong></p>
+  <p><strong>Manejo y Automatización:</strong></p>
   <ul>
-    <li>Loaders, unloaders, buffers, conveyor belts</li>
-    <li>PLC diagnosis and programming</li>
+    <li>Cargadores, descargadores, buffers, transportadores de banda</li>
+    <li>Diagnóstico y programación de PLC</li>
   </ul>
 
   <div class="alert">
-    <strong>Scope Boundary:</strong> Strict exclusion of Pick & Place machinery (no SMT placement systems included in v1)
+    <strong>Límite de Alcance:</strong> Exclusión estricta de maquinaria Pick & Place (no se incluyen sistemas de colocación SMT en v1)
   </div>
 
+  <h3>Noticias SMT/THT</h3>
+  <div id="news-feed-industrial"></div>
+
   <footer>
-    Feed Contextual: Window with automatic news curation about SMT and THT
+    Feed Contextual: ventana con curación automática de noticias sobre SMT y THT
   </footer>
 
 </body>

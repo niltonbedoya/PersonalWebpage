@@ -42,6 +42,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PUBLIC_DIR = BASE_DIR / "web" / "public"
 
 if PUBLIC_DIR.is_dir():
+    app.mount("/static/src", StaticFiles(directory=str(BASE_DIR / "web" / "src")), name="src")
     app.mount("/static", StaticFiles(directory=str(PUBLIC_DIR)), name="static")
     print(f"[OK] Static files mounted from: {PUBLIC_DIR}")
 else:

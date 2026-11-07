@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Software Engineering</title>
+  <link rel="stylesheet" href="/static/src/styles/shared.css">
   <style>
     body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
     .card { border: 1px solid #e9ecef; border-left: 4px solid #6c757d; padding: 25px; margin: 20px 0; background: #fff; }
@@ -12,8 +13,16 @@
     ol li { list-style: none; padding: 10px 0; border-bottom: 1px solid #f8f9fa; }
     ol li:before { counter-increment: li; content: counter(li) ". "; color: #6c757d; font-weight: bold; width: 20px; }
   </style>
+  <script src="/static/src/js/shared.js"></script>
 </head>
 <body>
+
+  <nav aria-label="Main navigation">
+    <a href="index.html">Hub Central</a>
+    <a href="industrial-smt.html">Industrial SMT/THT</a>
+    <a href="software-engineering.html">Software Engineering</a>
+    <button type="button" class="drawer-trigger" aria-expanded="false" aria-controls="drawer-rag" aria-label="Open assistant drawer">Assistant</button>
+  </nav>
 
   <h2>Software Engineering</h2>
 
@@ -29,6 +38,9 @@
       <strong>v1 Note:</strong> Zero live APIs exposed. Demonstrations are controlled/recorded. v1 focus: by-design anonymization and cost/risk elimination.
     </div>
   </div>
+
+  <h2>Noticias de IA y Software</h2>
+  <div id="news-feed-software"></div>
 
   <footer>
     Feed Contextual: Window with automatic news curation about AI and Software

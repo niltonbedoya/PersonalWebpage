@@ -1,79 +1,65 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Showcase Hybrid Engineering</title>
-  <style>
-    body { font-family: system-ui, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
-    .hero { text-align: center; padding: 50px 20px; background: #f8f9fa; margin: -20px -20px 30px; border-radius: 8px 8px 0 0; }
-    .hero h1 { font-size: 2.5rem; margin-bottom: 10px; background: #fff; display: inline-block; padding: 10px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 40px; }
-    .card { border: 1px solid #e9ecef; border-left: 4px solid #6c757d; padding: 25px; margin: 20px 0; background: #fff; }
-    .card-violet { border-left-color: #7f5af0; }
-    .card-red { border-left-color: #e83e8c; }
-    .card-orange { border-left-color: #fd7e14; }
-    .card-teal { border-left-color: #20c997; }
-    .card-green { border-left-color: #198754; }
-    .alert { padding: 15px; background: #fff3cd; border: 1px solid #ffeaa7; margin: 20px 0; color: #856404; }
-    footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #e9ecef; color: #6c757d; font-size: 0.9rem; }
-    h2 { margin-top: 0; color: #212529; }
-  </style>
+  <title>Showcase de Ingeniería Híbrida</title>
+  <link rel="stylesheet" href="/static/src/styles/shared.css">
+  <script src="/static/src/js/shared.js" defer></script>
 </head>
 <body>
+  <!-- Shared site navigation (inlined from web/src/components/shared-header.html) -->
+  <nav aria-label="Navegación principal">
+    <a href="index.html">Hub Central</a>
+    <a href="industrial-smt.html">Industrial SMT/THT</a>
+    <a href="software-engineering.html">Ingeniería de Software</a>
+    <button type="button" class="drawer-trigger" aria-expanded="false" aria-controls="drawer-rag" aria-label="Abrir cajón del asistente">Asistente</button>
+  </nav>
 
-  <div class="hero">
-    <h1>Showcase Hybrid Engineering</h1>
-    <p>Authority technically certified in hardware engineering, SMT/THT and industrial software architecture.</p>
-    <p><em>15+ years experience | Manufacturing & Software Development | Multi-agent Framework</em></p>
-  </div>
-
-  <h2>Vertical Industrial SMT/THT</h2>
-  <div class="card card-violet">
-    <h3>Inspection Machinery</h3>
-    <ul>
-      <li>Parmin: 3D SPI (paste inspection), 3D AOI (components/soldering), 3D PSI (conformal coating)</li>
-      <li>Marantz: 2D inspection pre-reflow and post-reflow (SMD and THT)</li>
-      <li>Ersa VERSAEYE: Optical inspection of soldering quality</li>
-      <li>Matrix: In-line X-ray (AXI) for hidden solderings (BGA, QFN, voiding)</li>
-    </ul>
-    <ul>
-      <li>Ersa: Selective soldering, wave soldering, convection ovens</li>
-      <li>Electrovert: Vectra wave series, reflow ovens</li>
-    </ul>
-    <p><strong>Metallurgy:</strong> Solders SAC305, SN100C, SnPb; Thermal profiling (Ramp-to-Soak, TAL)</p>
-    <div class="alert">
-      <strong>Scope Boundary:</strong> Strict exclusion of Pick & Place machinery (no SMT placement systems)
+  <div class="wrap">
+    <div class="hero">
+      <h1>Showcase de Ingeniería Híbrida</h1>
+      <p>Autoridad técnica certificada en ingeniería de hardware, SMT/THT y arquitectura de software industrial.</p>
+      <p><em>15+ años de experiencia | Manufactura y Desarrollo de Software | Framework Multiagente</em></p>
     </div>
-  </div>
 
-  <div class="card card-red">
-    <h3>Handling & Automation</h3>
-    <ul>
-      <li>Loaders, unloaders, buffers, conveyor belts</li>
-      <li>PLC diagnosis and programming</li>
-    </ul>
-  </div>
-
-  <h2>Vertical Software & IA Solutions</h2>
-  <div class="card card-orange">
-    <h3>Case Studies (v1 - Anonymized by Design)</h3>
-    <ol>
-      <li><strong>cs-tickets:</strong> Ticket Management System (AB anonymized base). Technical support, incident tracking, traceability and SLAs on 100% synthetic data.</li>
-      <li><strong>cs-erp:</strong> Commercial ERP (Kronenblumes anonymized base). Billing, credits, accounts receivable/payable, inventory control and sales with fictitious entities.</li>
-      <li><strong>cs-logistics:</strong> Logistics Control (Corea). Wheel counting and traceability, container assignment and export Packing List generation (PDF/Excel).</li>
-      <li><strong>cs-translation:</strong> Translation Motor (Controlled demo). Low latency pipeline for technical events. Video demonstration with synchronized pre-recorded audio and latency metrics.</li>
-      <li><strong>cs-health:</strong> IoT Health Platform (Prototype). Sensor ingestion (heart rate, hydration), medical OCR, menu computer vision, wearable synchronization.</li>
-    </ol>
-    <div class="alert">
-      <strong>v1 Note:</strong> Zero live APIs exposed. Demonstrations are controlled/recorded. v1 focus: by-design anonymization and cost/risk elimination.
+    <h2>Métricas de ingeniería</h2>
+    <div class="grid">
+      <div class="card card-violet">
+        <h3>Hardware SMT/THT</h3>
+        <p>Inspección 3D (SPI, AOI, PSI), AXI rayos X, soldadura selectiva y de ola, serigrafía y handling.</p>
+      </div>
+      <div class="card card-teal">
+        <h3>Software e IA</h3>
+        <p>Casos de estudio anonimizados, pipelines de traducción, plataformas IoT de salud y ERP.</p>
+      </div>
     </div>
+
+    <div class="alert">
+      <strong>Nota v1:</strong> APIs en vivo no expuestas. Demostraciones controladas y grabadas.
+      Enfoque en anonimización por diseño y eliminación de costos y riesgos.
+    </div>
+
+    <h2>Split Cards</h2>
+    <div class="grid">
+      <div class="card card-orange">
+        <h3>Vertical Industrial SMT/THT</h3>
+        <p>Maquinaria de inspección, sistemas térmicos y de soldadura, serigrafía, handling y metalurgia.</p>
+        <a href="industrial-smt.html" class="btn btn-primary">Ir al spoke Industrial</a>
+      </div>
+      <div class="card card-red">
+        <h3>Vertical Software e IA</h3>
+        <p>Casos de estudio, feeds de noticias IA/software y soluciones de ingeniería de software.</p>
+        <a href="software-engineering.html" class="btn btn-primary">Ir al spoke Software</a>
+      </div>
+    </div>
+
+    <h2>Feed de noticias</h2>
+    <div id="news-feed"></div>
+
+    <footer class="footer">
+      <p><a href="https://linkedin.com" target="_blank">LinkedIn</a> | <a href="https://github.com" target="_blank">GitHub</a> | <a href="/static/cv.pdf" target="_blank">Descargar CV (PDF)</a></p>
+    </footer>
   </div>
-
-  <footer>
-    Feed Contextual: Window with automatic news curation about SMT and THT / AI and Software<br>
-    <a href="https://linkedin.com" target="_blank">LinkedIn</a> | <a href="https://github.com" target="_blank">GitHub</a>
-  </footer>
-
 </body>
 </html>
