@@ -860,6 +860,116 @@ li::before {
   }
 }
 
+/* ---------- Integrated Media & Photo Frames (Ergonomic & GPU Accelerated) ---------- */
+.photo-frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--surface-card);
+  margin-bottom: 0.85rem;
+  aspect-ratio: 16 / 10;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.photo-frame:hover img {
+  transform: scale(1.035);
+  filter: brightness(1.05);
+}
+
+.photo-badge {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  right: 0.5rem;
+  background: rgba(9, 13, 22, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  letter-spacing: 0.02em;
+}
+
+.photo-badge-cyan {
+  color: var(--brand-cyan-hover);
+}
+
+.photo-badge-sub {
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 500;
+}
+
+/* Hero Portrait Split (Command Center) */
+.hero-split {
+  display: grid;
+  grid-template-columns: 1fr 310px;
+  gap: 2.25rem;
+  align-items: center;
+}
+
+.hero-portrait-wrap {
+  width: 100%;
+}
+
+.hero-portrait-frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(14, 165, 233, 0.35);
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.7), 0 0 24px -2px rgba(14, 165, 233, 0.18);
+  background: linear-gradient(145deg, #111827 0%, #0d131f 100%);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.hero-portrait-frame:hover {
+  transform: translateY(-2px);
+  border-color: var(--brand-cyan);
+  box-shadow: 0 20px 42px -6px rgba(0, 0, 0, 0.8), 0 0 32px 0 rgba(14, 165, 233, 0.3);
+}
+
+.hero-portrait-img {
+  width: 100%;
+  height: 330px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+}
+
+.hero-portrait-frame:hover .hero-portrait-img {
+  transform: scale(1.02);
+  filter: brightness(1.04);
+}
+
+@media (max-width: 900px) {
+  .hero-split {
+    grid-template-columns: 1fr;
+  }
+  .hero-portrait-wrap {
+    max-width: 290px;
+    margin: 1.25rem auto 0 auto;
+  }
+  .hero-portrait-img {
+    height: 290px;
+  }
+}
+
 /* ---------- Cinematic Page Transition Overlay (GPU-Accelerated) ---------- */
 .page-transition-overlay {
   position: fixed;
