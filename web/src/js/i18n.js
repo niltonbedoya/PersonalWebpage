@@ -293,6 +293,29 @@
 
   var STORAGE_KEY = "portfolio_lang";
 
+  function detectBrowserLang() {
+    try {
+      var nav = window.navigator;
+      var raw = "";
+      if (nav.languages && nav.languages.length > 0) {
+        raw = nav.languages[0];
+      } else if (nav.language) {
+        raw = nav.language;
+      } else if (nav.userLanguage) {
+        raw = nav.userLanguage;
+      }
+      if (raw && typeof raw === "string") {
+        var clean = raw.toLowerCase().trim();
+        if (clean.indexOf("es") === 0) {
+          return "es";
+        }
+      }
+    } catch (e) {
+      /* ignore navigator access error */
+    }
+    return "en";
+  }
+
   function getSavedLang() {
     try {
       var saved = localStorage.getItem(STORAGE_KEY);
@@ -302,7 +325,7 @@
     } catch (e) {
       /* ignore storage unavailable */
     }
-    return "es";
+    return detectBrowserLang();
   }
 
   function setLanguage(lang) {
@@ -377,6 +400,7 @@
   window.portfolioI18n = {
     setLanguage: setLanguage,
     getLanguage: getSavedLang,
+    detectLanguage: detectBrowserLang,
     dictionary: DICTIONARY
   };
 })();
