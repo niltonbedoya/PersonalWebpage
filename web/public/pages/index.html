@@ -3,51 +3,76 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Showcase Platform — Living Technical Portfolio</title>
+  <title>Showcase Platform &mdash; Living Technical Portfolio</title>
+  <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
 </head>
 <body>
 
-  <div class="container">
-    <nav class="footer" style="margin-bottom: 1rem; border: none; padding: 0;">
-      <a href="index.html" class="btn">Hub Central</a>
-      <a href="industrial-smt.html" class="btn">Industrial SMT/THT</a>
-      <a href="software-engineering.html" class="btn">Software & IA</a>
-    </nav>
-
-    <div class="hero">
-      <h1>Showcase Platform</h1>
-      <p>Portfolio técnico híbrido en vivo para un perfil de doble especialización:</p>
-      <p><strong>Ingeniería SMT/THT</strong> (Inspección Óptica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial & Soluciones IA</strong>.</p>
-      <button class="btn" aria-controls="drawer-rag" style="margin-top: 1rem;">Asistente RAG</button>
+  <header class="brand-header">
+    <div class="container brand-header-inner">
+      <a href="index.html" class="brand-identity">
+        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="38">
+        <div class="brand-text">
+          <span class="brand-title">Nilton Bedoya</span>
+          <span class="brand-subtitle">Showcase Platform</span>
+        </div>
+      </a>
+      <nav class="brand-nav">
+        <a href="index.html" class="nav-link active">Hub Central</a>
+        <a href="industrial-smt.html" class="nav-link">Industrial SMT/THT</a>
+        <a href="software-engineering.html" class="nav-link">Software &amp; IA</a>
+        <button class="btn btn-sm btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
+      </nav>
     </div>
+  </header>
+
+  <div class="container">
+    <section class="hero-brand">
+      <div class="hero-brand-content">
+        <span class="hero-tag">Living Technical Portfolio</span>
+        <h1>Showcase Platform</h1>
+        <p class="hero-desc">Portfolio tecnico hibrido en vivo para un perfil de doble especializacion:</p>
+        <p><strong>Ingenieria SMT/THT</strong> (Inspeccion Optica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial &amp; Soluciones IA</strong>.</p>
+        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+          <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
+          <a href="software-engineering.html" class="btn btn-outline-soft">Ver Spoke Software &rarr;</a>
+          <button class="btn btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
+        </div>
+      </div>
+      <div class="hero-brand-badge">
+        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="hero-badge-logo">
+        <span class="hero-badge-tag">Precision Engineering</span>
+        <span class="hero-badge-sub">SMT/THT &middot; Software &middot; IA</span>
+      </div>
+    </section>
 
     <div class="grid cols-2">
       <div class="card">
         <h2>Spoke Industrial</h2>
-        <p>Maquinaria de inspección óptica 3D, rayos X, sistemas térmicos, soldadura, handling y metalurgia.</p>
+        <p>Maquinaria de inspeccion optica 3D, rayos X, sistemas termicos, soldadura, handling y metalurgia.</p>
         <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
       </div>
       <div class="card">
         <h2>Spoke Software</h2>
-        <p>5 casos de estudio de software e IA, arquitecturas, demostraciones controladas y feeds de noticias tecnológicas.</p>
+        <p>5 casos de estudio de software e IA, arquitecturas, demostraciones controladas y feeds de noticias tecnologicas.</p>
         <a href="software-engineering.html" class="btn">Ver Spoke Software &rarr;</a>
       </div>
     </div>
 
     <div class="grid cols-3">
       <div class="card">
-        <h3>Métricas de Ingeniería</h3>
+        <h3>Metricas de Ingenieria</h3>
         <p>Plataforma multiagente con enrutamiento LLM de costo cero (Groq, Google AI Studio, Cloudflare, OpenRouter).</p>
       </div>
       <div class="card">
-        <h3>Guardrail & Seguridad</h3>
-        <p>Intercepción perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.</p>
+        <h3>Guardrail &amp; Seguridad</h3>
+        <p>Intercepcion perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.</p>
       </div>
       <div class="card">
         <h3>RAG con Grounding</h3>
-        <p>Motor RAG sobre corpus local SQLite-vec con score de fundamentación ≥ 0.85.</p>
+        <p>Motor RAG sobre corpus local SQLite-vec con score de fundamentacion &ge; 0.85.</p>
       </div>
     </div>
 
@@ -57,7 +82,7 @@
     </div>
 
     <footer class="footer">
-      <p>Feeds contextuales: SMT/THT · IA/Software &nbsp;|&nbsp;
+      <p>Feeds contextuales: SMT/THT &middot; IA/Software &nbsp;|&nbsp;
       <a href="https://linkedin.com" target="_blank">LinkedIn</a> &nbsp;|&nbsp;
       <a href="https://github.com" target="_blank">GitHub</a> &nbsp;|&nbsp;
       <a href="#">Descargar CV (PDF)</a></p>

@@ -1,35 +1,45 @@
 /* ============================================================
-   Showcase Platform — Shared Styles
-   Capa base: Industrial Minimal (Skill 1)
-   Capa de sección: Software Portfolio (Skill 2) solo en /software-engineering
+   Showcase Platform - Shared Styles
+   Base: Industrial Minimal
+   Section: Software Portfolio (var(--brand-violet))
+   Brand Palette: Nilton Bedoya Logo Integration
    ============================================================ */
 
-/* ---------- Tokens de diseño ---------- */
+/* ---------- Design Tokens ---------- */
 :root {
-  /* Colores base (Industrial Minimal) */
+  /* Brand Identity Tokens (Logo Palette) */
+  --brand-cyan: #0284c7;
+  --brand-cyan-hover: #0369a1;
+  --brand-violet: #7c3aed;
+  --brand-violet-hover: #6d28d9;
+  --brand-gradient: linear-gradient(135deg, #7c3aed 0%, #0284c7 100%);
+  --brand-dark: #0f172a;
+  --brand-light: #f8fafc;
+
+  /* Base Colors (Industrial Minimal + Brand Integration) */
   --bg: #f8fafc;
   --surface: #ffffff;
   --text: #0f172a;
   --muted: #64748b;
-  --accent: #f59e0b;        /* ámbar: soldadura / ingeniería */
+  --accent: var(--brand-cyan);
   --border: #e2e8f0;
 
-  /* Colores de sección (Software Portfolio) */
-  --accent-software: #4f46e5;   /* índigo */
-  --accent-software-hover: #4338ca;
+  /* Section Colors (Software Portfolio) */
+  --accent-software: var(--brand-violet);
+  --accent-software-hover: var(--brand-violet-hover);
 
-  /* Utilidades */
+  /* Utilities */
   --radius: 6px;
   --transition: 0.2s ease;
 }
 
-/* ---------- Reset y base ---------- */
+/* ---------- Reset and Base ---------- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   color-scheme: light;
 }
@@ -37,14 +47,102 @@ body {
 /* ---------- Layout ---------- */
 .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
 
-/* ---------- Tipografía ---------- */
+/* ---------- Typography ---------- */
 h1, h2, h3 { font-weight: 700; line-height: 1.25; }
 h1 { font-size: 2rem; letter-spacing: -0.02em; }
 h2 { font-size: 1.5rem; margin-top: 1.5rem; }
 h3 { font-size: 1.25rem; margin-top: 1rem; }
 p { margin: 0.5rem 0; }
 
-/* ---------- Componentes globales (Industrial Minimal) ---------- */
+/* ---------- Brand Header & Navbar ---------- */
+.brand-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.03);
+}
+
+.brand-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.brand-identity {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brand-logo {
+  height: 38px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.brand-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius);
+  transition: color var(--transition), background var(--transition);
+}
+
+.nav-link:hover {
+  color: var(--text);
+  background: #f1f5f9;
+}
+
+.nav-link.active {
+  color: var(--brand-cyan);
+  background: #e0f2fe;
+  font-weight: 600;
+}
+
+.nav-link.active-software {
+  color: var(--brand-violet);
+  background: #ede9fe;
+  font-weight: 600;
+}
+
+/* ---------- Global Components (Industrial Minimal) ---------- */
 .hero {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -52,6 +150,89 @@ p { margin: 0.5rem 0; }
 }
 .hero h1 { font-size: 2rem; }
 .hero p { color: var(--muted); margin-top: 0.5rem; }
+
+/* ---------- Hero Branding ---------- */
+.hero-brand {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2.25rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 2.25rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+}
+
+.hero-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand-cyan);
+  background: #e0f2fe;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.hero-brand-content h1 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
+}
+
+.hero-highlight {
+  background: var(--brand-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 800;
+}
+
+.hero-desc {
+  font-size: 1.05rem;
+  color: var(--muted);
+  margin: 0.5rem 0 0.75rem 0;
+}
+
+.hero-brand-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+  border-radius: 12px;
+  padding: 1.75rem 2rem;
+  border: 1px solid #334155;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.25);
+  min-width: 200px;
+  text-align: center;
+}
+
+.hero-badge-logo {
+  height: 84px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 4px 10px rgba(2, 132, 199, 0.35));
+}
+
+.hero-badge-tag {
+  color: #94a3b8;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+.hero-badge-sub {
+  color: #38bdf8;
+  font-size: 0.72rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
 
 .card {
   background: var(--surface);
@@ -88,7 +269,7 @@ p { margin: 0.5rem 0; }
   font-size: 0.9rem;
 }
 
-/* ---------- Botones ---------- */
+/* ---------- Buttons ---------- */
 .btn {
   background: var(--accent);
   color: #fff;
@@ -104,12 +285,53 @@ p { margin: 0.5rem 0; }
 .btn:hover { opacity: 0.9; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* ---------- Componentes Software Portfolio (Skill 2) ---------- */
-/* Se aplican dentro de /software-engineering para los case studies */
+.btn-sm {
+  padding: 0.45rem 0.85rem;
+  font-size: 0.85rem;
+}
 
+.btn-gradient {
+  background: var(--brand-gradient);
+  color: #ffffff;
+  border: none;
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: opacity var(--transition), transform var(--transition);
+}
+.btn-gradient:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.btn-outline-soft {
+  background: transparent;
+  color: var(--brand-violet);
+  border: 1px solid var(--brand-violet);
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: all var(--transition);
+}
+.btn-outline-soft:hover {
+  background: var(--brand-violet);
+  color: #fff;
+}
+
+/* ---------- Software Portfolio Components (Skill 2) ---------- */
 .card-soft {
   background: #fff;
   border: 1px solid #e5e7eb;
+  border-left: 4px solid var(--accent-software);
   border-radius: 8px;
   padding: 1.5rem;
   margin: 1rem 0;
@@ -151,6 +373,27 @@ p { margin: 0.5rem 0; }
 }
 
 /* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+  .hero-brand {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 1.75rem 1.25rem;
+  }
+  .hero-brand-badge {
+    margin: 1.25rem auto 0 auto;
+    width: 100%;
+    max-width: 240px;
+  }
+  .brand-header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .brand-nav {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
 @media (max-width: 640px) {
   .hero { padding: 2rem 0; }
   .card, .card-soft { padding: 1rem; }

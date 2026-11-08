@@ -3,66 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spoke Industrial — SMT/THT</title>
+  <title>Spoke Industrial &mdash; SMT/THT</title>
+  <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
 </head>
 <body>
 
-  <div class="container">
-    <nav class="footer" style="margin-bottom: 1rem; border: none; padding: 0;">
-      <a href="index.html" class="btn">Hub Central</a>
-      <a href="industrial-smt.html" class="btn">Industrial SMT/THT</a>
-      <a href="software-engineering.html" class="btn">Software & IA</a>
-    </nav>
+  <header class="brand-header">
+    <div class="container brand-header-inner">
+      <a href="index.html" class="brand-identity">
+        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="38">
+        <div class="brand-text">
+          <span class="brand-title">Nilton Bedoya</span>
+          <span class="brand-subtitle">Spoke Industrial SMT/THT</span>
+        </div>
+      </a>
+      <nav class="brand-nav">
+        <a href="index.html" class="nav-link">Hub Central</a>
+        <a href="industrial-smt.html" class="nav-link active">Industrial SMT/THT</a>
+        <a href="software-engineering.html" class="nav-link">Software &amp; IA</a>
+        <button class="btn btn-sm btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
+      </nav>
+    </div>
+  </header>
 
+  <div class="container">
     <div class="hero">
       <h1>Spoke Industrial</h1>
-      <p>Maquinaria de inspección, sistemas térmicos, soldadura, handling y metalurgia para procesos SMT/THT.</p>
-      <p><em>Límite de alcance: exclusión estricta de maquinaria Pick & Place.</em></p>
+      <p>Maquinaria de inspeccion, sistemas termicos, soldadura, handling y metalurgia para procesos SMT/THT.</p>
+      <p><em>Limite de alcance: exclusion estricta de maquinaria Pick & Place.</em></p>
     </div>
 
-    <nav class="footer" style="margin-bottom: 1.5rem; border: none; padding: 0;">
-      <a href="index.html" class="btn" style="background: var(--muted);">← Volver al Hub</a>
-    </nav>
+    <div style="margin: 1.25rem 0;">
+      <a href="index.html" class="btn" style="background: var(--muted);">&larr; Volver al Hub</a>
+    </div>
 
-    <h2>Sistemas de Inspección</h2>
+    <h2>Sistemas de Inspeccion</h2>
     <div class="grid cols-3">
       <div class="card">
         <h3>Parmi</h3>
         <ul>
-          <li>3D SPI — inspección de pasta de soldar</li>
-          <li>3D AOI — inspección de componentes y soldadura</li>
-          <li>3D PSI — inspección de conformal coating</li>
+          <li>3D SPI &mdash; inspeccion de pasta de soldar</li>
+          <li>3D AOI &mdash; inspeccion de componentes y soldadura</li>
+          <li>3D PSI &mdash; inspeccion de conformal coating</li>
         </ul>
       </div>
       <div class="card">
         <h3>Marantz</h3>
-        <p>Inspección 2D pre-reflow y post-reflow (componentes SMD y THT).</p>
+        <p>Inspeccion 2D pre-reflow y post-reflow (componentes SMD y THT).</p>
       </div>
       <div class="card">
         <h3>Ersa VERSAEYE</h3>
-        <p>Inspección óptica de soldadura.</p>
+        <p>Inspeccion optica de soldadura.</p>
       </div>
       <div class="card">
         <h3>Matrix</h3>
-        <p>Inspección por Rayos X en línea (AXI) para soldaduras ocultas (BGA, QFN, voiding).</p>
+        <p>Inspeccion por Rayos X en linea (AXI) para soldaduras ocultas (BGA, QFN, voiding).</p>
       </div>
       <div class="card">
         <h3>MPM</h3>
-        <p>Impresoras de alta precisión (AccuFlex, Momentum), alineación por visión y control reológico.</p>
+        <p>Impresoras de alta precision (AccuFlex, Momentum), alineacion por vision y control reologico.</p>
       </div>
     </div>
 
-    <h2>Sistemas Térmicos y Soldadura</h2>
+    <h2>Sistemas Termicos y Soldadura</h2>
     <div class="grid cols-2">
       <div class="card">
         <h3>Ersa</h3>
-        <p>Soldadura selectiva (mini-wave / multi-dip), soldadura por ola (Wave Soldering) y hornos de refusión por convección.</p>
+        <p>Soldadura selectiva (mini-wave / multi-dip), soldadura por ola (Wave Soldering) y hornos de refusion por conveccion.</p>
       </div>
       <div class="card">
         <h3>Electrovert</h3>
-        <p>Soldadura por ola (serie Vectra) y hornos de refusión.</p>
+        <p>Soldadura por ola (serie Vectra) y hornos de refusion.</p>
       </div>
     </div>
 
@@ -70,31 +83,31 @@
     <div class="grid cols-2">
       <div class="card">
         <h3>Pasta de soldar</h3>
-        <p>Reología, fluxes no-clean/solubles, granulometría tipo 3/4/5.</p>
+        <p>Reologia, fluxes no-clean/solubles, granulometria tipo 3/4/5.</p>
       </div>
       <div class="card">
         <h3>Aleaciones</h3>
-        <p>SAC305, SN100C, SnPb. Control de escoria (dross) y atmósfera inerte (N₂).</p>
+        <p>SAC305, SN100C, SnPb. Control de escoria (dross) y atmosfera inerte (N2).</p>
       </div>
       <div class="card">
-        <h3>Perfilado térmico</h3>
-        <p>Hornos de refusión (Ramp-to-Soak, Time Above Liquidus - TAL, enfriamiento controlado).</p>
+        <h3>Perfilado termico</h3>
+        <p>Hornos de refusion (Ramp-to-Soak, Time Above Liquidus - TAL, enfriamiento controlado).</p>
       </div>
     </div>
 
-    <h2>Handling y Automatización</h2>
+    <h2>Handling y Automatizacion</h2>
     <div class="card">
-      <p>Cargadores, descargadores, buffers, cintas transportadoras, diagnóstico y programación de PLCs.</p>
+      <p>Cargadores, descargadores, buffers, cintas transportadoras, diagnostico y programacion de PLCs.</p>
     </div>
 
     <div class="alert">
-      <strong>Límite de Alcance:</strong> Exclusión explícita de máquinas de inserción Pick &amp; Place.
+      <strong>Limite de Alcance:</strong> Exclusion explicita de maquinas de insercion Pick & Place.
     </div>
 
     <button class="btn" aria-controls="drawer-rag" style="margin-top: 1rem;">Asistente RAG</button>
 
     <footer class="footer">
-      <p>Feed contextual: noticias SMT/THT — <a href="index.html" style="color: var(--accent);">Volver al Hub</a></p>
+      <p>Feed contextual: noticias SMT/THT &mdash; <a href="index.html" style="color: var(--accent);">Volver al Hub</a></p>
     </footer>
   </div>
 
