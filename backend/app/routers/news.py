@@ -20,121 +20,170 @@ _radarito = Radarito()
 _seeded = False
 
 
-# Deterministic, sanitized seed items per Radarito channel. No PII, no real
-# names, emails or phones; source URLs use example.com.
+# Deterministic, sanitized seed items per Radarito channel.
+# Pillars:
+# 1. PCB Manufacturing & EMS (Automotive, Aerospace, Defense, Consumer Electronics)
+# 2. Partner Equipment Nilton works with (PARMI, ERSA, NORDSON, MARANTZ/Mek)
+# 3. AI Software (Skills, Frameworks, MCPs and modern AI Models)
 _SEED_ITEMS: dict[str, List[dict]] = {
     "THT_SOLDERING": [
         {
-            "id": "tht-001",
+            "id": "partner-002",
             "category": "THT_SOLDERING",
-            "title": "Lead-free soldering guidelines for through-hole assembly",
-            "source_url": "https://example.com/tht-soldering-guide",
-            "published_at": "2026-10-15T00:00:00",
-            "summary": "Best practices for manual through-hole soldering including temperature profiles and flux selection.",
-            "tags": ["soldering", "through-hole", "tht"],
+            "sub_category": "partner_equipment",
+            "title": "Kurtz Ersa optimiza el control de atmósfera inerte N2 en soldadura selectiva",
+            "title_es": "Kurtz Ersa optimiza el control de atmósfera inerte N2 en soldadura selectiva",
+            "title_en": "Kurtz Ersa optimizes N2 inert atmosphere management in selective soldering",
+            "source_url": "https://www.kurtzersa.com/electronics-production-equipment/selective-soldering.html",
+            "published_at": "2026-11-07T10:15:00",
+            "summary": "Ersa presenta mejoras en su serie Versaflow con toberas electromagnéticas de alta precisión y reducción del 40% en consumo de nitrógeno y formación de escoria para uniones THT de potencia.",
+            "summary_es": "Ersa presenta mejoras en su serie Versaflow con toberas electromagnéticas de alta precisión y reducción del 40% en consumo de nitrógeno y formación de escoria para uniones THT de potencia.",
+            "summary_en": "Ersa unveils Versaflow series enhancements with high-precision electromagnetic nozzles, cutting nitrogen consumption and dross formation by 40% in high-power THT joints.",
+            "tags": ["ersa", "selective-soldering", "nitrogen-atmosphere", "tht"],
         },
         {
             "id": "tht-002",
             "category": "THT_SOLDERING",
-            "title": "Selecting flux-core wire for electronics assembly",
-            "source_url": "https://example.com/flux-core-wire",
-            "published_at": "2026-10-22T00:00:00",
-            "summary": "Comparison of rosin and no-clean flux core solder wires for THT production.",
-            "tags": ["flux", "solder wire", "electronics"],
-        },
-        {
-            "id": "tht-003",
-            "category": "THT_SOLDERING",
-            "title": "Thermal profiling and dross prevention in selective soldering",
-            "source_url": "https://example.com/selective-soldering-dross",
-            "published_at": "2026-11-02T00:00:00",
-            "summary": "Nitrogen atmosphere management and precise nozzle positioning reduce dross formation and bridging in SAC305 selective soldering.",
-            "tags": ["selective soldering", "sac305", "nitrogen"],
-        },
-        {
-            "id": "tht-004",
-            "category": "THT_SOLDERING",
-            "title": "High-reliability through-hole metallurgical joint integrity",
-            "source_url": "https://example.com/tht-metallurgy-integrity",
-            "published_at": "2026-11-06T00:00:00",
-            "summary": "Intermetallic compound layer analysis and hole fill inspection for mission-critical industrial power modules.",
-            "tags": ["metallurgy", "intermetallics", "reliability"],
+            "sub_category": "partner_equipment",
+            "title": "Perfilado térmico Ramp-to-Soak y aleaciones SAC305 en ensamblaje THT",
+            "title_es": "Perfilado térmico Ramp-to-Soak y aleaciones SAC305 en ensamblaje THT",
+            "title_en": "Ramp-to-Soak thermal profiling and SAC305 alloys in THT assembly",
+            "source_url": "https://www.ipc.org/ipc-a-610-tht-inspection-criteria",
+            "published_at": "2026-10-25T08:00:00",
+            "summary": "Guía técnica sobre perfiles térmicos y control de precalentamiento para garantizar el llenado de taladros pasantes según IPC-A-610 en placas multicapa de alta disipación térmica.",
+            "summary_es": "Guía técnica sobre perfiles térmicos y control de precalentamiento para garantizar el llenado de taladros pasantes según IPC-A-610 en placas multicapa de alta disipación térmica.",
+            "summary_en": "Technical guide on thermal profiling and preheating control to ensure through-hole fill according to IPC-A-610 on high-dissipation multilayer boards.",
+            "tags": ["thermal-profiling", "sac305", "tht", "ipc-a-610"],
         },
     ],
     "SMD_INSPECTION": [
         {
-            "id": "smd-001",
+            "id": "pcb-001",
             "category": "SMD_INSPECTION",
-            "title": "Automated optical inspection for SMT solder joints",
-            "source_url": "https://example.com/smd-aoi-inspection",
-            "published_at": "2026-10-18T00:00:00",
-            "summary": "AOI systems detect bridging, tombstoning and insufficient solder on SMD boards.",
-            "tags": ["aoi", "smt", "inspection"],
+            "sub_category": "pcb_manufacturing",
+            "title": "Auge de plantas EMS en automoción y demanda de trazabilidad total de PCB",
+            "title_es": "Auge de plantas EMS en automoción y demanda de trazabilidad total de PCB",
+            "title_en": "Surge in automotive EMS plants and demand for full PCB traceability",
+            "source_url": "https://www.evertiq.com/news/54820",
+            "published_at": "2026-11-06T09:00:00",
+            "summary": "Grandes plantas de manufactura electrónica aceleran la adopción de trazabilidad a nivel de componente individual en ensambles críticos para automoción y movilidad eléctrica bajo estándares IATF 16949.",
+            "summary_es": "Grandes plantas de manufactura electrónica aceleran la adopción de trazabilidad a nivel de componente individual en ensambles críticos para automoción y movilidad eléctrica bajo estándares IATF 16949.",
+            "summary_en": "Tier-1 electronics manufacturing plants accelerate individual component-level traceability in critical automotive and e-mobility assemblies under IATF 16949 standards.",
+            "tags": ["ems", "automotive", "iatf-16949", "pcb-assembly"],
         },
         {
-            "id": "smd-002",
+            "id": "partner-001",
             "category": "SMD_INSPECTION",
-            "title": "X-ray inspection of BGA solder joints",
-            "source_url": "https://example.com/smd-bga-xray",
-            "published_at": "2026-10-28T00:00:00",
-            "summary": "Computed tomography and 2D X-ray reveal voids under BGA packages invisible to optical inspection.",
-            "tags": ["xray", "bga", "inspection"],
+            "sub_category": "partner_equipment",
+            "title": "PARMI introduce metrología láser dual para inspección 3D de pasta SPI y AOI",
+            "title_es": "PARMI introduce metrología láser dual para inspección 3D de pasta SPI y AOI",
+            "title_en": "PARMI introduces dual laser metrology for 3D SPI paste and AOI inspection",
+            "source_url": "https://parmi.com/sigmax-spi-dual-laser-inspection/",
+            "published_at": "2026-11-08T08:30:00",
+            "summary": "Los nuevos cabezales de escaneo láser inteligente de PARMI permiten medir volumen, altura y coplanaridad en componentes 01005 y micro-BGAs con cero falsos rechazos en líneas de alta velocidad.",
+            "summary_es": "Los nuevos cabezales de escaneo láser inteligente de PARMI permiten medir volumen, altura y coplanaridad en componentes 01005 y micro-BGAs con cero falsos rechazos en líneas de alta velocidad.",
+            "summary_en": "PARMI new intelligent laser scanning heads measure volume, height, and coplanarity on 01005 and micro-BGA components with zero false calls on high-speed SMT lines.",
+            "tags": ["parmi", "spi-3d", "aoi-3d", "metrology"],
         },
         {
-            "id": "smd-003",
+            "id": "partner-003",
             "category": "SMD_INSPECTION",
-            "title": "True 3D SPI height and volume measurement for 0201 passives",
-            "source_url": "https://example.com/smd-3d-spi-measurement",
-            "published_at": "2026-11-04T00:00:00",
-            "summary": "Moiré projection and dual-frequency phase-shift metrology provide volumetric paste deposition accuracy down to micro-meter scale.",
-            "tags": ["spi", "3d metrology", "solder paste"],
+            "sub_category": "partner_equipment",
+            "title": "NORDSON BT revoluciona los ensayos de Wire Pull y Ball Shear en microelectrónica",
+            "title_es": "NORDSON BT revoluciona los ensayos de Wire Pull y Ball Shear en microelectrónica",
+            "title_en": "NORDSON BT transforms Wire Pull and Ball Shear mechanical testing in microelectronics",
+            "source_url": "https://www.nordson.com/en/divisions/dage/bond-testers",
+            "published_at": "2026-11-05T14:00:00",
+            "summary": "Las plataformas de ensayo mecánico Bond Tester de Nordson incorporan calibración multieje automática para validar adherencia de soldadura e intermetálicos bajo normas automotrices MIL-STD e IPC.",
+            "summary_es": "Las plataformas de ensayo mecánico Bond Tester de Nordson incorporan calibración multieje automática para validar adherencia de soldadura e intermetálicos bajo normas automotrices MIL-STD e IPC.",
+            "summary_en": "Nordson Bond Tester platforms add automated multi-axis calibration to validate solder adhesion and intermetallics compliance under automotive MIL-STD and IPC standards.",
+            "tags": ["nordson", "bond-tester", "wire-pull", "ball-shear"],
         },
         {
-            "id": "smd-004",
+            "id": "pcb-002",
             "category": "SMD_INSPECTION",
-            "title": "Wire pull and ball shear mechanical testing under IPC standards",
-            "source_url": "https://example.com/bond-tester-adhesion-methods",
-            "published_at": "2026-11-07T00:00:00",
-            "summary": "Bond tester methodology for validating destructive and non-destructive joint adhesion in high-density electronic assemblies.",
-            "tags": ["bond tester", "wire pull", "ball shear"],
+            "sub_category": "pcb_manufacturing",
+            "title": "Fabricación de PCBs de alta fiabilidad para el sector aeroespacial y defensa",
+            "title_es": "Fabricación de PCBs de alta fiabilidad para el sector aeroespacial y defensa",
+            "title_en": "High-reliability PCB fabrication for aerospace and defense sectors",
+            "source_url": "https://www.ipc.org/aerospace-defense-pcb-class3-reliability",
+            "published_at": "2026-11-04T11:00:00",
+            "summary": "Empresas de fabricación de circuitos impresos refuerzan la certificación IPC Clase 3 y ensayos destructivos y no destructivos para módulos de misión crítica y satélites LEO.",
+            "summary_es": "Empresas de fabricación de circuitos impresos refuerzan la certificación IPC Clase 3 y ensayos destructivos y no destructivos para módulos de misión crítica y satélites LEO.",
+            "summary_en": "PCB manufacturers tighten IPC Class 3 certification and destructive/non-destructive testing for mission-critical electronic modules and LEO satellites.",
+            "tags": ["aerospace", "defense", "ipc-class-3", "high-reliability"],
+        },
+        {
+            "id": "partner-004",
+            "category": "SMD_INSPECTION",
+            "sub_category": "partner_equipment",
+            "title": "Marantz Electronics (Mek) expande la inspección 3D estereoscópica para THT y SMD",
+            "title_es": "Marantz Electronics (Mek) expande la inspección 3D estereoscópica para THT y SMD",
+            "title_en": "Marantz Electronics (Mek) expands stereoscopic 3D inspection for THT and SMD",
+            "source_url": "https://www.marantz-electronics.com/3d-aoi/",
+            "published_at": "2026-11-03T16:20:00",
+            "summary": "Los sistemas modulares SpectorBOX de Mek combinan cámaras cenitales y laterales para verificar levantamiento de terminales, polaridad y meniscos de soldadura tanto en PCB inferior como superior.",
+            "summary_es": "Los sistemas modulares SpectorBOX de Mek combinan cámaras cenitales y laterales para verificar levantamiento de terminales, polaridad y meniscos de soldadura tanto en PCB inferior como superior.",
+            "summary_en": "Mek SpectorBOX modular systems combine top and side cameras to verify lead protrusion, polarity, and solder fillets on both bottom and top PCB surfaces.",
+            "tags": ["marantz", "mek", "aoi-inspection", "tht-smd"],
         },
     ],
     "AI_SOFTWARE": [
         {
             "id": "ai-001",
             "category": "AI_SOFTWARE",
-            "title": "Fine-tuning small code models for embedded toolchains",
-            "source_url": "https://example.com/ai-embedded-toolchain",
-            "published_at": "2026-10-20T00:00:00",
-            "summary": "Domain-specific fine-tuning improves code generation for C and Python embedded toolchains.",
-            "tags": ["ai", "code-models", "embedded"],
-        },
-        {
-            "id": "ai-002",
-            "category": "AI_SOFTWARE",
-            "title": "Local LLM inference on CPU for edge devices",
-            "source_url": "https://example.com/ai-cpu-inference",
-            "published_at": "2026-10-29T00:00:00",
-            "summary": "Quantized models run inference on CPU-class edge hardware without GPU acceleration.",
-            "tags": ["llm", "cpu", "edge"],
+            "sub_category": "skills_frameworks_mcps",
+            "title": "Model Context Protocol (MCP) se consolida como estándar para agentes de software",
+            "title_es": "Model Context Protocol (MCP) se consolida como estándar para agentes de software",
+            "title_en": "Model Context Protocol (MCP) solidifies as standard for autonomous software agents",
+            "source_url": "https://modelcontextprotocol.io/",
+            "published_at": "2026-11-08T12:00:00",
+            "summary": "La especificación abierta MCP y frameworks como FastAPI permiten conectar LLMs con herramientas locales, bases de datos vectoriales y APIs empresariales sin acoplamiento propietario.",
+            "summary_es": "La especificación abierta MCP y frameworks como FastAPI permiten conectar LLMs con herramientas locales, bases de datos vectoriales y APIs empresariales sin acoplamiento propietario.",
+            "summary_en": "The open MCP specification and frameworks like FastAPI allow LLMs to securely connect with local tools, vector databases, and enterprise APIs without vendor lock-in.",
+            "tags": ["mcp", "frameworks", "ai-agents", "fastapi"],
         },
         {
             "id": "ai-003",
             "category": "AI_SOFTWARE",
-            "title": "Decoupled multi-agent architectures with FastAPI and zero-cost LLMs",
-            "source_url": "https://example.com/multiagent-zero-cost-fastapi",
-            "published_at": "2026-11-05T00:00:00",
-            "summary": "Asynchronous finite state machines and perimeter guardrails enable robust, defensive AI multi-agent orchestration at zero operational cost.",
-            "tags": ["multi-agent", "fastapi", "ai architecture"],
+            "sub_category": "ai_models",
+            "title": "Nuevos modelos de lenguaje compactos ofrecen inferencia ultrarrápida y coste cero",
+            "title_es": "Nuevos modelos de lenguaje compactos ofrecen inferencia ultrarrápida y coste cero",
+            "title_en": "New compact language models deliver ultra-fast inference at zero operational cost",
+            "source_url": "https://ai.google.dev/gemini-api/docs/models/gemini",
+            "published_at": "2026-11-07T17:00:00",
+            "summary": "Familias como Gemini Flash-Lite, Gemma y LLaMA optimizan la cuantización a 4 bits para ejecutar razonamiento estructurado y llamadas a funciones en servidores locales sin GPUs dedicadas.",
+            "summary_es": "Familias como Gemini Flash-Lite, Gemma y LLaMA optimizan la cuantización a 4 bits para ejecutar razonamiento estructurado y llamadas a funciones en servidores locales sin GPUs dedicadas.",
+            "summary_en": "Model families like Gemini Flash-Lite, Gemma, and LLaMA optimize 4-bit quantization to run structured reasoning and function calling on local servers without dedicated GPUs.",
+            "tags": ["gemini", "llama", "llm-models", "inference"],
+        },
+        {
+            "id": "ai-002",
+            "category": "AI_SOFTWARE",
+            "sub_category": "skills_frameworks_mcps",
+            "title": "Arquitectura de Skills desacopladas y TDD estricto en sistemas multiagente",
+            "title_es": "Arquitectura de Skills desacopladas y TDD estricto en sistemas multiagente",
+            "title_en": "Decoupled Skills architecture and strict TDD in multi-agent systems",
+            "source_url": "https://fastapi.tiangolo.com/",
+            "published_at": "2026-11-06T15:30:00",
+            "summary": "Nuevos patrones de desarrollo promueven agentes especializados de bajo coste con herramientas acotadas, guardrails perimetrales de baja latencia y verificación continua mediante suites offline.",
+            "summary_es": "Nuevos patrones de desarrollo promueven agentes especializados de bajo coste con herramientas acotadas, guardrails perimetrales de baja latencia y verificación continua mediante suites offline.",
+            "summary_en": "Emerging development patterns promote specialized low-cost agents with bounded tools, low-latency perimeter guardrails, and continuous offline test verification.",
+            "tags": ["skills", "multi-agent", "tdd", "zero-cost"],
         },
         {
             "id": "ai-004",
             "category": "AI_SOFTWARE",
-            "title": "Real-time edge computer vision for automated inventory counting",
-            "source_url": "https://example.com/edge-vision-tire-counter",
-            "published_at": "2026-11-08T00:00:00",
-            "summary": "Lightweight YOLO models on localized video streams provide sub-second tracking and export packing list automated generation.",
-            "tags": ["computer vision", "yolo", "logistics"],
+            "sub_category": "ai_models",
+            "title": "Modelos multimodales y visión artificial en tiempo real para procesos industriales",
+            "title_es": "Modelos multimodales y visión artificial en tiempo real para procesos industriales",
+            "title_en": "Multimodal models and real-time computer vision for industrial workflows",
+            "source_url": "https://huggingface.co/blog",
+            "published_at": "2026-11-05T09:45:00",
+            "summary": "Modelos de visión ligeros procesan transmisiones de vídeo en el edge para conteo de inventario, detección de microdefectos y verificación de ensamblajes en menos de 50 milisegundos.",
+            "summary_es": "Modelos de visión ligeros procesan transmisiones de vídeo en el edge para conteo de inventario, detección de microdefectos y verificación de ensamblajes en menos de 50 milisegundos.",
+            "summary_en": "Lightweight vision models process video streams at the edge for automated inventory counting, micro-defect detection, and assembly inspection under 50 milliseconds.",
+            "tags": ["computer-vision", "multimodal", "edge-ai", "yolo"],
         },
     ],
 }
@@ -161,6 +210,7 @@ class NewsQuery(BaseModel):
 async def news_endpoint(
     category: Optional[Literal["THT_SOLDERING", "SMD_INSPECTION", "AI_SOFTWARE"]] = Query(None),
     limit: Optional[int] = Query(10),
+    lang: Optional[Literal["es", "en"]] = Query("es"),
     body: Optional[NewsQuery] = Body(None),
 ):
     """Endpoint de noticias curadas por Radarito (soporta query parameters y body)."""
@@ -168,9 +218,21 @@ async def news_endpoint(
     selected_limit = limit if category is not None else (body.limit if body and body.limit is not None else limit)
     if not selected_category:
         raise HTTPException(status_code=422, detail="Field 'category' is required via query param or body")
-    logger.info("News request for category: %s, limit: %s", selected_category, selected_limit)
+    logger.info("News request for category: %s, limit: %s, lang: %s", selected_category, selected_limit, lang)
     _ensure_seed()
-    items = [item for item in _SEED_ITEMS[selected_category]]
+    raw_items = [item for item in _SEED_ITEMS[selected_category]]
     if selected_limit is not None:
-        items = items[: selected_limit]
-    return [NewsItemPayload(**item).model_dump() for item in items]
+        raw_items = raw_items[: selected_limit]
+
+    processed = []
+    for item in raw_items:
+        data = dict(item)
+        if lang == "en":
+            data["title"] = item.get("title_en", item["title"])
+            data["summary"] = item.get("summary_en", item["summary"])
+        else:
+            data["title"] = item.get("title_es", item["title"])
+            data["summary"] = item.get("summary_es", item["summary"])
+        processed.append(NewsItemPayload(**data).model_dump())
+
+    return processed

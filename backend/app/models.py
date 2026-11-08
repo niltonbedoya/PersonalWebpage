@@ -32,6 +32,16 @@ class NewsItemPayload(BaseModel):
     """Brief summary of the news item (max 300 chars)."""
     tags: List[str]
     """List of tags for categorization and filtering."""
+    sub_category: Optional[str] = None
+    """Sub-classification: pcb_manufacturing, partner_equipment, skills_frameworks_mcps, ai_models."""
+    title_es: Optional[str] = None
+    """Spanish localized headline."""
+    title_en: Optional[str] = None
+    """English localized headline."""
+    summary_es: Optional[str] = None
+    """Spanish localized summary."""
+    summary_en: Optional[str] = None
+    """English localized summary."""
 
 
 class RAGResponsePayload(BaseModel):

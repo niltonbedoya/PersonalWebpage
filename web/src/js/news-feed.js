@@ -1,10 +1,10 @@
 /* News Feed module for Showcase Platform.
    Fetches curated news from Radarito (/news) and renders responsive cards.
    Vanilla JS, zero dependencies, ASCII-clean.
-   Caps display at max 3 cards to avoid page saturation:
-   - Dashboard (index): exactly 3 cards — 1 from each sector (SMD_INSPECTION, THT_SOLDERING, AI_SOFTWARE).
-   - Industrial spoke: max 3 most recent cards from SMD + THT.
-   - Software spoke: max 3 most recent cards from AI_SOFTWARE.
+   Bilingual ES/EN, source link included, capped at 3 cards per view:
+   - Dashboard (index): 1 PCB manufacturing, 1 Partner equipment, 1 AI general.
+   - Industrial spoke: 1 PCB manufacturing, 2 Partner equipment (PARMI, ERSA, NORDSON, MARANTZ).
+   - Software spoke: 1 Skills/Frameworks/MCPs, 2 AI Models.
 */
 
 (function () {
@@ -18,20 +18,26 @@
       SMD_INSPECTION: "Inspección 3D & Rayos X",
       THT_SOLDERING: "Soldadura SMT/THT",
       AI_SOFTWARE: "Software & AI",
-      all: "Todas las noticias",
-      loading: "Cargando noticias curadas...",
+      pcb_manufacturing: "Fabricación PCB",
+      partner_equipment: "Equipos Partner",
+      skills_frameworks_mcps: "Skills & MCPs",
+      ai_models: "Modelos AI",
+      source_prefix: "Fuente: ",
+      loading: "Cargando radar tecnológico...",
       empty: "No hay noticias disponibles en esta categoría.",
-      read_more: "Ver más",
       feed_title: "Radar Tecnológico & Noticias Curadas"
     },
     en: {
       SMD_INSPECTION: "3D Inspection & X-Ray",
       THT_SOLDERING: "SMT/THT Soldering",
       AI_SOFTWARE: "Software & AI",
-      all: "All News",
-      loading: "Loading curated news...",
+      pcb_manufacturing: "PCB Manufacturing",
+      partner_equipment: "Partner Equipment",
+      skills_frameworks_mcps: "Skills & MCPs",
+      ai_models: "AI Models",
+      source_prefix: "Source: ",
+      loading: "Loading technology radar...",
       empty: "No news items available in this category.",
-      read_more: "Read more",
       feed_title: "Technology Radar & Curated News"
     }
   };
@@ -61,31 +67,6 @@
     }
   }
 
-  function renderCard(item, labels) {
-    var categoryLabel = labels[item.category] || item.category;
-    var tagsHtml = "";
-    if (Array.isArray(item.tags)) {
-      tagsHtml = item.tags
-        .slice(0, 3)
-        .map(function (t) {
-          return '<span class="news-tag">#' + escapeHtml(t) + "</span>";
-        })
-        .join(" ");
-    }
-
-    return (
-      '<article class="news-card">' +
-      '  <div class="news-card-header">' +
-      '    <span class="news-card-badge">' + escapeHtml(categoryLabel) + "</span>" +
-      '    <span class="news-card-date">' + escapeHtml(formatDate(item.published_at)) + "</span>" +
-      "  </div>" +
-      '  <h4 class="news-card-title">' + escapeHtml(item.title) + "</h4>" +
-      '  <p class="news-card-summary">' + escapeHtml(item.summary) + "</p>" +
-      '  <div class="news-card-tags">' + tagsHtml + "</div>" +
-      "</article>"
-    );
-  }
-
   function escapeHtml(str) {
     if (!str) return "";
     return String(str)
@@ -94,6 +75,59 @@
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&#39;");
+  }
+
+  function getHostname(urlStr) {
+    if (!urlStr) return "";
+    try {
+      var url = new URL(urlStr);
+      return url.hostname.replace(/^www\./, "");
+    } catch (e) {
+      return "link";
+    }
+  }
+
+  function renderCard(item, labels) {
+    var lang = getLang();
+    var title = lang === "en" ? (item.title_en || item.title) : (item.title_es || item.title);
+    var summary = lang === "en" ? (item.summary_en || item.summary) : (item.summary_es || item.summary);
+
+    // Pick badge: sub_category label if available, otherwise category label
+    var badgeKey = item.sub_category || item.category;
+    var badgeLabel = labels[badgeKey] || labels[item.category] || badgeKey;
+
+    var tagsHtml = "";
+    if (Array.isArray(item.tags)) {
+      tagsHtml = item.tags
+        .slice(0, 4)
+        .map(function (t) {
+          return '<span class="news-tag">#' + escapeHtml(t) + "</span>";
+        })
+        .join(" ");
+    }
+
+    var host = getHostname(item.source_url);
+    var sourceText = (labels.source_prefix || "Fuente: ") + escapeHtml(host);
+
+    return (
+      '<article class="news-card">' +
+      '  <div class="news-card-header">' +
+      '    <span class="news-card-badge">' + escapeHtml(badgeLabel) + "</span>" +
+      '    <span class="news-card-date">' + escapeHtml(formatDate(item.published_at)) + "</span>" +
+      "  </div>" +
+      '  <h4 class="news-card-title">' + escapeHtml(title) + "</h4>" +
+      '  <p class="news-card-summary">' + escapeHtml(summary) + "</p>" +
+      '  <div class="news-card-tags">' + tagsHtml + "</div>" +
+      '  <div class="news-card-footer">' +
+      '    <a href="' + escapeHtml(item.source_url) + '" target="_blank" rel="noopener noreferrer" class="news-source-link">' +
+      "      <span>" + sourceText + "</span>" +
+      '      <svg class="news-external-icon" viewBox="0 0 16 16" width="12" height="12" fill="currentColor">' +
+      '        <path d="M4.5 3a.5.5 0 0 0 0 1h5.793L2.146 12.146a.5.5 0 0 0 .708.708L11 4.707V10.5a.5.5 0 0 0 1 0v-7a.5.5 0 0 0-.5-.5h-7z"/>' +
+      "      </svg>" +
+      "    </a>" +
+      "  </div>" +
+      "</article>"
+    );
   }
 
   function sortByDateDesc(items) {
@@ -122,12 +156,13 @@
     if (!feedBox) return;
 
     var labels = getLabels();
+    var lang = getLang();
     var pageContext = feedBox.getAttribute("data-page-context") || "index";
 
     var content = document.getElementById(CONTENT_CONTAINER_ID);
     if (!content) return;
 
-    // Clean up any old dynamic tabs if present to avoid DOM pollution
+    // Clean up any old dynamic tabs if present
     var existingTabs = document.getElementById("news-tabs-bar");
     if (existingTabs) {
       existingTabs.remove();
@@ -136,48 +171,73 @@
     content.innerHTML = '<p class="news-loading">' + escapeHtml(labels.loading) + "</p>";
 
     if (pageContext === "industrial-smt") {
-      // In Industrial Spoke: Load SMD_INSPECTION & THT_SOLDERING, sort by date, show max 3
+      // ELECTRONICA SMT — 3 Noticias:
+      // a. 1 noticia sobre empresas de fabricación de circuitos impresos/integrados (pcb_manufacturing)
+      // b. 2 noticias de empresas con las que trabajo (partner_equipment: PARMI, ERSA, NORDSON, MARANTZ)
       Promise.all([
-        fetch("/news/?category=SMD_INSPECTION").then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch("/news/?category=THT_SOLDERING").then(function (r) { return r.json(); }).catch(function () { return []; })
+        fetch("/news/?category=SMD_INSPECTION&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=THT_SOLDERING&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; })
       ]).then(function (results) {
-        var combined = (results[0] || []).concat(results[1] || []);
-        var sorted = sortByDateDesc(combined);
-        renderGrid(content, sorted.slice(0, 3), labels);
+        var allIndustrial = (results[0] || []).concat(results[1] || []);
+        var pcbNews = sortByDateDesc(allIndustrial.filter(function (x) { return x.sub_category === "pcb_manufacturing"; }));
+        var partnerNews = sortByDateDesc(allIndustrial.filter(function (x) { return x.sub_category === "partner_equipment"; }));
+
+        var selected = [];
+        if (pcbNews.length > 0) selected.push(pcbNews[0]);
+        if (partnerNews.length > 0) selected.push(partnerNews[0]);
+        if (partnerNews.length > 1) selected.push(partnerNews[1]);
+
+        renderGrid(content, selected, labels);
       }).catch(function () {
         content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
       });
     } else if (pageContext === "software-engineering") {
-      // In Software Spoke: Load AI_SOFTWARE, sort by date, show max 3
-      fetch("/news/?category=AI_SOFTWARE")
+      // DESARROLLO DE SOFTWARE AI — 3 Noticias:
+      // a. 1 noticia sobre skills, frameworks, MCPs (skills_frameworks_mcps)
+      // b. 2 noticias sobre modelos y novedades de AI (ai_models)
+      fetch("/news/?category=AI_SOFTWARE&lang=" + lang)
         .then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
           return res.json();
         })
         .then(function (items) {
-          var sorted = sortByDateDesc(items || []);
-          renderGrid(content, sorted.slice(0, 3), labels);
+          var allSoftware = items || [];
+          var skillsNews = sortByDateDesc(allSoftware.filter(function (x) { return x.sub_category === "skills_frameworks_mcps"; }));
+          var modelsNews = sortByDateDesc(allSoftware.filter(function (x) { return x.sub_category === "ai_models"; }));
+
+          var selected = [];
+          if (skillsNews.length > 0) selected.push(skillsNews[0]);
+          if (modelsNews.length > 0) selected.push(modelsNews[0]);
+          if (modelsNews.length > 1) selected.push(modelsNews[1]);
+
+          renderGrid(content, selected, labels);
         })
         .catch(function () {
           content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
         });
     } else {
-      // Dashboard (index): exactly 3 cards — 1 from each sector (SMD, THT, AI)
+      // DASHBOARD — 3 Noticias:
+      // a. 1 noticia de empresas de fabricación de PCB / EMS (pcb_manufacturing)
+      // b. 1 noticia de empresas con las que trabajo (partner_equipment: PARMI, ERSA, NORDSON, MARANTZ)
+      // c. 1 noticia de AI en general (skills, frameworks o modelos)
       Promise.all([
-        fetch("/news/?category=SMD_INSPECTION").then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch("/news/?category=THT_SOLDERING").then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch("/news/?category=AI_SOFTWARE").then(function (r) { return r.json(); }).catch(function () { return []; })
+        fetch("/news/?category=SMD_INSPECTION&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=THT_SOLDERING&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=AI_SOFTWARE&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; })
       ]).then(function (results) {
-        var smdSorted = sortByDateDesc(results[0] || []);
-        var thtSorted = sortByDateDesc(results[1] || []);
-        var aiSorted = sortByDateDesc(results[2] || []);
+        var allHardware = (results[0] || []).concat(results[1] || []);
+        var allAI = results[2] || [];
 
-        var dashboardItems = [];
-        if (smdSorted.length > 0) dashboardItems.push(smdSorted[0]);
-        if (thtSorted.length > 0) dashboardItems.push(thtSorted[0]);
-        if (aiSorted.length > 0) dashboardItems.push(aiSorted[0]);
+        var pcbNews = sortByDateDesc(allHardware.filter(function (x) { return x.sub_category === "pcb_manufacturing"; }));
+        var partnerNews = sortByDateDesc(allHardware.filter(function (x) { return x.sub_category === "partner_equipment"; }));
+        var aiNews = sortByDateDesc(allAI);
 
-        renderGrid(content, dashboardItems, labels);
+        var selected = [];
+        if (pcbNews.length > 0) selected.push(pcbNews[0]);
+        if (partnerNews.length > 0) selected.push(partnerNews[0]);
+        if (aiNews.length > 0) selected.push(aiNews[0]);
+
+        renderGrid(content, selected, labels);
       }).catch(function () {
         content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
       });

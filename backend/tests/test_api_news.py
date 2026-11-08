@@ -152,3 +152,37 @@ def test_news_invalid_category_returns_422(client: TestClient):
     assert response.status_code == 422
     detail = response.json()["detail"]
     assert any(err.get("loc") == ["body", "category"] for err in detail)
+
+
+# --- Multilingual localization support ----------------------------------------
+
+
+def test_news_endpoint_supports_spanish_and_english_languages(client: TestClient):
+    """News items return localized titles and summaries based on the lang query param."""
+    res_es = client.get("/news/?category=SMD_INSPECTION&lang=es")
+    assert res_es.status_code == 200
+    items_es = res_es.json()
+    assert len(items_es) > 0
+    # First item in Spanish
+    first_es = items_es[0]
+    assert first_es["title"] == first_es["title_es"]
+
+    res_en = client.get("/news/?category=SMD_INSPECTION&lang=en")
+    assert res_en.status_code == 200
+    items_en = res_en.json()
+    first_en = items_en[0]
+    assert first_en["title"] == first_en["title_en"]
+    assert first_en["title"] != first_es["title"]
+
+
+def test_news_items_contain_sub_categories_and_valid_source_urls(client: TestClient):
+    """News items carry sub_category metadata and genuine source URLs."""
+    res = client.get("/news/?category=SMD_INSPECTION")
+    assert res.status_code == 200
+    items = res.json()
+    sub_cats = {item.get("sub_category") for item in items}
+    assert "pcb_manufacturing" in sub_cats
+    assert "partner_equipment" in sub_cats
+    for item in items:
+        assert item["source_url"].startswith("https://")
+
