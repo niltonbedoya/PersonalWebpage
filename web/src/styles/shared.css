@@ -262,6 +262,51 @@ li::before {
   font-weight: 600;
 }
 
+/* ---------- Language Switcher (ES / EN) ---------- */
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-pill);
+  padding: 0.15rem 0.25rem;
+  margin-left: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  user-select: none;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  padding: 0.2rem 0.45rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+  transition: all var(--transition);
+  line-height: 1;
+}
+
+.lang-btn:hover {
+  color: var(--text);
+}
+
+.lang-btn.active {
+  background: rgba(14, 165, 233, 0.2);
+  color: var(--brand-cyan-hover);
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.25);
+}
+
+.lang-sep {
+  color: rgba(255, 255, 255, 0.15);
+  font-size: 0.65rem;
+  margin: 0 1px;
+}
+
 /* ---------- Hero Section (Ergonomic & Textual) ---------- */
 .hero {
   background: var(--surface);

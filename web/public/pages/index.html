@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Showcase Platform &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
-  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_noscroll_v9">
-  <script src="/static/src/js/shared.js?v=20261108_noscroll_v9" defer></script>
+  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_i18n_v10">
+  <script src="/static/src/js/shared.js?v=20261108_i18n_v10" defer></script>
+  <script src="/static/src/js/i18n.js?v=20261108_i18n_v10" defer></script>
 </head>
-<body style="background: #090d16; color: #f8fafc;">
+<body data-i18n-title="hub.title" style="background: #090d16; color: #f8fafc;">
 
   <header class="brand-header">
     <div class="container brand-header-inner">
@@ -16,14 +17,19 @@
         <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="30">
         <div class="brand-text">
           <span class="brand-title">Nilton Bedoya</span>
-          <span class="brand-subtitle">Showcase Platform</span>
+          <span class="brand-subtitle" data-i18n="brand.subtitle.hub">Showcase Platform</span>
         </div>
       </a>
       <nav class="brand-nav">
-        <a href="index.html" class="nav-link active">Hub Central</a>
-        <a href="industrial-smt.html" class="nav-link">Industrial SMT/THT</a>
-        <a href="software-engineering.html" class="nav-link">Software &amp; IA</a>
-        <button class="btn btn-sm btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
+        <a href="index.html" class="nav-link active" data-i18n="nav.hub">Hub Central</a>
+        <a href="industrial-smt.html" class="nav-link" data-i18n="nav.smt">ELECTR&Oacute;NICA &mdash; SMT/THT</a>
+        <a href="software-engineering.html" class="nav-link" data-i18n="nav.soft">Desarrollo de Software (IA)</a>
+        <button class="btn btn-sm btn-gradient" aria-controls="drawer-rag" data-i18n="nav.rag">Asistente RAG</button>
+        <div class="lang-switch" role="group" aria-label="Idioma">
+          <button type="button" class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+          <span class="lang-sep">|</span>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
       </nav>
     </div>
   </header>
@@ -31,11 +37,11 @@
   <div class="container">
     <section class="hero hero-split">
       <div class="hero-split-text">
-        <span class="hero-pill"><span class="status-dot"></span> Living Technical Portfolio &bull; Hybrid Architecture</span>
-        <h1>Showcase Platform &mdash; <span class="hero-highlight">Nilton Bedoya</span></h1>
-        <p class="hero-desc">Portfolio tecnico hibrido en vivo de doble especializacion: <strong>Ingenieria SMT/THT</strong> (Inspeccion Optica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial &amp; Soluciones IA</strong> con inferencia de costo cero.</p>
+        <span class="hero-pill" data-i18n-html="true" data-i18n="hub.hero.pill"><span class="status-dot"></span> Living Technical Portfolio &bull; Hybrid Architecture</span>
+        <h1 data-i18n-html="true" data-i18n="hub.hero.title">Showcase Platform &mdash; <span class="hero-highlight">Nilton Bedoya</span></h1>
+        <p class="hero-desc" data-i18n-html="true" data-i18n="hub.hero.desc">Portfolio t&eacute;cnico h&iacute;brido en vivo de doble especializaci&oacute;n: <strong>Ingenier&iacute;a SMT/THT</strong> (Inspecci&oacute;n &Oacute;ptica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial &amp; Soluciones IA</strong> con inferencia de costo cero.</p>
         <div style="margin-top: 1.25rem;">
-          <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+          <button class="btn btn-gradient" aria-controls="drawer-rag" data-i18n="btn.rag">Consultar al Asistente RAG</button>
         </div>
       </div>
       <div class="hero-portrait-wrap">
@@ -51,44 +57,44 @@
 
     <div class="grid cols-2">
       <div class="card card-hub-industrial">
-        <span class="badge badge-cyan">Hardware &amp; Precision</span>
-        <h2>Spoke Industrial</h2>
-        <p>Maquinaria de inspeccion optica 3D, rayos X en linea (AXI), sistemas termicos, soldadura selectiva/ola, handling y metalurgia aplicada a lineas de alta exigencia SMT/THT.</p>
+        <span class="badge badge-cyan" data-i18n-html="true" data-i18n="hub.card.smt.tag">Hardware &amp; Precisi&oacute;n</span>
+        <h2 data-i18n="hub.card.smt.title">ELECTR&Oacute;NICA &mdash; SMT/THT</h2>
+        <p data-i18n="hub.card.smt.desc">Maquinaria de inspecci&oacute;n &oacute;ptica 3D, rayos X en l&iacute;nea (AXI), sistemas t&eacute;rmicos, soldadura selectiva/ola, handling y metalurgia aplicada a l&iacute;neas de alta exigencia SMT/THT.</p>
         <div style="margin-top: 1.25rem;">
-          <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
+          <a href="industrial-smt.html" class="btn" data-i18n-html="true" data-i18n="hub.card.smt.btn">Ver Electr&oacute;nica SMT/THT &rarr;</a>
         </div>
       </div>
       <div class="card card-hub-software">
-        <span class="badge badge-violet">Cyber-Intelligence &amp; AI</span>
-        <h2>Spoke Software</h2>
-        <p>5 casos de estudio de software e IA, arquitecturas limpias, pipelines multiagente en FastAPI, demostraciones controladas y feeds de inteligencia tecnologica.</p>
+        <span class="badge badge-violet" data-i18n-html="true" data-i18n="hub.card.soft.tag">Ciberinteligencia &amp; IA</span>
+        <h2 data-i18n="hub.card.soft.title">Desarrollo de Software (IA)</h2>
+        <p data-i18n="hub.card.soft.desc">5 casos de estudio de software e IA, arquitecturas limpias, pipelines multiagente en FastAPI, demostraciones controladas y feeds de inteligencia tecnol&oacute;gica.</p>
         <div style="margin-top: 1.25rem;">
-          <a href="software-engineering.html" class="btn btn-outline-soft">Ver Spoke Software &rarr;</a>
+          <a href="software-engineering.html" class="btn btn-outline-soft" data-i18n-html="true" data-i18n="hub.card.soft.btn">Ver Software &amp; IA &rarr;</a>
         </div>
       </div>
     </div>
 
-    <h2>Metricas del Sistema</h2>
+    <h2 data-i18n="hub.metrics.title">M&eacute;tricas del Sistema</h2>
     <div class="grid cols-3">
       <div class="card-metric">
-        <span class="card-metric-tag">Multiagent Runtime</span>
-        <h3>Metricas de Ingenieria</h3>
-        <p>Plataforma multiagente con enrutamiento LLM de costo cero (Groq, Google AI Studio, Cloudflare, OpenRouter).</p>
+        <span class="card-metric-tag" data-i18n="hub.metric.runtime.tag">Multiagent Runtime</span>
+        <h3 data-i18n="hub.metric.runtime.title">M&eacute;tricas de Ingenier&iacute;a</h3>
+        <p data-i18n="hub.metric.runtime.desc">Plataforma multiagente con enrutamiento LLM de costo cero (Groq, Google AI Studio, Cloudflare, OpenRouter).</p>
       </div>
       <div class="card-metric">
-        <span class="card-metric-tag">&lt; 150 ms Perimeter</span>
-        <h3>Guardrail &amp; Seguridad</h3>
-        <p>Intercepcion perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.</p>
+        <span class="card-metric-tag" data-i18n-html="true" data-i18n="hub.metric.guard.tag">&lt; 150 ms Perimeter</span>
+        <h3 data-i18n="hub.metric.guard.title">Guardrail &amp; Seguridad</h3>
+        <p data-i18n="hub.metric.guard.desc">Intercepci&oacute;n perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.</p>
       </div>
       <div class="card-metric">
-        <span class="card-metric-tag">Score &ge; 0.85</span>
-        <h3>RAG con Grounding</h3>
-        <p>Motor RAG sobre corpus local SQLite-vec con score de fundamentacion &ge; 0.85.</p>
+        <span class="card-metric-tag" data-i18n-html="true" data-i18n="hub.metric.rag.tag">Score &ge; 0.85</span>
+        <h3 data-i18n="hub.metric.rag.title">RAG con Grounding</h3>
+        <p data-i18n="hub.metric.rag.desc">Motor RAG sobre corpus local SQLite-vec con score de fundamentaci&oacute;n &ge; 0.85.</p>
       </div>
     </div>
 
     <div id="news-feed">
-      <h3>Noticias SMT/THT</h3>
+      <h3 data-i18n="hub.news.title">Noticias SMT/THT</h3>
       <p id="news-feed-content">Cargando noticias...</p>
     </div>
 

@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spoke Software &mdash; Soluciones IA &mdash; Nilton Bedoya</title>
+  <title>Desarrollo de Software (IA) &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
-  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_noscroll_v9">
-  <script src="/static/src/js/shared.js?v=20261108_noscroll_v9" defer></script>
+  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_i18n_v10">
+  <script src="/static/src/js/shared.js?v=20261108_i18n_v10" defer></script>
+  <script src="/static/src/js/i18n.js?v=20261108_i18n_v10" defer></script>
 </head>
-<body style="background: #090d16; color: #f8fafc;">
+<body data-i18n-title="soft.title" style="background: #090d16; color: #f8fafc;">
 
   <header class="brand-header">
     <div class="container brand-header-inner">
@@ -16,14 +17,19 @@
         <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="30">
         <div class="brand-text">
           <span class="brand-title">Nilton Bedoya</span>
-          <span class="brand-subtitle">Spoke Software &amp; Soluciones IA</span>
+          <span class="brand-subtitle" data-i18n="brand.subtitle.soft">Desarrollo de Software (IA)</span>
         </div>
       </a>
       <nav class="brand-nav">
-        <a href="index.html" class="nav-link">Hub Central</a>
-        <a href="industrial-smt.html" class="nav-link">Industrial SMT/THT</a>
-        <a href="software-engineering.html" class="nav-link active-software">Software &amp; IA</a>
-        <button class="btn btn-sm btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
+        <a href="index.html" class="nav-link" data-i18n="nav.hub">Hub Central</a>
+        <a href="industrial-smt.html" class="nav-link" data-i18n="nav.smt">ELECTR&Oacute;NICA &mdash; SMT/THT</a>
+        <a href="software-engineering.html" class="nav-link active-software" data-i18n="nav.soft">Desarrollo de Software (IA)</a>
+        <button class="btn btn-sm btn-gradient" aria-controls="drawer-rag" data-i18n="nav.rag">Asistente RAG</button>
+        <div class="lang-switch" role="group" aria-label="Idioma">
+          <button type="button" class="lang-btn active" data-lang="es" aria-pressed="true">ES</button>
+          <span class="lang-sep">|</span>
+          <button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button>
+        </div>
       </nav>
     </div>
   </header>
@@ -31,12 +37,12 @@
   <div class="container">
     <section class="hero hero-split hero-split-code">
       <div class="hero-split-text">
-        <span class="hero-pill hero-pill-violet"><span class="status-dot"></span> Cyber-Intelligence &bull; Zero-Cost LLM Routing</span>
-        <h1>Spoke Software &mdash; <span class="hero-highlight">Ingenieria &amp; IA</span></h1>
-        <p>Casos de estudio de software industrial, sistemas multiagente desacoplados, arquitecturas limpias y demostraciones controladas con inferencia de costo cero.</p>
-        <p><em>v1 sin APIs vivas expuestas. Demostraciones pregrabadas y sanitizadas bajo diseno defensivo.</em></p>
+        <span class="hero-pill hero-pill-violet" data-i18n-html="true" data-i18n="soft.hero.pill"><span class="status-dot"></span> Cyber-Intelligence &bull; Zero-Cost LLM Routing</span>
+        <h1 data-i18n-html="true" data-i18n="soft.hero.title">Desarrollo de Software &mdash; <span class="hero-highlight">(IA)</span></h1>
+        <p data-i18n="soft.hero.desc">Casos de estudio de software industrial, sistemas multiagente desacoplados, arquitecturas limpias y demostraciones controladas con inferencia de costo cero.</p>
+        <p data-i18n-html="true" data-i18n="soft.hero.scope"><em>v1 sin APIs vivas expuestas. Demostraciones pregrabadas y sanitizadas bajo dise&ntilde;o defensivo.</em></p>
         <div style="margin-top: 1.25rem;">
-          <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+          <button class="btn btn-gradient" aria-controls="drawer-rag" data-i18n="btn.rag">Consultar al Asistente RAG</button>
         </div>
       </div>
       <div class="hero-code-panel">
@@ -129,19 +135,19 @@
       </div>
     </div>
 
-    <div class="alert">
-      <strong>v1 sin APIs vivas expuestas:</strong> los case studies estan sanitizados por diseno para eliminar costes y prevenir riesgos de fuga de credenciales o PII.
+    <div class="alert" data-i18n-html="true" data-i18n="soft.alert.v1">
+      <strong>v1 sin APIs vivas expuestas:</strong> los case studies est&aacute;n sanitizados por dise&ntilde;o para eliminar costes y prevenir riesgos de fuga de credenciales o PII.
     </div>
 
     <div style="margin: 2rem 0; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
-      <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
-      <a href="index.html" class="btn btn-outline-soft">&larr; Volver al Hub Central</a>
+      <button class="btn btn-gradient" aria-controls="drawer-rag" data-i18n="btn.rag">Consultar al Asistente RAG</button>
+      <a href="index.html" class="btn btn-outline-soft" data-i18n-html="true" data-i18n="btn.back_hub">&larr; Volver al Hub Central</a>
     </div>
 
     <footer class="footer">
       <p>Feed contextual: noticias IA/Software &nbsp;|&nbsp;
-      <a href="index.html">Volver al Hub</a> &nbsp;|&nbsp;
-      <a href="industrial-smt.html">Ver Spoke Industrial SMT/THT</a></p>
+      <a href="index.html" data-i18n="footer.back_hub">Volver al Hub</a> &nbsp;|&nbsp;
+      <a href="industrial-smt.html" data-i18n="footer.view_smt">Ver ELECTR&Oacute;NICA &mdash; SMT/THT</a></p>
     </footer>
   </div>
 

@@ -37,6 +37,7 @@ NAV_LINKS = {
 ASSETS = [
     "/static/src/styles/shared.css",
     "/static/src/js/shared.js",
+    "/static/src/js/i18n.js",
 ]
 
 VOID_ELEMENTS = {
