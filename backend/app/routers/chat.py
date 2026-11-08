@@ -127,6 +127,7 @@ async def chat_endpoint(request: ChatRequest):
         output_type = "rag"
         if payload.is_fully_grounded:
             response_text = payload.answer
+            output_type = "rag"
         else:
             live_response = None
             if llm_client.has_live_llm():
@@ -134,14 +135,22 @@ async def chat_endpoint(request: ChatRequest):
                     request.message,
                     rag_context="\n".join(c.get("content", "") for c in payload.cited_sources) if payload.cited_sources else None
                 )
-            response_text = live_response or (
-                "No dispongo de detalles específicos sobre ese punto en el corpus verificado.\n\n"
-                "Para conocer la experiencia técnica de Nilton Bedoya, te sugiero consultar sobre:\n"
-                "• Electrónica SMT/THT (Inspección 3D Parmi/Marantz, Rayos X Matrix, hornos Ersa).\n"
-                "• Software & AI (Proyectos Tire Counter, Servicio de Tickets, CardioNutri, KRONENBLUMEN).\n"
-                "• Arquitectura y Metodología Gentle-AI de costo cero.\n\n"
-                "¿Te gustaría consultar sobre alguno de estos temas?"
-            )
+            if live_response:
+                response_text = live_response
+                output_type = "general"
+                agent_output = {"agent": "Nexus", "response": response_text}
+                agent_name = "Nexus"
+                grounding_score = 1.0
+            else:
+                response_text = (
+                    "No dispongo de detalles específicos sobre ese punto en el corpus verificado.\n\n"
+                    "Para conocer la experiencia técnica de Nilton Bedoya, te sugiero consultar sobre:\n"
+                    "• Electrónica SMT/THT (Inspección 3D Parmi/Marantz, Rayos X Matrix, hornos Ersa).\n"
+                    "• Software & AI (Proyectos Tire Counter, Servicio de Tickets, CardioNutri, KRONENBLUMEN).\n"
+                    "• Arquitectura y Metodología Gentle-AI de costo cero.\n\n"
+                    "¿Te gustaría consultar sobre alguno de estos temas?"
+                )
+                output_type = "rag"
     else:
         # Other destination agents (Centinela, etc.): generic routed response.
         response_text = "Mensaje recibido - enrutado a " + destination
