@@ -132,7 +132,7 @@ async def centinela_evaluate_endpoint(query: AgentQuery) -> JSONResponse:
         status="error" if blocked else "success",
         grounding_score=0.0 if blocked else 1.0,
         cited_sources=[verdict.intent_category],
-    ).dict()
+    ).model_dump()
     # "blocked" is not a Literal of AgentResponse.status, so expose it as an
     # extra payload field (JSONResponse bypasses response_model validation).
     base["status"] = "blocked" if blocked else "success"
@@ -173,7 +173,7 @@ async def radarito_fetch_news_endpoint(news_fetch: NewsFetch) -> JSONResponse:
             status="success",
             grounding_score=0.95,
             cited_sources=cited_sources,
-        ).dict(),
+        ).model_dump(),
     )
 
 
@@ -205,7 +205,7 @@ async def mensajerito_evaluate_lead_endpoint(
         cited_sources=[payload.raw_transcript_snippet]
         if payload.raw_transcript_snippet
         else [],
-    ).dict()
+    ).model_dump()
     base["opportunity_type"] = payload.opportunity_type
     base["priority"] = payload.priority
     base["sender_name"] = payload.sender_name
@@ -239,13 +239,13 @@ async def audit_verify_endpoint(audit_data: Dict[str, Any]) -> JSONResponse:
     approved = verdict.status == "APPROVED"
     base = AgentResponse(
         agent="Auditor",
-        response=f"Auditoria {'aprobada' if approved else 'rechchada'} "
+        response=f"Auditoria {'aprobada' if approved else 'rechazada'} "
                 f"({len(verdict.failure_reasons)} problema"
                 f"{'s' if verdict.failure_reasons else ''})",
         status="success" if approved else "error",
         grounding_score=0.95 if approved else 0.0,
         cited_sources=list(verdict.failure_reasons or []),
-    ).dict()
+    ).model_dump()
     base["audit_status"] = verdict.status
     base["audited_agent"] = verdict.audited_agent
     base["failure_reasons"] = list(verdict.failure_reasons or [])

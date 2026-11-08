@@ -21,6 +21,8 @@
       "footer.contact_cv": "Contacto profesional &amp; CV v&iacute;a Asistente RAG",
       "footer.view_smt": "Ver Electr\u00f3nica \u2014 SMT/THT",
       "footer.view_soft": "Ver Desarrollo de Software (AI)",
+      "footer.context_feed_smt": "Feed contextual: noticias SMT/THT",
+      "footer.context_feed_soft": "Feed contextual: noticias AI/Software",
 
       // Hub Page
       "hub.title": "Dashboard \u2014 Nilton Bedoya",
@@ -28,7 +30,7 @@
       "hub.hero.title": "Dashboard &mdash; <span class=\"hero-highlight\">Nilton Bedoya</span>",
       "hub.hero.desc": "Portfolio t\u00e9cnico h\u00edbrido en vivo de doble especializaci\u00f3n: <strong>Ingenier\u00eda SMT/THT</strong> (Inspecci\u00f3n \u00d3ptica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial &amp; Soluciones AI</strong> con inferencia de costo cero.",
       "hub.badge.left.title": "Nilton Bedoya",
-      "hub.badge.left.sub": "Electronics SMT/THT",
+      "hub.badge.left.sub": "Electr\u00f3nica SMT/THT",
       "hub.badge.right.title": "AI Development",
       "hub.badge.right.sub": "Frameworks - Skills - MCPs",
       "hub.card.smt.tag": "Hardware &amp; Precisi\u00f3n",
@@ -43,7 +45,7 @@
       "hub.metric.runtime.tag": "Multiagent Runtime",
       "hub.metric.runtime.title": "M\u00e9tricas de Ingenier\u00eda",
       "hub.metric.runtime.desc": "Plataforma multiagente con enrutamiento LLM de costo cero (Groq, Google AI Studio, Cloudflare, OpenRouter).",
-      "hub.metric.guard.tag": "&lt; 150 ms Perimeter",
+      "hub.metric.guard.tag": "Per\u00edmetro &lt; 150 ms",
       "hub.metric.guard.title": "Guardrail &amp; Seguridad",
       "hub.metric.guard.desc": "Intercepci\u00f3n perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.",
       "hub.metric.rag.tag": "Score &ge; 0.85",
@@ -104,7 +106,7 @@
       "smt.card.transport.title": "Sistemas de Transporte y Control",
       "smt.card.transport.desc": "Cargadores, descargadores, buffers FIFO/LIFO, cintas transportadoras sincronizadas, diagn\u00f3stico y programaci\u00f3n de PLCs industriales para operaci\u00f3n 24/7 sin paradas.",
       "smt.badge.diag.main": "Hardware &bull; Calibraci\u00f3n",
-      "smt.badge.diag.sub": "Nordson BT &bull; Electr\u00f3nica &amp; Celdas",
+      "smt.badge.diag.sub": "Nordson BT &bull; Electr\u00f3nica &amp; Celdas de Carga",
       "smt.tag.diag": "Diagn\u00f3stico Electromec\u00e1nico",
       "smt.card.diag.title": "Mantenimiento y Calibraci\u00f3n de Precisi\u00f3n",
       "smt.card.diag.desc": "Intervenci\u00f3n directa a nivel de placa electr\u00f3nica, fuentes de alimentaci\u00f3n, buses de control y calibraci\u00f3n de celda de carga en equipos Nordson BT.",
@@ -161,6 +163,8 @@
       "footer.contact_cv": "Professional contact &amp; CV via RAG Assistant",
       "footer.view_smt": "View Electronics \u2014 SMT/THT",
       "footer.view_soft": "View Software Development (AI)",
+      "footer.context_feed_smt": "Contextual feed: SMT/THT news",
+      "footer.context_feed_soft": "Contextual feed: AI/Software news",
 
       // Hub Page
       "hub.title": "Dashboard \u2014 Nilton Bedoya",

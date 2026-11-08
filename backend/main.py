@@ -20,7 +20,7 @@ from backend.agent_ops_router import agent_ops_router
 # Create FastAPI app
 app = FastAPI(
     title="Showcase Platform Multi-Agente",
-    description="Runtime multiagente hibrid - FastAPI con routing de LLM de costo cero y agentes autonomos con WebSockets en tiempo real",
+    description="Runtime multiagente hibrido - FastAPI con routing de LLM de costo cero y agentes autonomos con WebSockets en tiempo real",
     version="0.1.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
@@ -58,11 +58,11 @@ if PUBLIC_DIR.is_dir():
 else:
     print(f"[WARN] Static dir not found: {PUBLIC_DIR}")
 
-# Incluir routers API
-app.include_router(router, prefix="/chat", tags=["chat"])
-app.include_router(news_router, prefix="/news", tags=["news"])
-app.include_router(contact_router, prefix="/contact", tags=["contact"])
-app.include_router(health_router, prefix="/health", tags=["health"])
+# Incluir routers API (los routers ya definen sus prefijos internamente)
+app.include_router(router)
+app.include_router(news_router)
+app.include_router(contact_router)
+app.include_router(health_router)
 
 # Agent operations endpoints under /api/v1/agents/* (F3, S6/S7)
 app.include_router(agent_ops_router)

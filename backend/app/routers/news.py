@@ -4,7 +4,7 @@ Returns NewsItemPayload-conformant items per category.
 Offline, deterministic, no network.
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException, Query, Body
 from pydantic import BaseModel
 from typing import Literal, Optional, List
 import logging
@@ -104,11 +104,19 @@ class NewsQuery(BaseModel):
 
 
 @news_router.get("/", response_model=List[dict])
-async def news_endpoint(query: NewsQuery):
-    """Endpoint de noticias curadas por Radarito."""
-    logger.info("News request for category: %s, limit: %s", query.category, query.limit)
+async def news_endpoint(
+    category: Optional[Literal["THT_SOLDERING", "SMD_INSPECTION", "AI_SOFTWARE"]] = Query(None),
+    limit: Optional[int] = Query(10),
+    body: Optional[NewsQuery] = Body(None),
+):
+    """Endpoint de noticias curadas por Radarito (soporta query parameters y body)."""
+    selected_category = category if category is not None else (body.category if body else None)
+    selected_limit = limit if category is not None else (body.limit if body and body.limit is not None else limit)
+    if not selected_category:
+        raise HTTPException(status_code=422, detail="Field 'category' is required via query param or body")
+    logger.info("News request for category: %s, limit: %s", selected_category, selected_limit)
     _ensure_seed()
-    items = [item for item in _SEED_ITEMS[query.category]]
-    if query.limit is not None:
-        items = items[: query.limit]
+    items = [item for item in _SEED_ITEMS[selected_category]]
+    if selected_limit is not None:
+        items = items[: selected_limit]
     return [NewsItemPayload(**item).model_dump() for item in items]

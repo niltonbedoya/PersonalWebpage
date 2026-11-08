@@ -9,7 +9,7 @@ import json
 import logging
 from typing import Dict, Set, Any, Optional
 from fastapi import WebSocket, WebSocketDisconnect
-from datetime import datetime
+from datetime import datetime, timezone
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +28,7 @@ class ConnectionManager:
             "Auditor": set(),
         }
         # Broadcast channels for inter-agent communication
-        self.broadcast_channels: Dict[str, Set[WebSocket]] = set()
+        self.broadcast_channels: Dict[str, Set[WebSocket]] = {}
         self.client_agent_map: Dict[WebSocket, str] = {}  # client -> current agent
     
     async def connect(self, websocket: WebSocket, agent_name: str = "Nexus") -> None:
@@ -85,7 +85,7 @@ class ConnectionManager:
         message = {
             "type": "agent_output",
             "agent": agent_name,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "output": output,
             "output_type": output_type,
             "status": "delivered",
