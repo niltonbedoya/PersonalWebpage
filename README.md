@@ -1,17 +1,40 @@
 # Showcase Platform — Living Technical Portfolio
 
-Portfolio técnico híbrido en vivo para un perfil de doble especialización:
+[![CI/CD — Showcase Platform](https://github.com/niltonbedoya/PersonalWebpage/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/niltonbedoya/PersonalWebpage/actions/workflows/ci-cd.yml)
+[![Tests: 455 passed](https://img.shields.io/badge/tests-455%20passed-brightgreen.svg)](#roadmap-fases-bajo-gentle-ai)
+[![Zero-Cost LLM](https://img.shields.io/badge/LLM-Zero--Cost%20Routing-blue.svg)](#matriz-de-agentes-runtime)
+[![Cloudflare Tunnel](https://img.shields.io/badge/SSL-Cloudflare%20Edge-orange.svg)](https://portfolio.services-nba.com/)
+
+Portfolio técnico híbrido en producción para un perfil de doble especialización:
 **Ingeniería SMT/THT (Inspección Óptica 3D, Rayos X, Soldadura, Handling)** y
-**Arquitectura de Software Industrial & Soluciones IA**.
+**Arquitectura de Software Industrial & Soluciones AI**.
 
-Objetivo: certificar autoridad técnica ante reclutadores, colegas y
-oportunidades de colaboración — *show, don't tell* — garantizando calidad de
-ingeniería con metodología formal de desarrollo.
+🌐 **Acceso público en producción:** [https://portfolio.services-nba.com/](https://portfolio.services-nba.com/)
 
-> **Estado del proyecto:** fase inicial. El producto se construye desde cero
-> bajo metodología **Gentle-AI** (orquestación ODD + TDD estricto). La
-> especificación está consolidada y aprobada en `docs/`; el código se entrega
-> por fases según el roadmap de abajo.
+---
+
+## Capturas de Pantalla & Casos de Estudio
+
+### Desarrollo de Software & Soluciones AI
+
+| Traducción Simultánea en Vivo (Interstellar AI) | Dashboard Operativo de Tickets Técnicos |
+|:---:|:---:|
+| ![Traductor Simultáneo](web/public/assets/projects/translation-interstellar-ai.jpg) | ![Dashboard de Tickets](web/public/assets/projects/tickets-dashboard.png) |
+| **Pipeline AI de baja latencia con depuración en tiempo real** | **SaaS de servicio técnico con SLAs y trazabilidad** |
+
+| Kronenblumen POS & ERP Industrial | COUNTER Terminal Industrial (Visión AI) | CardioNutri Telemetría IoT |
+|:---:|:---:|:---:|
+| ![Kronenblumen ERP](web/public/assets/projects/kronenblumen-pos-erp.jpg) | ![Counter Terminal](web/public/assets/projects/counter-terminal-industrial.png) | ![CardioNutri](web/public/assets/projects/cardionutri-telemetry.jpg) |
+| **Panel de soporte QA/IT y facturación** | **Conteo y packing list de exportación** | **Monitoreo biométrico y telemetría clínica** |
+
+### Ingeniería Electrónica SMT/THT & Automatización
+
+| ERSA Versaflow 3/45 (Soldadura Selectiva) | Inspección Óptica 3D AOI (Mek / Marantz) | Inspección Rayos X AXI (Matrix) |
+|:---:|:---:|:---:|
+| ![ERSA Versaflow](web/public/assets/photos/smt-ersa-versaflow-selective-soldering.jpg) | ![Mek Marantz](web/public/assets/photos/smt-marantz-mek-inspection-machines.jpg) | ![Matrix X-Ray](web/public/assets/photos/smt-matrix-xray-inspection.jpg) |
+| **Soldadura selectiva mini-wave con nitrógeno N2** | **Inspección óptica de componentes SMD y uniones** | **Inspección no destructiva de soldaduras BGA/QFN** |
+
+---
 
 ## Arquitectura dual: dos jerarquías de agentes
 
@@ -117,16 +140,15 @@ Context7 MCP (docs dinámica) · Cloudflare Pages (hosting edge) · pytest + Vit
 
 | Fase | Alcance | Estado |
 |---|---|---|
-| F1 | Contratos Pydantic v2 con tests Red→Green | Pendiente |
-| F2 | 6 agentes runtime contra mocks deterministas | Pendiente |
-| F3 | API (/chat /news /contact /health) + WebSockets | Pendiente |
-| F4 | Frontend Hub & Spoke + feeds + drawer RAG | Pendiente |
-| F5 | Corpus sanitizado + indexado SQLite-vec | Pendiente |
-| F6 | Resiliencia: 50+ anti-inyección, veredictos del Auditor | Pendiente |
-| F7 | Deploy Cloudflare Pages + CI offline | Pendiente |
+| F1 | Contratos Pydantic v2 con tests Red→Green | ✅ Completada (13 tests) |
+| F2 | 6 agentes runtime contra mocks deterministas | ✅ Completada (104 tests) |
+| F3 | API (/chat /news /contact /health) + WebSockets | ✅ Completada (182 tests) |
+| F4 | Frontend Hub & Spoke + feeds + drawer RAG | ✅ Completada (201 tests) |
+| F5 | Corpus sanitizado + indexado SQLite-vec | ✅ Completada (387 tests) |
+| F6 | Resiliencia: 67 vectores anti-inyección, veredictos Auditor | ✅ Completada (441 tests) |
+| F7 | Hardening, Rate Limiting, Deploy Mac Mini + Cloudflare Edge | ✅ Completada (455 tests en verde) |
 
-Cada fase se planifica como feature document en `odd/` y solo se marca
-completada con tests observados en verde.
+El proyecto cuenta con una suite completa de **455 tests automatizados pasando al 100%**, ejecutándose en cada commit mediante el pipeline de GitHub Actions desplegado en producción continua.
 
 ## Referencias
 
