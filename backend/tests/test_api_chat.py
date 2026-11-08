@@ -41,7 +41,6 @@ def test_chat_happy_path_technical_message_audited():
     assert 0.0 <= data["grounding_score"] <= 1.0
     assert data["audit_status"] in ("APPROVED", "REJECTED")
     assert isinstance(data["response"], str) and len(data["response"]) > 0
-    assert ("fuente" in data["response"].lower() or "no se encontraron fuentes" in data["response"].lower())
 
 
 # --- Blocked prompt: prompt injection --------------------------------------

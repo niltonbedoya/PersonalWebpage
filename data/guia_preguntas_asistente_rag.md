@@ -43,8 +43,8 @@ Preguntas que puedes formular:
 - **CardioNutri (`niltonbedoya/cardionutri`)**:
   - ¿Qué características tiene la plataforma CardioNutri en React Native Expo y FastAPI?
   - ¿Cómo se gestiona la sincronización con Health Connect y sensores biométricos?
-- **KRONENBLUMEN (`niltonbedoya/KRONENBLUMEN`)**:
-  - ¿Cómo opera la solución de visión por computador AI para conteo de neumáticos y lectura de código DOT?
+- **ERP Comercial y Control de Importaciones**:
+  - ¿Cómo opera la solución de visión por computador AI para conteo y lectura de código?
   - ¿Qué stack utiliza para el ERP comercial y la sincronización con Supabase?
 - **Traductor Simultáneo (`niltonbedoya/Traductor-Simultaneo`)**:
   - ¿Cómo funciona el pipeline de traducción y síntesis de voz en tiempo real con Azure Speech?

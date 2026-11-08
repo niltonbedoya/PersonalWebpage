@@ -37,6 +37,10 @@ jobs:
         run: |
           git diff --quiet || { echo "ERROR: working tree has uncommitted changes"; git status --short; exit 1; }
 
+      - name: Build RAG corpus index
+        run: |
+          python -c "from backend.app.db.indexer import index_corpus; index_corpus()"
+
       - name: Run full test suite
         run: |
           python -m pytest backend/tests/ tests/ -q

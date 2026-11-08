@@ -52,7 +52,7 @@ Nilton Bedoya es un Ingeniero Senior con más de 15 años de experiencia técnic
 - **Tire Counter**: Sistema de clasificación, conteo y despacho de neumáticos con monorepo TypeScript y FSM offline-first.
 - **Servicio de Tickets**: Plataforma SaaS de gestión técnica para Field Service con FastAPI, React y PWA offline.
 - **CardioNutri**: Asistente clínico y nutricional con sincronización Health Connect y wearables.
-- **KRONENBLUMEN**: ERP comercial con visión AI para conteo y lectura DOT de neumáticos.
+- **ERP Comercial y Control de Importaciones**: ERP comercial y punto de venta (POS) con visión AI para conteo y trazabilidad.
 - **Traductor Simultáneo**: Motor de traducción y síntesis de voz en tiempo real con Azure Speech.
 - **Linux Home Server**: Infraestructura doméstica en Mac Mini con Docker, Tailscale y monitoreo.
 

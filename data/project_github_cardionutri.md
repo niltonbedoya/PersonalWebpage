@@ -1,7 +1,7 @@
 # Proyecto GitHub: CardioNutri — Asistente Clínico & Nutricional Inteligente
 
 ## Resumen del Proyecto
-Aplicación móvil nativa para Android desarrollada por Nilton Bedoya con React Native y Expo SDK, diseñada para el seguimiento integral de la salud cardiovascular, adherencia farmacológica, nutrición de precisión guiada por modelos de visión multimodal con IA y sincronización de actividad física con relojes inteligentes y sensores deportivos mediante Health Connect.
+Aplicación móvil nativa para Android desarrollada por Nilton Bedoya con React Native y Expo SDK, diseñada para el seguimiento integral de la salud cardiovascular, adherencia farmacológica, nutrición de precisión guiada por modelos de visión multimodal con AI y sincronización de actividad física con relojes inteligentes y sensores deportivos mediante Health Connect.
 
 ## Características Principales
 
@@ -35,7 +35,7 @@ Aplicación móvil nativa para Android desarrollada por Nilton Bedoya con React 
 - **Framework Móvil**: React Native con Expo SDK.
 - **Gráficos**: React Native SVG para renderizado vectorial ultraligero de curvas y barras.
 - **Sensores de Salud**: Health Connect API nativa.
-- **Modelos de Visión**: Modelos de IA multimodal para análisis de imágenes médicas y menús.
+- **Modelos de Visión**: Modelos de AI multimodal para análisis de imágenes médicas y menús.
 - **Persistencia**: AsyncStorage y base de datos local bajo arquitectura offline-first.
 - **Validación de Datos**: Zod (Schema Driven Development) para esquemas médicos estrictos.
 - **Testing**: Jest y React Native Testing Library con cobertura completa de pruebas unitarias.

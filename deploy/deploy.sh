@@ -4,9 +4,9 @@
 # Hace git pull, reinstala dependencias si cambiaron, y reinicia el servicio FastAPI.
 set -euo pipefail
 
-REPO_DIR="${HOME}/showcase-platform"   # <-- Cambiar si el repo está en otra ruta
-SERVICE_NAME="showcase-platform"
-LOG_FILE="${HOME}/showcase-platform-deploy.log"
+REPO_DIR="${REPO_DIR:-${HOME}/Proyectos/PersonalWebpage}"
+SERVICE_NAME="${SERVICE_NAME:-personalwebpage.service}"
+LOG_FILE="${HOME}/personalwebpage-deploy.log"
 
 log() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "${LOG_FILE}"
@@ -22,27 +22,20 @@ git fetch origin
 git checkout main
 git reset --hard origin/main
 
-# 2. Instalar/actualizar dependencias de Python
-log "Instalando dependencias de Python..."
-python -m pip install --upgrade pip
-pip install -r requirements.txt
+# 2. Reconstruir índice RAG
+log "Reconstruyendo índice RAG..."
+python3 -c "from backend.app.db.indexer import index_corpus; index_corpus()" || true
 
-# 3. Reiniciar el servicio FastAPI
+# 3. Reiniciar el servicio FastAPI (systemd user)
 log "Reiniciando servicio ${SERVICE_NAME}..."
-if systemctl is-active --quiet "${SERVICE_NAME}"; then
-  sudo systemctl restart "${SERVICE_NAME}"
-else
-  log "ADVERTENCIA: El servicio ${SERVICE_NAME} no está activo. Intenta iniciarlo manualmente."
-  sudo systemctl start "${SERVICE_NAME}" || true
-fi
+systemctl --user restart "${SERVICE_NAME}" || sudo systemctl restart "${SERVICE_NAME}" || true
 
 # 4. Verificar que el servicio esté vivo
-sleep 3
-if systemctl is-active --quiet "${SERVICE_NAME}"; then
+sleep 2
+if systemctl --user is-active --quiet "${SERVICE_NAME}" || systemctl is-active --quiet "${SERVICE_NAME}"; then
   log "OK: Servicio ${SERVICE_NAME} está activo."
 else
-  log "ERROR: El servicio ${SERVICE_NAME} no pudo iniciarse. Revisa los logs:"
-  sudo journalctl -u "${SERVICE_NAME}" --no-pager -n 30 | tee -a "${LOG_FILE}"
+  log "ERROR: El servicio ${SERVICE_NAME} no pudo iniciarse."
   exit 1
 fi
 

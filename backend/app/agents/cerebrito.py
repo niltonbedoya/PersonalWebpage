@@ -162,10 +162,7 @@ class Cerebrito:
         if not summary.endswith("."):
             summary += "."
 
-        citation = f"\n\n*(Fuente: {title})*"
-        closing = "\n¿Te gustaría profundizar en algún detalle específico?"
-
-        return f"{summary}{citation}{closing}"
+        return summary
 
     @staticmethod
     def _normalize_token(token: str) -> str:
