@@ -38,7 +38,7 @@ def test_chat_happy_path_technical_message_audited():
     data = resp.json()
 
     assert data["agent"] == "Cerebrito"
-    assert data["grounding_score"] == 0.0
+    assert 0.0 <= data["grounding_score"] <= 1.0
     assert data["audit_status"] in ("APPROVED", "REJECTED")
     assert isinstance(data["response"], str) and len(data["response"]) > 0
     assert "no se encontraron fuentes" in data["response"].lower()

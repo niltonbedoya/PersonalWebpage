@@ -38,6 +38,7 @@ ASSETS = [
     "/static/src/styles/shared.css",
     "/static/src/js/shared.js",
     "/static/src/js/i18n.js",
+    "/static/src/js/drawer-rag.js",
 ]
 
 VOID_ELEMENTS = {

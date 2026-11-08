@@ -23,6 +23,11 @@
       "footer.view_soft": "Ver Desarrollo de Software (AI)",
       "footer.context_feed_smt": "Feed contextual: noticias SMT/THT",
       "footer.context_feed_soft": "Feed contextual: noticias AI/Software",
+      "drawer.title": "Asistente T\u00e9cnico RAG",
+      "drawer.loading": "Consultando corpus t\u00e9cnico...",
+      "drawer.placeholder": "Haz una consulta t\u00e9cnica sobre mi perfil o proyectos...",
+      "drawer.send": "Enviar",
+      "drawer.close": "Cerrar",
 
       // Hub Page
       "hub.title": "Dashboard \u2014 Nilton Bedoya",
@@ -165,6 +170,11 @@
       "footer.view_soft": "View Software Development (AI)",
       "footer.context_feed_smt": "Contextual feed: SMT/THT news",
       "footer.context_feed_soft": "Contextual feed: AI/Software news",
+      "drawer.title": "RAG Technical Assistant",
+      "drawer.loading": "Querying technical corpus...",
+      "drawer.placeholder": "Ask a technical question about my profile or projects...",
+      "drawer.send": "Send",
+      "drawer.close": "Close",
 
       // Hub Page
       "hub.title": "Dashboard \u2014 Nilton Bedoya",
@@ -365,6 +375,15 @@
         el.innerHTML = text;
       } else {
         el.textContent = text;
+      }
+    });
+
+    // Translate all [data-i18n-ph] input placeholders
+    var phNodes = document.querySelectorAll("[data-i18n-ph]");
+    phNodes.forEach(function (el) {
+      var phKey = el.getAttribute("data-i18n-ph");
+      if (phKey && dict[phKey] !== undefined) {
+        el.placeholder = dict[phKey];
       }
     });
 

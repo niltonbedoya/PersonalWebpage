@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_dash_v11">
   <script src="/static/src/js/shared.js?v=20261108_dash_v11" defer></script>
   <script src="/static/src/js/i18n.js?v=20261108_dash_v11" defer></script>
+  <script src="/static/src/js/drawer-rag.js?v=20261108_rag_v1" defer></script>
 </head>
 <body data-i18n-title="hub.title" style="background: #090d16; color: #f8fafc;">
 
@@ -111,6 +112,30 @@
       <span style="color: var(--muted);" data-i18n="footer.contact_cv">Contacto profesional &amp; CV v&iacute;a Asistente RAG</span></p>
     </footer>
   </div>
+
+  <div class="drawer-backdrop" id="drawer-rag-backdrop"></div>
+  <aside class="drawer" id="drawer-rag" aria-modal="true" role="dialog" aria-labelledby="drawer-rag-title">
+    <div class="drawer-header">
+      <h3 id="drawer-rag-title" data-i18n="drawer.title">Asistente T&eacute;cnico RAG</h3>
+      <button type="button" class="btn drawer-close" id="drawer-rag-close" aria-label="Close drawer" aria-controls="drawer-rag">&times;</button>
+    </div>
+    <div class="drawer-messages" id="drawer-rag-messages" aria-live="polite">
+      <div class="drawer-message drawer-message-assistant">
+        <div class="drawer-message-label">Assistant</div>
+        <div class="drawer-message-body">
+          Hola, soy el asistente t&eacute;cnico del portafolio. Puedes consultarme sobre procesos SMT/THT, inspecci&oacute;n &oacute;ptica 3D, rayos X, calibraci&oacute;n Nordson BT, o sobre los casos de estudio de software y arquitectura multiagente.
+        </div>
+      </div>
+    </div>
+    <div class="drawer-loading" id="drawer-rag-loading" hidden data-i18n="drawer.loading" style="padding: 0.5rem 1.25rem; font-size: 0.85rem; color: var(--brand-cyan);">Consultando corpus...</div>
+    <div class="drawer-error" id="drawer-rag-error" hidden style="padding: 0.5rem 1.25rem; font-size: 0.85rem; color: #ef4444;"></div>
+    <div class="drawer-footer">
+      <form class="form" id="drawer-rag-form" style="display: flex; gap: 0.5rem; margin: 0;">
+        <input type="text" id="drawer-rag-input" name="message" placeholder="Haz una consulta t&eacute;cnica..." data-i18n-ph="drawer.placeholder" style="flex: 1; padding: 0.65rem 0.85rem; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 0.9rem;" autocomplete="off" />
+        <button type="submit" class="btn btn-gradient" id="drawer-rag-send" data-i18n="drawer.send" style="padding: 0.65rem 1rem; font-size: 0.9rem;">Enviar</button>
+      </form>
+    </div>
+  </aside>
 
 </body>
 </html>

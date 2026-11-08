@@ -90,8 +90,9 @@
       body: { message: message, intent_category: "rag" }
     }).then(function (response) {
       var text = "";
-      if (response && response.message) { text = response.message; }
-      else if (response && response.answer) { text = response.answer; }
+      if (response && typeof response.response === "string") { text = response.response; }
+      else if (response && typeof response.message === "string") { text = response.message; }
+      else if (response && typeof response.answer === "string") { text = response.answer; }
       else if (typeof response === "string") { text = response; }
       else { text = JSON.stringify(response); }
       appendMessage(text, "assistant");
@@ -103,18 +104,19 @@
   }
 
   function init() {
-    var trigger = document.querySelector(TRIGGER_SELECTOR);
+    var triggers = document.querySelectorAll(TRIGGER_SELECTOR);
     var closeBtn = el(CLOSE_ID);
     var backdrop = el(BACKDROP_ID);
     var form = el(FORM_ID);
 
-    if (trigger) {
-      trigger.addEventListener("click", function () {
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener("click", function (e) {
+        e.preventDefault();
         var drawer = el(DRAWER_ID);
         var isOpen = drawer && drawer.classList.contains("open");
         if (isOpen) { closeDrawer(); } else { openDrawer(); }
       });
-    }
+    });
     if (closeBtn) { closeBtn.addEventListener("click", closeDrawer); }
     if (backdrop) { backdrop.addEventListener("click", closeDrawer); }
     if (form) { form.addEventListener("submit", onSend); }
