@@ -1042,12 +1042,34 @@ li::before {
 
 .photo-badge-cyan {
   color: var(--brand-cyan-hover);
+  font-weight: 600;
+}
+
+.photo-badge-violet {
+  color: var(--brand-violet-hover);
+  font-weight: 600;
 }
 
 .photo-badge-sub {
   color: var(--muted);
   font-size: 0.68rem;
   font-weight: 500;
+}
+
+.photo-badge-col {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+.photo-badge-left {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.photo-badge-right {
+  text-align: right;
+  align-items: flex-end;
 }
 
 /* Hero Portrait Split (Command Center) */
