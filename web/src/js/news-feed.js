@@ -1,6 +1,11 @@
 /* News Feed module for Showcase Platform.
    Fetches curated news from Radarito (/news) and renders responsive cards.
-   Vanilla JS, zero dependencies, ASCII-clean. */
+   Vanilla JS, zero dependencies, ASCII-clean.
+   Caps display at max 3 cards to avoid page saturation:
+   - Dashboard (index): exactly 3 cards — 1 from each sector (SMD_INSPECTION, THT_SOLDERING, AI_SOFTWARE).
+   - Industrial spoke: max 3 most recent cards from SMD + THT.
+   - Software spoke: max 3 most recent cards from AI_SOFTWARE.
+*/
 
 (function () {
   "use strict";
@@ -91,32 +96,25 @@
       .replace(/'/g, "&#39;");
   }
 
-  function loadCategoryNews(category, containerEl, labels) {
-    containerEl.innerHTML = '<p class="news-loading">' + escapeHtml(labels.loading) + "</p>";
+  function sortByDateDesc(items) {
+    return (items || []).slice().sort(function (a, b) {
+      var tA = a.published_at ? new Date(a.published_at).getTime() : 0;
+      var tB = b.published_at ? new Date(b.published_at).getTime() : 0;
+      return tB - tA;
+    });
+  }
 
-    fetch("/news/?category=" + encodeURIComponent(category))
-      .then(function (res) {
-        if (!res.ok) throw new Error("HTTP " + res.status);
-        return res.json();
-      })
-      .then(function (items) {
-        if (!items || !items.length) {
-          containerEl.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
-          return;
-        }
-        var gridHtml = '<div class="news-grid">';
-        for (var i = 0; i < items.length; i++) {
-          gridHtml += renderCard(items[i], labels);
-        }
-        gridHtml += "</div>";
-        containerEl.innerHTML = gridHtml;
-      })
-      .catch(function (err) {
-        containerEl.innerHTML =
-          '<p class="news-empty" style="color:var(--muted);">' +
-          escapeHtml(labels.empty) +
-          "</p>";
-      });
+  function renderGrid(containerEl, items, labels) {
+    if (!items || !items.length) {
+      containerEl.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
+      return;
+    }
+    var html = '<div class="news-grid">';
+    for (var i = 0; i < items.length; i++) {
+      html += renderCard(items[i], labels);
+    }
+    html += "</div>";
+    containerEl.innerHTML = html;
   }
 
   function initFeed() {
@@ -126,72 +124,63 @@
     var labels = getLabels();
     var pageContext = feedBox.getAttribute("data-page-context") || "index";
 
-    // Set heading if provided
-    var heading = feedBox.querySelector("h3");
-    if (heading && !heading.hasAttribute("data-custom-title")) {
-      heading.textContent = labels.feed_title;
-    }
-
     var content = document.getElementById(CONTENT_CONTAINER_ID);
     if (!content) return;
 
+    // Clean up any old dynamic tabs if present to avoid DOM pollution
+    var existingTabs = document.getElementById("news-tabs-bar");
+    if (existingTabs) {
+      existingTabs.remove();
+    }
+
+    content.innerHTML = '<p class="news-loading">' + escapeHtml(labels.loading) + "</p>";
+
     if (pageContext === "industrial-smt") {
-      // In Industrial Spoke: Load SMD_INSPECTION & THT_SOLDERING
-      content.innerHTML = '<p class="news-loading">' + escapeHtml(labels.loading) + "</p>";
+      // In Industrial Spoke: Load SMD_INSPECTION & THT_SOLDERING, sort by date, show max 3
       Promise.all([
         fetch("/news/?category=SMD_INSPECTION").then(function (r) { return r.json(); }).catch(function () { return []; }),
         fetch("/news/?category=THT_SOLDERING").then(function (r) { return r.json(); }).catch(function () { return []; })
       ]).then(function (results) {
         var combined = (results[0] || []).concat(results[1] || []);
-        if (!combined.length) {
-          content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
-          return;
-        }
-        var html = '<div class="news-grid">';
-        for (var i = 0; i < combined.length; i++) {
-          html += renderCard(combined[i], labels);
-        }
-        html += "</div>";
-        content.innerHTML = html;
+        var sorted = sortByDateDesc(combined);
+        renderGrid(content, sorted.slice(0, 3), labels);
+      }).catch(function () {
+        content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
       });
     } else if (pageContext === "software-engineering") {
-      // In Software Spoke: Load AI_SOFTWARE
-      loadCategoryNews("AI_SOFTWARE", content, labels);
-    } else {
-      // Hub Index: Render category tabs and load default
-      var currentCat = "SMD_INSPECTION";
-      var tabsContainer = document.getElementById("news-tabs-bar");
-      if (!tabsContainer) {
-        tabsContainer = document.createElement("div");
-        tabsContainer.id = "news-tabs-bar";
-        tabsContainer.className = "news-tabs";
-        feedBox.insertBefore(tabsContainer, content);
-      }
-
-      function updateTabs() {
-        tabsContainer.innerHTML =
-          '<button type="button" class="news-tab-btn ' + (currentCat === "SMD_INSPECTION" ? "active" : "") + '" data-cat="SMD_INSPECTION">' +
-          escapeHtml(labels.SMD_INSPECTION) +
-          "</button>" +
-          '<button type="button" class="news-tab-btn ' + (currentCat === "THT_SOLDERING" ? "active" : "") + '" data-cat="THT_SOLDERING">' +
-          escapeHtml(labels.THT_SOLDERING) +
-          "</button>" +
-          '<button type="button" class="news-tab-btn ' + (currentCat === "AI_SOFTWARE" ? "active" : "") + '" data-cat="AI_SOFTWARE">' +
-          escapeHtml(labels.AI_SOFTWARE) +
-          "</button>";
-
-        var btns = tabsContainer.querySelectorAll(".news-tab-btn");
-        btns.forEach(function (b) {
-          b.addEventListener("click", function () {
-            currentCat = b.getAttribute("data-cat");
-            updateTabs();
-            loadCategoryNews(currentCat, content, labels);
-          });
+      // In Software Spoke: Load AI_SOFTWARE, sort by date, show max 3
+      fetch("/news/?category=AI_SOFTWARE")
+        .then(function (res) {
+          if (!res.ok) throw new Error("HTTP " + res.status);
+          return res.json();
+        })
+        .then(function (items) {
+          var sorted = sortByDateDesc(items || []);
+          renderGrid(content, sorted.slice(0, 3), labels);
+        })
+        .catch(function () {
+          content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
         });
-      }
+    } else {
+      // Dashboard (index): exactly 3 cards — 1 from each sector (SMD, THT, AI)
+      Promise.all([
+        fetch("/news/?category=SMD_INSPECTION").then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=THT_SOLDERING").then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=AI_SOFTWARE").then(function (r) { return r.json(); }).catch(function () { return []; })
+      ]).then(function (results) {
+        var smdSorted = sortByDateDesc(results[0] || []);
+        var thtSorted = sortByDateDesc(results[1] || []);
+        var aiSorted = sortByDateDesc(results[2] || []);
 
-      updateTabs();
-      loadCategoryNews(currentCat, content, labels);
+        var dashboardItems = [];
+        if (smdSorted.length > 0) dashboardItems.push(smdSorted[0]);
+        if (thtSorted.length > 0) dashboardItems.push(thtSorted[0]);
+        if (aiSorted.length > 0) dashboardItems.push(aiSorted[0]);
+
+        renderGrid(content, dashboardItems, labels);
+      }).catch(function () {
+        content.innerHTML = '<p class="news-empty">' + escapeHtml(labels.empty) + "</p>";
+      });
     }
   }
 
