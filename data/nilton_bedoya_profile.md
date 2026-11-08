@@ -48,7 +48,16 @@ Nilton Bedoya es un Ingeniero Senior con más de 15 años de experiencia técnic
   - Patrones de Contenedor-Presentacional, Atomic Design y desacoplamiento extremo.
   - Enfoque defensivo: v1 sin APIs vivas expuestas a costes recurrentes ni fuga de credenciales.
 
-## Enlaces y Contacto Profesional
+## Repositorios y Proyectos en GitHub (niltonbedoya)
+- **Tire Counter**: Sistema de clasificación, conteo y despacho de neumáticos con monorepo TypeScript y FSM offline-first.
+- **Servicio de Tickets**: Plataforma SaaS de gestión técnica para Field Service con FastAPI, React y PWA offline.
+- **CardioNutri**: Asistente clínico y nutricional con sincronización Health Connect y wearables.
+- **KRONENBLUMEN**: ERP comercial con visión AI para conteo y lectura DOT de neumáticos.
+- **Traductor Simultáneo**: Motor de traducción y síntesis de voz en tiempo real con Azure Speech.
+- **Linux Home Server**: Infraestructura doméstica en Mac Mini con Docker, Tailscale y monitoreo.
+
+## Contacto Profesional y Enlaces
 - **LinkedIn Oficial**: https://www.linkedin.com/in/nilton-bedoya-4b1402150
 - **GitHub Oficial**: https://github.com/niltonbedoya
-- **Portafolio Web (Dashboard)**: Plataforma viva con selector bilingüe dinámico (ES/EN) y asistente RAG integrado.
+- **Portafolio Web (Dashboard)**: Plataforma técnica en vivo con selector bilingüe dinámico y asistente RAG integrado.
+- Para colaboraciones, consultoría o propuestas técnicas, puedes conectar directamente en LinkedIn o solicitar información mediante este asistente RAG.

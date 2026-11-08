@@ -33,10 +33,11 @@ class Cerebrito:
 
     INTENT_ENRICHMENTS = [
         ({"dedicas", "dedica", "dedicacion"}, "perfil profesional Nilton Bedoya", "perfil"),
-        ({"contactarte", "contactar", "contacto", "contactarle"}, "contacto profesional Nilton Bedoya linkedin", "contacto"),
+        ({"contactarte", "contactar", "contacto", "contactarle"}, "contacto profesional Nilton Bedoya linkedin colaboraciones", "contacto"),
         ({"pick", "place"}, "limite alcance exclusion maquinaria pick place", "pick"),
         ({"experiencia", "trayectoria"}, "perfil profesional Nilton Bedoya experiencia", "experiencia"),
         ({"stack", "tecnologias", "tecnologia"}, "stack tecnologico arquitectura software", "stack"),
+        ({"github", "repositorios", "repositorio"}, "proyectos software repositorio github Nilton Bedoya", "github"),
     ]
 
     def __init__(self, knowledge_adapter: Any = None, db_path: str = None):
@@ -131,25 +132,32 @@ class Cerebrito:
 
         best_chunk = chunks[0]
         title = best_chunk.get("title", "Corpus Técnico")
-        raw_content = best_chunk.get("content", "")
 
-        # Clean markdown headings, bullets, and bold markers
-        lines = []
-        for line in raw_content.splitlines():
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            line = re.sub(r"^[-*•]\s*", "", line)
-            line = re.sub(r"\*\*([^*]+)\*\*", r"\1", line)
-            line = re.sub(r"`([^`]+)`", r"\1", line)
-            if len(line) > 15:
-                lines.append(line)
+        # Collect clean complete lines across top chunks
+        clean_lines = []
+        for chk in chunks[:3]:
+            raw_content = chk.get("content", "")
+            for line in raw_content.splitlines():
+                line = line.strip()
+                if not line or line.startswith("#"):
+                    continue
+                if "preguntas que puedes" in line.lower() or "documento tecnico de referencia" in line.lower():
+                    continue
+                line = re.sub(r"^[-*•]\s*", "", line)
+                line = re.sub(r"\*\*([^*]+)\*\*", r"\1", line)
+                line = re.sub(r"`([^`]+)`", r"\1", line)
+                # Keep lines that start with uppercase or numbers and look like complete thoughts
+                if len(line) > 15 and (line[0].isupper() or line[0].isdigit()):
+                    if line not in clean_lines:
+                        clean_lines.append(line)
 
-        # Select first 2 clean statements for a crisp 2-3 line response
-        if lines:
-            summary = " ".join(lines[:2]).strip()
+        if clean_lines:
+            if len(clean_lines) >= 2 and clean_lines[0].endswith(":"):
+                summary = f"{clean_lines[0]} {clean_lines[1]}".strip()
+            else:
+                summary = " ".join(clean_lines[:2]).strip()
         else:
-            summary = raw_content[:180].strip()
+            summary = chunks[0].get("content", "")[:180].strip()
 
         if not summary.endswith("."):
             summary += "."
