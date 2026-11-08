@@ -16,6 +16,7 @@ from backend.app.mcp.adapters import MCPRegistry
 from backend.app import models  # noqa: F401
 from backend.websockets import manager, websocket_route, websocket_status
 from backend.agent_ops_router import agent_ops_router
+from backend.app.core.security_headers import SecurityHardeningMiddleware
 
 # Create FastAPI app
 app = FastAPI(
@@ -25,6 +26,9 @@ app = FastAPI(
     docs_url="/api/docs",
     redoc_url="/api/redoc",
 )
+
+# Inyectar middleware defensivo de cabeceras HTTP y rate limiting
+app.add_middleware(SecurityHardeningMiddleware)
 
 # Configurar CORS
 app.add_middleware(

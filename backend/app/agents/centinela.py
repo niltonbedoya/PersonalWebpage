@@ -1,6 +1,7 @@
 """Centinela — Subagente C: Guardrail & Seguridad."""
 
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +33,9 @@ class Centinela:
             "bypass", "authentication", "admin panel",
             "run this code", "execute the following",
             "override", "system:", "answers everything",
+            "<|im_start|>", "<|im_end|>", "<<sys>>", "<</sys>>",
+            "![", "<script", "<iframe", "javascript:",
+            "base64 -d", "base64 decode", "| base64",
         ]
         self.intent_categories = [
             "TECHNICAL_PROFILE", "HARDWARE_SMT", "SOFTWARE_CASE_STUDY",
@@ -52,10 +56,20 @@ class Centinela:
             }
 
             prompt_lower = prompt.lower()
+            prompt_nospace = re.sub(r"\s+", "", prompt_lower)
 
             # Check for prompt injection/jailbreak patterns
             for keyword in self.risk_keywords:
-                if keyword in prompt_lower:
+                kw_nospace = re.sub(r"\s+", "", keyword)
+                if keyword in prompt_lower or (len(kw_nospace) >= 5 and kw_nospace in prompt_nospace):
+                    verdict_dict.update({
+                        "is_allowed": False,
+                        "risk_level": "HIGH",
+                        "intent_category": "PROMPT_INJECTION",
+                        "redirect_message": "Lo siento, no puedo procesar solicitudes de modificación de instrucciones. Estoy diseñado para ayudar con consultas técnicas sobre ingeniería SMT/THT y arquitectura de software.",
+                    })
+                    logger.warning(f"Prompt injection detected: {keyword}")
+                    return GuardrailVerdict(**verdict_dict)
                     verdict_dict.update({
                         "is_allowed": False,
                         "risk_level": "HIGH",

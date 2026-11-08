@@ -340,14 +340,8 @@ async def chat_endpoint(request: ChatRequest):
         payload = await cerebrito.query(request.message)
         grounding_score = payload.grounding_score
         agent_name = "Cerebrito"
-        agent_output = {
-            "query": payload.query,
-            "answer": payload.answer,
-            "grounding_score": payload.grounding_score,
-            "cited_sources": payload.cited_sources,
-            "is_fully_grounded": payload.is_fully_grounded,
-        }
         output_type = "rag"
+
         if payload.is_fully_grounded:
             if lang == "en" and llm_client.has_live_llm():
                 # Synthesize / translate technical answer into English
@@ -359,41 +353,33 @@ async def chat_endpoint(request: ChatRequest):
                 response_text = translated or payload.answer
             else:
                 response_text = payload.answer
-            output_type = "rag"
         else:
-            live_response = None
-            if llm_client.has_live_llm():
-                live_response = await llm_client.generate_response(
-                    request.message,
-                    rag_context="\n".join(c.get("content", "") for c in payload.cited_sources) if payload.cited_sources else None,
-                    system_prompt=lang_prompt,
+            if lang == "en":
+                response_text = (
+                    "I do not have specific details on that topic in the verified corpus.\n\n"
+                    "To explore Nilton Bedoya's technical experience, I suggest asking about:\n"
+                    "• SMT/THT Electronics (Parmi/Marantz 3D inspection, Matrix X-Ray, Ersa reflow ovens).\n"
+                    "• Software & AI (Tire Counter, Service Ticketing, CardioNutri, commercial ERP).\n"
+                    "• Zero-cost Gentle-AI architecture and methodology.\n\n"
+                    "Would you like to know more about any of these topics?"
                 )
-            if live_response:
-                response_text = live_response
-                output_type = "general"
-                agent_output = {"agent": "Nexus", "response": response_text}
-                agent_name = "Nexus"
-                grounding_score = 1.0
             else:
-                if lang == "en":
-                    response_text = (
-                        "I do not have specific details on that topic in the verified corpus.\n\n"
-                        "To explore Nilton Bedoya's technical experience, I suggest asking about:\n"
-                        "• SMT/THT Electronics (Parmi/Marantz 3D inspection, Matrix X-Ray, Ersa reflow ovens).\n"
-                        "• Software & AI (Tire Counter, Service Ticketing, CardioNutri, commercial ERP).\n"
-                        "• Zero-cost Gentle-AI architecture and methodology.\n\n"
-                        "Would you like to know more about any of these topics?"
-                    )
-                else:
-                    response_text = (
-                        "No dispongo de detalles específicos sobre ese punto en el corpus verificado.\n\n"
-                        "Para conocer la experiencia técnica de Nilton Bedoya, te sugiero consultar sobre:\n"
-                        "• Electrónica SMT/THT (Inspección 3D Parmi/Marantz, Rayos X Matrix, hornos Ersa).\n"
-                        "• Software & AI (Proyectos Tire Counter, Servicio de Tickets, CardioNutri, KRONENBLUMEN).\n"
-                        "• Arquitectura y Metodología Gentle-AI de costo cero.\n\n"
-                        "¿Te gustaría consultar sobre alguno de estos temas?"
-                    )
-                output_type = "rag"
+                response_text = (
+                    "No dispongo de detalles específicos sobre ese punto en el corpus verificado.\n\n"
+                    "Para conocer la experiencia técnica de Nilton Bedoya, te sugiero consultar sobre:\n"
+                    "• Electrónica SMT/THT (Inspección 3D Parmi/Marantz, Rayos X Matrix, hornos Ersa).\n"
+                    "• Software & AI (Proyectos Tire Counter, Servicio de Tickets, CardioNutri, KRONENBLUMEN).\n"
+                    "• Arquitectura y Metodología Gentle-AI de costo cero.\n\n"
+                    "¿Te gustaría consultar sobre alguno de estos temas?"
+                )
+
+        agent_output = {
+            "query": payload.query,
+            "answer": response_text,
+            "grounding_score": grounding_score,
+            "cited_sources": payload.cited_sources,
+            "is_fully_grounded": payload.is_fully_grounded,
+        }
     else:
         # Other destination agents (Centinela, etc.): generic routed response.
         response_text = "Mensaje recibido - enrutado a " + destination

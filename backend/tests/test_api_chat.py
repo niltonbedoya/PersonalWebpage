@@ -153,3 +153,22 @@ def test_chat_english_query_returns_english_response():
     assert "portfolio" in resp_lower or "electronics" in resp_lower or "software" in resp_lower
 
 
+def test_chat_unsupported_technical_query_maintains_grounding_honesty():
+    """Technical query without corpus grounding returns Cerebrito real score <0.85, never masked as 1.0."""
+    resp = client.post(
+        "/chat/",
+        json={
+            "message": "cálculo de relatividad cuántica y astrofísica estelar en agujeros negros",
+            "intent_category": "TECHNICAL_PROFILE",
+        },
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["agent"] == "Cerebrito"
+    assert data["grounding_score"] is not None
+    assert data["grounding_score"] < 0.85
+    assert "No dispongo de detalles específicos" in data["response"] or "Electrónica SMT/THT" in data["response"]
+
+
+
+
