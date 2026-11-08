@@ -23,7 +23,17 @@
     wrap.className = "drawer-message drawer-message-" + sender;
     var label = document.createElement("div");
     label.className = "drawer-message-label";
-    label.textContent = sender === "user" ? "You" : "Assistant";
+    var userLabel = "You";
+    var assistantLabel = "Assistant";
+    if (window.portfolioI18n && window.portfolioI18n.dictionary) {
+      var curLang = window.portfolioI18n.getLanguage ? window.portfolioI18n.getLanguage() : "es";
+      var dict = window.portfolioI18n.dictionary[curLang];
+      if (dict) {
+        userLabel = dict["drawer.user_label"] || userLabel;
+        assistantLabel = dict["drawer.assistant_label"] || assistantLabel;
+      }
+    }
+    label.textContent = sender === "user" ? userLabel : assistantLabel;
     var body = document.createElement("div");
     body.className = "drawer-message-body";
     body.textContent = text;
@@ -85,9 +95,11 @@
     appendMessage(message, "user");
     if (input) { input.value = ""; }
 
+    var currentLang = (window.portfolioI18n && window.portfolioI18n.getLanguage) ? window.portfolioI18n.getLanguage() : (document.documentElement.lang || "es");
+
     shared.apiRequest("/chat", {
       method: "POST",
-      body: { message: message, intent_category: "TECHNICAL_PROFILE" }
+      body: { message: message, intent_category: "TECHNICAL_PROFILE", language: currentLang }
     }).then(function (response) {
       var text = "";
       if (response && typeof response.response === "string") { text = response.response; }

@@ -134,6 +134,22 @@ def test_chat_capability_inquiry_returns_capabilities():
     assert data["agent"] == "Nexus"
     assert data["audit_status"] == "APPROVED"
     resp_lower = data["response"].lower()
-    assert "asistente" in resp_lower or "portfolio" in resp_lower
+    assert "asistente" in resp_lower or "portfolio" in resp_lower or "assistant" in resp_lower
     assert "electr" in resp_lower or "software" in resp_lower
+
+
+def test_chat_english_query_returns_english_response():
+    """English messages receive responses in English with audit approval."""
+    resp = client.post(
+        "/chat/",
+        json={"message": "Hello, how are you?", "intent_category": "TECHNICAL_PROFILE", "language": "en"},
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["agent"] == "Nexus"
+    assert data["audit_status"] == "APPROVED"
+    resp_lower = data["response"].lower()
+    assert "hello" in resp_lower or "nilton" in resp_lower or "portfolio" in resp_lower
+    assert "portfolio" in resp_lower or "electronics" in resp_lower or "software" in resp_lower
+
 

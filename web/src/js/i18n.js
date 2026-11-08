@@ -28,6 +28,9 @@
       "drawer.placeholder": "Haz una consulta t\u00e9cnica sobre mi perfil o proyectos...",
       "drawer.send": "Enviar",
       "drawer.close": "Cerrar",
+      "drawer.assistant_label": "Asistente",
+      "drawer.user_label": "T\u00fa",
+      "drawer.welcome": "Hola, soy el asistente t\u00e9cnico del portafolio. Puedes consultarme sobre procesos SMT/THT, inspecci\u00f3n \u00f3ptica 3D, rayos X, calibraci\u00f3n Nordson BT, o sobre los casos de estudio de software y arquitectura multiagente.",
 
       // Hub Page
       "hub.title": "Dashboard \u2014 Nilton Bedoya",
@@ -175,6 +178,9 @@
       "drawer.placeholder": "Ask a technical question about my profile or projects...",
       "drawer.send": "Send",
       "drawer.close": "Close",
+      "drawer.assistant_label": "Assistant",
+      "drawer.user_label": "You",
+      "drawer.welcome": "Hello, I am the portfolio's technical assistant. You can ask me about SMT/THT processes, 3D optical inspection, X-Ray, Nordson BT calibration, or about software engineering and multi-agent architecture case studies.",
 
       // Hub Page
       "hub.title": "Dashboard \u2014 Nilton Bedoya",
