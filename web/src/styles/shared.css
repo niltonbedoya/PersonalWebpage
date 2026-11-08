@@ -193,11 +193,13 @@ li::before {
   width: auto;
   display: block;
   object-fit: contain;
-  transition: transform var(--transition);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), filter 0.3s ease;
+  transform-style: preserve-3d;
 }
 
 .brand-identity:hover .brand-logo {
-  transform: scale(1.05);
+  transform: perspective(400px) rotateY(18deg) scale(1.12);
+  filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.65)) drop-shadow(0 0 20px rgba(139, 92, 246, 0.45));
 }
 
 .brand-text {
@@ -855,5 +857,72 @@ li::before {
   }
   .card, .card-soft {
     padding: 1.2rem;
+  }
+}
+
+/* ---------- Cinematic Page Transition Overlay (GPU-Accelerated) ---------- */
+.page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(9, 13, 22, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-transition-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.transition-spinner-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 800px;
+}
+
+.transition-logo {
+  height: 64px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: opacity 0.2s ease;
+}
+
+.page-transition-overlay.active .transition-logo {
+  opacity: 1;
+  animation: spin3DLogo 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+@keyframes spin3DLogo {
+  0% {
+    transform: perspective(800px) rotateY(0deg) scale(0.8);
+    filter: drop-shadow(0 0 10px rgba(14, 165, 233, 0.4));
+  }
+  50% {
+    transform: perspective(800px) rotateY(180deg) scale(1.15);
+    filter: drop-shadow(0 0 25px rgba(139, 92, 246, 0.85));
+  }
+  100% {
+    transform: perspective(800px) rotateY(360deg) scale(1);
+    filter: drop-shadow(0 0 20px rgba(14, 165, 233, 0.75));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-transition-overlay {
+    display: none !important;
+  }
+  .brand-logo {
+    transition: none !important;
+    transform: none !important;
   }
 }

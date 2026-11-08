@@ -67,9 +67,59 @@ var hub = (function () {
   };
 })();
 
+/* Page Transition with 3D Logo Spin (GPU-accelerated, zero lag) */
+function initPageTransitions() {
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+  var overlay = document.getElementById("page-transition-overlay");
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.id = "page-transition-overlay";
+    overlay.className = "page-transition-overlay";
+    overlay.innerHTML = '<div class="transition-spinner-wrap"><img src="/static/assets/logos/logo_transparent.png" alt="Transitioning" class="transition-logo" width="60" height="60"></div>';
+    document.body.appendChild(overlay);
+  }
+
+  // Hide overlay on page show (handles initial load and bfcache)
+  function hideOverlay() {
+    overlay.classList.remove("active");
+  }
+  window.addEventListener("pageshow", hideOverlay);
+  hideOverlay();
+
+  // Intercept internal HTML navigation clicks
+  document.addEventListener("click", function (e) {
+    var link = e.target.closest("a");
+    if (!link) return;
+    var href = link.getAttribute("href");
+    if (!href || href.indexOf("#") === 0 || href.indexOf("mailto:") === 0 || href.indexOf("tel:") === 0) return;
+    if (link.target === "_blank" || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (href.indexOf("http://") === 0 || href.indexOf("https://") === 0) {
+      if (href.indexOf(window.location.origin) !== 0) return;
+    }
+    // Only intercept local html page routes
+    if (href.indexOf(".html") !== -1 || href === "/" || href.indexOf("/static/pages/") !== -1) {
+      // If clicking link to current page, do not animate
+      var currentPath = window.location.pathname.split("/").pop() || "index.html";
+      var targetPath = href.split("/").pop().split("?")[0].split("#")[0] || "index.html";
+      if (currentPath === targetPath) return;
+
+      e.preventDefault();
+      overlay.classList.add("active");
+      setTimeout(function () {
+        window.location.href = href;
+      }, 240);
+    }
+  });
+}
+
+domReady(initPageTransitions);
+
 window.shared = {
   API_BASE_URL: API_BASE_URL,
   apiRequest: apiRequest,
   domReady: domReady,
-  hub: hub
+  hub: hub,
+  initPageTransitions: initPageTransitions
 };
