@@ -1,6 +1,6 @@
-# Feature Document: F4 — Integración de Identidad Visual y Logo Personal
+# Feature Document: F4 -- Rediseno Dark Mode Ergonomico con Identidad de Marca
 
-**Objective:** Integrar la identidad de marca personal y el logotipo "NB" (delineación técnica + degradado violeta/azul cian) en el frontend existente (`web/src/styles/shared.css` y páginas en `web/public/pages/`), respetando la base "Industrial Minimal" y la capa "Software Portfolio".
+**Objective:** Redisenar completamente el frontend a Dark Mode profesional de alta fidelidad ergonomica, alineado 1:1 con la estetica de `logo_dark.png` (fondo oscuro mate `#090d16`, contrastes calibrados, logo discreto y elegante en navbar ~30px, sin bloques desproporcionados, acentos cian para Industrial y violeta para Software).
 **Branch:** main.
 **Allowed edit surfaces:**
 - `odd/f4-branding-logo.md`
@@ -11,32 +11,42 @@
 
 ## Specs
 
-S1. **Favicon**: Enlazar `/static/assets/logos/logo_icon.ico` como favicon en el `<head>` de las 3 páginas (`index.html`, `industrial-smt.html`, `software-engineering.html`).
-S2. **Tokens de color de marca**: Actualizar `web/src/styles/shared.css` para incorporar la paleta extraída del logotipo:
-    - Cian de precisión / cobalto: `#0284c7` (hover `#0369a1`).
-    - Violeta / índigo tecnológico: `#7c3aed` (hover `#6d28d9`).
-    - Gradiente de marca: `linear-gradient(135deg, #7c3aed 0%, #0284c7 100%)`.
-    - Mantener legibilidad, contraste y estética Industrial Minimal limpia.
-S3. **Navbar con Isotipo**: Implementar un header común con el logo (`/static/assets/logos/logo_transparent.png` a 36-40px de altura), nombre "Nilton Bedoya", especialidad y enlaces de navegación con estados activos.
-S4. **Hero en Hub Central (`index.html`)**: Incorporar el isotipo en tamaño destacado o tarjeta visual técnica, reforzando la narrativa de precisión geométrica y doble especialización (SMT/THT + Software/IA).
-S5. **Consistencia en Spokes**: Aplicar el header/navbar unificado y la jerarquía de acentos en `industrial-smt.html` y `software-engineering.html`.
-S6. **Restricciones de plataforma**: Código fuente y HTML estrictamente ASCII (consola Windows cp1252), rutas absolutas servidas bajo `/static/`, sin regresiones en la suite de tests.
+S1. **Fondo Dark Mode & Tokens Cromaticos de Alta Ergonomia**:
+    - `--bg: #090d16;` (lienzo tecnico oscuro profundo).
+    - `--surface: #111827;` (superficie de tarjetas gris pizarra oscuro).
+    - `--surface-hover: #1a2234;`
+    - `--border: #1e293b;` y `--border-glow: rgba(14, 165, 233, 0.2);`
+    - `--text: #f8fafc;` (blanco nitido alta legibilidad WCAG AAA).
+    - `--muted: #94a3b8;` (gris tecnico equilibrado).
+    - `--accent-cyan: #0ea5e9;` (acento industrial SMT/THT).
+    - `--accent-violet: #8b5cf6;` (acento software & IA).
+    - `--brand-gradient: linear-gradient(135deg, #8b5cf6 0%, #0ea5e9 100%);`
+S2. **Dimensionamiento Ergonomico del Logo**:
+    - Reducir el isotipo en navbar a un tamano discreto y profesional (~30px).
+    - Eliminar la tarjeta/caja sobredimensionada del hero que desentonaba.
+    - Integrar la identidad con sutileza tecnica (monograma elegante, tipografia precisa).
+S3. **Header / Navbar Dark Mode**:
+    - Barra oscura integrada con `backdrop-filter: blur(12px)` y fondo `#0d131f` con borde inferior sutil (`#1e293b`).
+    - Enlaces de navegacion con indicadores luminosos (hover y active con acentos cian/violeta).
+    - Boton de Asistente RAG estilizado en modo oscuro con borde y resplandor de gradiente.
+S4. **Personalizacion Ergonomica por Pagina**:
+    - **Hub (`index.html`)**: Hero conciso y elegante, Split Cards con acentos balanceados (cian para SMT/THT, violeta para Software), metricas tecnicas con look de instrumentacion.
+    - **Spoke Industrial (`industrial-smt.html`)**: Estetica de sala limpia / instrumentacion industrial, tarjetas con acentos cian `#0ea5e9` y badges de tecnologia.
+    - **Spoke Software (`software-engineering.html`)**: Estetica de ingenieria de software moderna / ciber-inteligencia, tarjetas con acentos violeta `#8b5cf6`, tags de codigo `#0d131f` con texto violeta.
+S5. **Compatibilidad y Restricciones**:
+    - Todo el HTML/CSS/JS/MD es estrictamente ASCII (entidades HTML para caracteres especiales) para compatibilidad con Windows cp1252.
+    - Cero regresiones en la suite de 376 tests.
 
 ## Tasks
 
-- [x] T1. Crear feature document `odd/f4-branding-logo.md` con specs y constraints.
-- [x] T2. Actualizar variables CSS y componentes en `web/src/styles/shared.css` con los tokens de color y clases de branding.
-- [x] T3. Actualizar `index.html` con favicon, header con logo y seccion hero integrada.
-- [x] T4. Actualizar `industrial-smt.html` y `software-engineering.html` con favicon y header unificado con logo.
-- [x] T5. Verificar integridad visual y estructural (pruebas de backend y enlaces).
+- [x] T1. Actualizar `odd/f4-branding-logo.md` con las especificaciones de Dark Mode.
+- [x] T2. Reescribir `web/src/styles/shared.css` con el sistema completo de diseno Dark Mode.
+- [x] T3. Redisenar `web/public/pages/index.html` (Hub Central en Dark Mode sin logo sobredimensionado).
+- [x] T4. Redisenar `web/public/pages/industrial-smt.html` (Spoke Industrial SMT/THT en Dark Mode).
+- [x] T5. Redisenar `web/public/pages/software-engineering.html` (Spoke Software en Dark Mode).
+- [x] T6. Ejecutar suite de pruebas y verificar enlaces y contraste.
 
 ## Log
 
-- 2026-11-08: Documento creado tras inspeccion visual multimodal de los archivos de logo en `web/public/assets/logos/`.
-- 2026-11-08: Implementacion completada por gentle-ai-worker satisfaciendo S1-S6:
-  - S1: Favicon agregado a index.html, industrial-smt.html y software-engineering.html (/static/assets/logos/logo_icon.ico).
-  - S2: Tokens y componentes CSS agregados a web/src/styles/shared.css (--brand-cyan, --brand-violet, --brand-gradient, .brand-header, .hero-brand, etc.).
-  - S3: Header unificado con logo /static/assets/logos/logo_transparent.png (38px), titulo Nilton Bedoya, subtitulos contextuales, links y trigger RAG.
-  - S4: Hero con tarjeta tecnica de marca y badge visual con isotipo en index.html.
-  - S5: Consistencia visual y estructural en spokes industrial-smt y software-engineering.
-  - S6: Codigo 100% ASCII-only y suite completa de tests pasando (376 passed).
+- 2026-11-08: Redefinicion a Dark Mode tras feedback del usuario (logo discreto ~30px, paleta completa del logo en modo oscuro ergonomico).
+- 2026-11-08: Implementacion completa en shared.css, index.html, industrial-smt.html y software-engineering.html. 376/376 tests pasando satisfactoriamente. Todos los archivos verificados 100% ASCII-clean.

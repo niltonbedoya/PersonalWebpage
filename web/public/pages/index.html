@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Showcase Platform &mdash; Living Technical Portfolio</title>
+  <title>Showcase Platform &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
@@ -13,7 +13,7 @@
   <header class="brand-header">
     <div class="container brand-header-inner">
       <a href="index.html" class="brand-identity">
-        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="38">
+        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="30">
         <div class="brand-text">
           <span class="brand-title">Nilton Bedoya</span>
           <span class="brand-subtitle">Showcase Platform</span>
@@ -29,48 +29,50 @@
   </header>
 
   <div class="container">
-    <section class="hero-brand">
-      <div class="hero-brand-content">
-        <span class="hero-tag">Living Technical Portfolio</span>
-        <h1>Showcase Platform</h1>
-        <p class="hero-desc">Portfolio tecnico hibrido en vivo para un perfil de doble especializacion:</p>
-        <p><strong>Ingenieria SMT/THT</strong> (Inspeccion Optica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial &amp; Soluciones IA</strong>.</p>
-        <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-          <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
-          <a href="software-engineering.html" class="btn btn-outline-soft">Ver Spoke Software &rarr;</a>
-          <button class="btn btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
-        </div>
-      </div>
-      <div class="hero-brand-badge">
-        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="hero-badge-logo">
-        <span class="hero-badge-tag">Precision Engineering</span>
-        <span class="hero-badge-sub">SMT/THT &middot; Software &middot; IA</span>
+    <section class="hero">
+      <span class="hero-pill"><span class="status-dot"></span> Living Technical Portfolio &bull; Hybrid Architecture</span>
+      <h1>Showcase Platform &mdash; <span class="hero-highlight">Nilton Bedoya</span></h1>
+      <p class="hero-desc">Portfolio tecnico hibrido en vivo de doble especializacion: <strong>Ingenieria SMT/THT</strong> (Inspeccion Optica 3D, Rayos X, Soldadura, Handling) y <strong>Arquitectura de Software Industrial &amp; Soluciones IA</strong> con inferencia de costo cero.</p>
+      <div style="margin-top: 1.5rem; display: flex; gap: 0.85rem; flex-wrap: wrap; align-items: center;">
+        <a href="industrial-smt.html" class="btn">Explorar Spoke Industrial &rarr;</a>
+        <a href="software-engineering.html" class="btn btn-outline-soft">Explorar Spoke Software &rarr;</a>
+        <button class="btn btn-gradient" aria-controls="drawer-rag">Asistente RAG</button>
       </div>
     </section>
 
     <div class="grid cols-2">
-      <div class="card">
+      <div class="card card-hub-industrial">
+        <span class="badge badge-cyan">Hardware &amp; Precision</span>
         <h2>Spoke Industrial</h2>
-        <p>Maquinaria de inspeccion optica 3D, rayos X, sistemas termicos, soldadura, handling y metalurgia.</p>
-        <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
+        <p>Maquinaria de inspeccion optica 3D, rayos X en linea (AXI), sistemas termicos, soldadura selectiva/ola, handling y metalurgia aplicada a lineas de alta exigencia SMT/THT.</p>
+        <div style="margin-top: 1.25rem;">
+          <a href="industrial-smt.html" class="btn">Ver Spoke Industrial &rarr;</a>
+        </div>
       </div>
-      <div class="card">
+      <div class="card card-hub-software">
+        <span class="badge badge-violet">Cyber-Intelligence &amp; AI</span>
         <h2>Spoke Software</h2>
-        <p>5 casos de estudio de software e IA, arquitecturas, demostraciones controladas y feeds de noticias tecnologicas.</p>
-        <a href="software-engineering.html" class="btn">Ver Spoke Software &rarr;</a>
+        <p>5 casos de estudio de software e IA, arquitecturas limpias, pipelines multiagente en FastAPI, demostraciones controladas y feeds de inteligencia tecnologica.</p>
+        <div style="margin-top: 1.25rem;">
+          <a href="software-engineering.html" class="btn btn-outline-soft">Ver Spoke Software &rarr;</a>
+        </div>
       </div>
     </div>
 
+    <h2>Metricas del Sistema</h2>
     <div class="grid cols-3">
-      <div class="card">
+      <div class="card-metric">
+        <span class="card-metric-tag">Multiagent Runtime</span>
         <h3>Metricas de Ingenieria</h3>
         <p>Plataforma multiagente con enrutamiento LLM de costo cero (Groq, Google AI Studio, Cloudflare, OpenRouter).</p>
       </div>
-      <div class="card">
+      <div class="card-metric">
+        <span class="card-metric-tag">&lt; 150 ms Perimeter</span>
         <h3>Guardrail &amp; Seguridad</h3>
         <p>Intercepcion perimetral &lt;150 ms contra jailbreak, inyecciones y off-topic.</p>
       </div>
-      <div class="card">
+      <div class="card-metric">
+        <span class="card-metric-tag">Score &ge; 0.85</span>
         <h3>RAG con Grounding</h3>
         <p>Motor RAG sobre corpus local SQLite-vec con score de fundamentacion &ge; 0.85.</p>
       </div>
@@ -83,8 +85,8 @@
 
     <footer class="footer">
       <p>Feeds contextuales: SMT/THT &middot; IA/Software &nbsp;|&nbsp;
-      <a href="https://linkedin.com" target="_blank">LinkedIn</a> &nbsp;|&nbsp;
-      <a href="https://github.com" target="_blank">GitHub</a> &nbsp;|&nbsp;
+      <a href="https://linkedin.com" target="_blank" rel="noopener">LinkedIn</a> &nbsp;|&nbsp;
+      <a href="https://github.com" target="_blank" rel="noopener">GitHub</a> &nbsp;|&nbsp;
       <a href="#">Descargar CV (PDF)</a></p>
     </footer>
   </div>

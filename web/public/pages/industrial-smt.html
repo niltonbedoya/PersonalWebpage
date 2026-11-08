@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spoke Industrial &mdash; SMT/THT</title>
+  <title>Spoke Industrial &mdash; SMT/THT &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
@@ -13,7 +13,7 @@
   <header class="brand-header">
     <div class="container brand-header-inner">
       <a href="index.html" class="brand-identity">
-        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="38">
+        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="30">
         <div class="brand-text">
           <span class="brand-title">Nilton Bedoya</span>
           <span class="brand-subtitle">Spoke Industrial SMT/THT</span>
@@ -29,85 +29,104 @@
   </header>
 
   <div class="container">
-    <div class="hero">
-      <h1>Spoke Industrial</h1>
-      <p>Maquinaria de inspeccion, sistemas termicos, soldadura, handling y metalurgia para procesos SMT/THT.</p>
+    <section class="hero">
+      <span class="hero-pill"><span class="status-dot"></span> Cleanroom Engineering &bull; High Reliability</span>
+      <h1>Spoke Industrial &mdash; <span class="hero-highlight">SMT/THT</span></h1>
+      <p>Maquinaria de inspeccion optica 3D, rayos X en linea, sistemas termicos, soldadura, handling y metalurgia para procesos avanzados de manufactura electronica.</p>
       <p><em>Limite de alcance: exclusion estricta de maquinaria Pick & Place.</em></p>
-    </div>
-
-    <div style="margin: 1.25rem 0;">
-      <a href="index.html" class="btn" style="background: var(--muted);">&larr; Volver al Hub</a>
-    </div>
+      <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="index.html" class="btn">&larr; Volver al Hub</a>
+        <a href="software-engineering.html" class="btn btn-outline-soft">Ir a Spoke Software &rarr;</a>
+        <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+      </div>
+    </section>
 
     <h2>Sistemas de Inspeccion</h2>
     <div class="grid cols-3">
       <div class="card">
+        <span class="tag-tech tag-cyan">3D SPI &middot; AOI &middot; PSI</span>
         <h3>Parmi</h3>
         <ul>
-          <li>3D SPI &mdash; inspeccion de pasta de soldar</li>
-          <li>3D AOI &mdash; inspeccion de componentes y soldadura</li>
-          <li>3D PSI &mdash; inspeccion de conformal coating</li>
+          <li>3D SPI &mdash; inspeccion volumetrica de pasta de soldar</li>
+          <li>3D AOI &mdash; inspeccion de componentes y calidad de soldadura</li>
+          <li>3D PSI &mdash; inspeccion de conformal coating y espesores</li>
         </ul>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Optica 2D</span>
         <h3>Marantz</h3>
-        <p>Inspeccion 2D pre-reflow y post-reflow (componentes SMD y THT).</p>
+        <p>Inspeccion optica 2D pre-reflow y post-reflow de componentes SMD y THT en lineas de alta cadencia.</p>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Soldadura THT</span>
         <h3>Ersa VERSAEYE</h3>
-        <p>Inspeccion optica de soldadura.</p>
+        <p>Inspeccion optica especializada de uniones de soldadura selectiva y wave soldering con control angular.</p>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Rayos X AXI</span>
         <h3>Matrix</h3>
-        <p>Inspeccion por Rayos X en linea (AXI) para soldaduras ocultas (BGA, QFN, voiding).</p>
+        <p>Inspeccion por Rayos X en linea (AXI) para soldaduras ocultas (BGA, QFN, calculo automatizado de voiding).</p>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Screen Printing</span>
         <h3>MPM</h3>
-        <p>Impresoras de alta precision (AccuFlex, Momentum), alineacion por vision y control reologico.</p>
+        <p>Impresoras de pasta de alta precision (AccuFlex, Momentum), alineacion por vision y control reologico continuo.</p>
       </div>
     </div>
 
     <h2>Sistemas Termicos y Soldadura</h2>
     <div class="grid cols-2">
       <div class="card">
+        <span class="tag-tech tag-cyan">Selectiva &middot; Refusion</span>
         <h3>Ersa</h3>
-        <p>Soldadura selectiva (mini-wave / multi-dip), soldadura por ola (Wave Soldering) y hornos de refusion por conveccion.</p>
+        <p>Soldadura selectiva (mini-wave / multi-dip), soldadura por ola (Wave Soldering) y hornos de refusion por conveccion forzada con control de nitrogeno.</p>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Wave Soldering</span>
         <h3>Electrovert</h3>
-        <p>Soldadura por ola (serie Vectra) y hornos de refusion.</p>
+        <p>Soldadura por ola (serie Vectra) con doble tobera de alta turbulencia y hornos de refusion industrial de alto throughput.</p>
       </div>
     </div>
 
     <h2>Metalurgia y Materiales</h2>
-    <div class="grid cols-2">
+    <div class="grid cols-3">
       <div class="card">
+        <span class="tag-tech tag-cyan">Pasta de Soldar</span>
         <h3>Pasta de soldar</h3>
-        <p>Reologia, fluxes no-clean/solubles, granulometria tipo 3/4/5.</p>
+        <p>Comportamiento reologico, fluxes no-clean y solubles en agua, granulometria Tipo 3, 4 y 5 segun apertura de stencil.</p>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Aleaciones RoHS</span>
         <h3>Aleaciones</h3>
-        <p>SAC305, SN100C, SnPb. Control de escoria (dross) y atmosfera inerte (N2).</p>
+        <p>SAC305, SN100C y formulaciones clasicas SnPb. Gestion de dross (escoria) y mantenimiento de atmosfera inerte N2 (&lt;50 ppm O2).</p>
       </div>
       <div class="card">
+        <span class="tag-tech tag-cyan">Perfilado Termico</span>
         <h3>Perfilado termico</h3>
-        <p>Hornos de refusion (Ramp-to-Soak, Time Above Liquidus - TAL, enfriamiento controlado).</p>
+        <p>Hornos de refusion: perfiles Ramp-to-Soak vs Ramp-to-Spike, calculo de Time Above Liquidus (TAL) y tasas de enfriamiento controlado.</p>
       </div>
     </div>
 
     <h2>Handling y Automatizacion</h2>
     <div class="card">
-      <p>Cargadores, descargadores, buffers, cintas transportadoras, diagnostico y programacion de PLCs.</p>
+      <span class="tag-tech tag-cyan">SMEMA &middot; Line Automation</span>
+      <h3>Sistemas de Transporte y Control</h3>
+      <p>Cargadores, descargadores, buffers FIFO/LIFO, cintas transportadoras sincronizadas, diagnostico y programacion de PLCs industriales para operacion 24/7 sin paradas.</p>
     </div>
 
     <div class="alert">
-      <strong>Limite de Alcance:</strong> Exclusion explicita de maquinas de insercion Pick & Place.
+      <strong>Limite de Alcance:</strong> Exclusion explicita de maquinas de insercion Pick & Place. El perfil cubre inspeccion, procesos termicos, metalurgia y automatizacion.
     </div>
 
-    <button class="btn" aria-controls="drawer-rag" style="margin-top: 1rem;">Asistente RAG</button>
+    <div style="margin: 2rem 0; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+      <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+      <a href="index.html" class="btn btn-outline-soft">&larr; Volver al Hub Central</a>
+    </div>
 
     <footer class="footer">
-      <p>Feed contextual: noticias SMT/THT &mdash; <a href="index.html" style="color: var(--accent);">Volver al Hub</a></p>
+      <p>Feed contextual: noticias SMT/THT &nbsp;|&nbsp;
+      <a href="index.html">Volver al Hub</a> &nbsp;|&nbsp;
+      <a href="software-engineering.html">Ver Spoke Software &amp; IA</a></p>
     </footer>
   </div>
 

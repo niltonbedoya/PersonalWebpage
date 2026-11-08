@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spoke Software &mdash; Soluciones IA</title>
+  <title>Spoke Software &mdash; Soluciones IA &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
   <link rel="stylesheet" href="/static/src/styles/shared.css">
   <script src="/static/src/js/shared.js" defer></script>
@@ -13,7 +13,7 @@
   <header class="brand-header">
     <div class="container brand-header-inner">
       <a href="index.html" class="brand-identity">
-        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="38">
+        <img src="/static/assets/logos/logo_transparent.png" alt="Nilton Bedoya Logo" class="brand-logo" height="30">
         <div class="brand-text">
           <span class="brand-title">Nilton Bedoya</span>
           <span class="brand-subtitle">Spoke Software &amp; Soluciones IA</span>
@@ -29,59 +29,79 @@
   </header>
 
   <div class="container">
-    <div class="hero">
-      <h1>Spoke Software</h1>
-      <p>Casos de estudio de software e IA, arquitecturas y demostraciones controladas.</p>
-      <p><em>v1 sin APIs vivas expuestas. Demostraciones pregrabadas y sanitizadas.</em></p>
-    </div>
-
-    <div style="margin: 1.25rem 0;">
-      <a href="index.html" class="btn btn-outline-soft">&larr; Volver al Hub</a>
-    </div>
+    <section class="hero">
+      <span class="hero-pill hero-pill-violet"><span class="status-dot"></span> Cyber-Intelligence &bull; Zero-Cost LLM Routing</span>
+      <h1>Spoke Software &mdash; <span class="hero-highlight">Ingenieria &amp; IA</span></h1>
+      <p>Casos de estudio de software industrial, sistemas multiagente desacoplados, arquitecturas limpias y demostraciones controladas con inferencia de costo cero.</p>
+      <p><em>v1 sin APIs vivas expuestas. Demostraciones pregrabadas y sanitizadas bajo diseno defensivo.</em></p>
+      <div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <a href="index.html" class="btn btn-outline-soft">&larr; Volver al Hub</a>
+        <a href="industrial-smt.html" class="btn">Ir a Spoke Industrial &rarr;</a>
+        <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+      </div>
+    </section>
 
     <h2>Casos de Estudio</h2>
     <div class="grid cols-2">
       <div class="card-soft fade-in">
-        <span class="code-tag">cs-tickets</span>
-        <h3>Sistema de Tickets de Servicio</h3>
-        <p>Ticketing tecnico, seguimiento de incidencias, trazabilidad y SLAs sobre datos 100% sinteticos (Base AB anonimizada).</p>
-        <button class="btn-outline">Ver caso</button>
+        <div>
+          <span class="code-tag">cs-tickets</span>
+          <h3>Sistema de Tickets de Servicio</h3>
+          <p>Ticketing tecnico, seguimiento de incidencias, trazabilidad y SLAs sobre datos 100% sinteticos (Base AB anonimizada). Enrutamiento automatico y clasificacion por severidad.</p>
+        </div>
+        <button class="btn-outline">Ver caso de estudio &rarr;</button>
       </div>
+
       <div class="card-soft fade-in" style="animation-delay: 0.1s;">
-        <span class="code-tag">cs-erp</span>
-        <h3>ERP Comercial &amp; Financiero</h3>
-        <p>Facturacion, creditos, cuentas por cobrar/pagar, control de inventario y ventas con entidades ficticias (Base Kronenblumen).</p>
-        <button class="btn-outline">Ver caso</button>
+        <div>
+          <span class="code-tag">cs-erp</span>
+          <h3>ERP Comercial &amp; Financiero</h3>
+          <p>Facturacion electronica, lineas de credito, cuentas por cobrar/pagar, control de inventario y gestion de ventas corporativas con entidades ficticias (Base Kronenblumen).</p>
+        </div>
+        <button class="btn-outline">Ver caso de estudio &rarr;</button>
       </div>
+
       <div class="card-soft fade-in" style="animation-delay: 0.2s;">
-        <span class="code-tag">cs-logistics</span>
-        <h3>Control Logistico &amp; Packing List</h3>
-        <p>Conteo y trazabilidad de ruedas, asignacion de contenedores y generacion de Packing List de exportacion (PDF/Excel) &mdash; Corea.</p>
-        <button class="btn-outline">Ver caso</button>
+        <div>
+          <span class="code-tag">cs-logistics</span>
+          <h3>Control Logistico &amp; Packing List</h3>
+          <p>Conteo y trazabilidad automatizada de ruedas, asignacion de contenedores y generacion de Packing List de exportacion internacional (PDF/Excel) &mdash; caso Corea.</p>
+        </div>
+        <button class="btn-outline">Ver caso de estudio &rarr;</button>
       </div>
+
       <div class="card-soft fade-in" style="animation-delay: 0.3s;">
-        <span class="code-tag">cs-translation</span>
-        <h3>Traduccion &amp; Transcripcion Simultanea</h3>
-        <p>Pipeline de baja latencia para eventos tecnicos. Demostracion en video con audio pregrabado sincronizado y metricas de latencia.</p>
-        <button class="btn-outline">Ver caso</button>
+        <div>
+          <span class="code-tag">cs-translation</span>
+          <h3>Traduccion &amp; Transcripcion Simultanea</h3>
+          <p>Pipeline de procesamiento en tiempo real de baja latencia para eventos tecnicos. Demostracion en video con audio pregrabado sincronizado y metricas de latencia.</p>
+        </div>
+        <button class="btn-outline">Ver caso de estudio &rarr;</button>
       </div>
+
       <div class="card-soft fade-in" style="animation-delay: 0.4s;">
-        <span class="code-tag">cs-health</span>
-        <h3>Plataforma IoT de Salud</h3>
-        <p>Ingesta de metricas wearables (ritmo cardiaco, hidratacion), OCR de informes medicos y vision computacional de menus.</p>
-        <button class="btn-outline">Ver caso</button>
+        <div>
+          <span class="code-tag">cs-health</span>
+          <h3>Plataforma IoT de Salud</h3>
+          <p>Ingesta de metricas wearables (ritmo cardiaco, SPO2, hidratacion), OCR de informes medicos con modelos locales y vision computacional para analisis nutricional.</p>
+        </div>
+        <button class="btn-outline">Ver caso de estudio &rarr;</button>
       </div>
     </div>
 
     <div class="alert">
-      <strong>v1 sin APIs vivas expuestas:</strong> los case studies son sanitizados/by design para eliminar costes y riesgos de seguridad.
+      <strong>v1 sin APIs vivas expuestas:</strong> los case studies estan sanitizados por diseno para eliminar costes y prevenir riesgos de fuga de credenciales o PII.
     </div>
 
-    <button class="btn" aria-controls="drawer-rag" style="margin-top: 1rem;">Asistente RAG</button>
+    <div style="margin: 2rem 0; display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+      <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+      <a href="index.html" class="btn btn-outline-soft">&larr; Volver al Hub Central</a>
+    </div>
 
     <footer class="footer">
       <p>Feed contextual: noticias IA/Software &nbsp;|&nbsp;
-      <a href="index.html" style="color: var(--accent-software);">Volver al Hub</a></p>
+      <a href="index.html">Volver al Hub</a> &nbsp;|&nbsp;
+      <a href="industrial-smt.html">Ver Spoke Industrial SMT/THT</a></p>
     </footer>
   </div>
 
