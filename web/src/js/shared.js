@@ -77,7 +77,7 @@ function initPageTransitions() {
     overlay = document.createElement("div");
     overlay.id = "page-transition-overlay";
     overlay.className = "page-transition-overlay";
-    overlay.innerHTML = '<div class="transition-spinner-wrap"><img src="/static/assets/logos/logo_transparent.png" alt="Transitioning" class="transition-logo" width="60" height="60"></div>';
+    overlay.innerHTML = '<div class="transition-spinner-wrap"><img src="/static/assets/logos/logo_transparent.png" alt="Transitioning" class="transition-logo" width="180" height="180"></div>';
     document.body.appendChild(overlay);
   }
 
