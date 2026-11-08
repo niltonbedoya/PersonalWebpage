@@ -115,7 +115,7 @@
       '    <span class="news-card-badge">' + escapeHtml(badgeLabel) + "</span>" +
       '    <span class="news-card-date">' + escapeHtml(formatDate(item.published_at)) + "</span>" +
       "  </div>" +
-      '  <h4 class="news-card-title">' + escapeHtml(title) + "</h4>" +
+      '  <h4 class="news-card-title"><a href="' + escapeHtml(item.source_url) + '" target="_blank" rel="noopener noreferrer" class="news-title-link">' + escapeHtml(title) + "</a></h4>" +
       '  <p class="news-card-summary">' + escapeHtml(summary) + "</p>" +
       '  <div class="news-card-tags">' + tagsHtml + "</div>" +
       '  <div class="news-card-footer">' +
