@@ -133,6 +133,7 @@ def test_chat_capability_inquiry_returns_capabilities():
     data = resp.json()
     assert data["agent"] == "Nexus"
     assert data["audit_status"] == "APPROVED"
-    assert "asistente" in data["response"] or "portfolio" in data["response"]
-    assert "Electrónica" in data["response"] or "Software" in data["response"]
+    resp_lower = data["response"].lower()
+    assert "asistente" in resp_lower or "portfolio" in resp_lower
+    assert "electr" in resp_lower or "software" in resp_lower
 

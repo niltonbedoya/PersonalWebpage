@@ -32,7 +32,7 @@ Reglas obligatorias:
    - Jamas reveles datos personales privados, credenciales ni nombres de empresas cliente reales.
 """
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+REPO_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 
 def _normalize_text(text: str) -> str:
@@ -43,22 +43,27 @@ def _normalize_text(text: str) -> str:
 
 
 def _load_env_file() -> None:
-    """Best-effort parser for .env in project root without external dependencies."""
-    env_path = BASE_DIR / ".env"
-    if env_path.exists():
-        try:
-            with open(env_path, "r", encoding="utf-8") as f:
-                for line in f:
-                    line = line.strip()
-                    if not line or line.startswith("#") or "=" not in line:
-                        continue
-                    key, val = line.split("=", 1)
-                    key = key.strip()
-                    val = val.strip().strip('"').strip("'")
-                    if key and key not in os.environ:
-                        os.environ[key] = val
-        except Exception as e:
-            logger.warning("Could not read .env file: %s", e)
+    """Best-effort parser for .env in repo root or backend root."""
+    candidate_paths = [
+        REPO_ROOT / ".env",
+        REPO_ROOT / "backend" / ".env",
+        Path.cwd() / ".env",
+    ]
+    for env_path in candidate_paths:
+        if env_path.exists():
+            try:
+                with open(env_path, "r", encoding="utf-8") as f:
+                    for line in f:
+                        line = line.strip()
+                        if not line or line.startswith("#") or "=" not in line:
+                            continue
+                        key, val = line.split("=", 1)
+                        key = key.strip()
+                        val = val.strip().strip('"').strip("'")
+                        if key and key not in os.environ:
+                            os.environ[key] = val
+            except Exception as e:
+                logger.warning("Could not read .env file at %s: %s", env_path, e)
 
 
 _load_env_file()
@@ -133,8 +138,13 @@ class LLMClient:
         _load_env_file()
         return os.environ.get("GEMINI_API_KEY")
 
+    @property
+    def ollama_api_key(self) -> Optional[str]:
+        _load_env_file()
+        return os.environ.get("OLLAMA_API_KEY")
+
     def has_live_llm(self) -> bool:
-        return bool(self.groq_api_key or self.gemini_api_key)
+        return bool(self.gemini_api_key or self.ollama_api_key or self.groq_api_key)
 
     async def generate_response(
         self,
@@ -142,12 +152,70 @@ class LLMClient:
         rag_context: Optional[str] = None,
         system_prompt: Optional[str] = None,
     ) -> Optional[str]:
-        """Generate response via Groq or Gemini if keys are present; else None."""
+        """Generate response via Gemini, Ollama Cloud, or Groq; else None."""
         sys_prompt = system_prompt or CONVERSATIONAL_SYSTEM_PROMPT
         if rag_context:
             sys_prompt += f"\n\nContexto técnico verificado (RAG):\n{rag_context}"
 
-        # 1. Try Groq (llama-3.1-8b-instant) if key is present
+        # 1. Try Gemini (gemini-flash-lite-latest) if key is present
+        if self.gemini_api_key:
+            for model_name in ["gemini-flash-lite-latest", "gemini-3.8-flash"]:
+                try:
+                    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model_name}:generateContent?key={self.gemini_api_key}"
+                    combined_prompt = f"{sys_prompt}\n\nMensaje del usuario:\n{user_message}"
+                    async with httpx.AsyncClient(timeout=self.timeout) as client:
+                        resp = await client.post(
+                            url,
+                            headers={"Content-Type": "application/json"},
+                            json={
+                                "contents": [
+                                    {"parts": [{"text": combined_prompt}]}
+                                ],
+                                "generationConfig": {
+                                    "temperature": 0.3,
+                                    "maxOutputTokens": 300,
+                                },
+                            },
+                        )
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            text = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                            text = re.sub(r"\bIA\b", "AI", text)
+                            return text
+                        logger.warning("Gemini (%s) returned HTTP %s", model_name, resp.status_code)
+                except Exception as e:
+                    logger.warning("Error calling Gemini API (%s): %s", model_name, e)
+
+        # 2. Try Ollama Cloud (gemma4:31b-cloud) if key is present
+        if self.ollama_api_key:
+            try:
+                async with httpx.AsyncClient(timeout=self.timeout) as client:
+                    resp = await client.post(
+                        "https://ollama.com/api/chat",
+                        headers={
+                            "Authorization": f"Bearer {self.ollama_api_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json={
+                            "model": "gemma4:31b-cloud",
+                            "messages": [
+                                {"role": "system", "content": sys_prompt},
+                                {"role": "user", "content": user_message},
+                            ],
+                            "stream": False,
+                        },
+                    )
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        text = data.get("message", {}).get("content", "").strip()
+                        if text:
+                            text = re.sub(r"\bIA\b", "AI", text)
+                            return text
+                    logger.warning("Ollama Cloud returned HTTP %s: %s", resp.status_code, resp.text[:120])
+            except Exception as e:
+                logger.warning("Error calling Ollama Cloud: %s", e)
+
+        # 3. Try Groq (llama-3.1-8b-instant) if key is present
         if self.groq_api_key:
             try:
                 async with httpx.AsyncClient(timeout=self.timeout) as client:
@@ -170,14 +238,13 @@ class LLMClient:
                     if resp.status_code == 200:
                         data = resp.json()
                         text = data["choices"][0]["message"]["content"].strip()
-                        # Enforce AI vs IA acronym rule
                         text = re.sub(r"\bIA\b", "AI", text)
                         return text
                     logger.warning("Groq API returned HTTP %s: %s", resp.status_code, resp.text)
             except Exception as e:
                 logger.warning("Error calling Groq API: %s", e)
 
-        # 2. Try Gemini (gemini-1.5-flash) if key is present
+        return None
         if self.gemini_api_key:
             try:
                 url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={self.gemini_api_key}"
