@@ -119,22 +119,32 @@ class Cerebrito:
             if token.strip(".,;:!?()[]\"'¿¡«»")
         }
 
-    # Common Spanish and English conversational stopwords to prevent lowering
-    # grounding score term coverage when queries are phrased naturally.
+    # Common Spanish and English conversational and meta-question stopwords to
+    # prevent lowering grounding score term coverage when queries are phrased naturally.
     _STOPWORDS = {
-        # Spanish
+        # Spanish articles, prepositions, conjunctions, pronouns
         "de", "la", "el", "en", "y", "que", "como", "un", "una", "unos", "unas",
         "por", "para", "con", "del", "al", "los", "las", "se", "es", "su", "sus",
         "o", "u", "este", "esta", "estos", "estas", "a", "ante", "bajo", "cabe",
         "desde", "hacia", "hasta", "segun", "sin", "so", "sobre", "tras", "cual",
         "cuales", "quien", "quienes", "donde", "cuando", "cuanto", "cuanta",
-        "cuantos", "cuantas", "funciona", "dime", "cuenta", "explicame",
-        # English
+        "cuantos", "cuantas",
+        # Spanish conversational triggers & framing meta-words
+        "funciona", "dime", "cuenta", "cuentame", "explica", "explicame", "habla",
+        "hablame", "muestra", "muestrame", "resumen", "resumeme", "detalles",
+        "informacion", "proyecto", "proyectos", "solucion", "soluciones", "aporta",
+        "sirve", "hace", "usar", "uso", "usos", "objetivo", "proposito",
+        "caracteristicas", "ventajas", "beneficios",
+        # English articles, prepositions, conjunctions, auxiliary verbs
         "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of",
         "with", "by", "from", "up", "about", "into", "over", "after", "is", "are",
         "was", "were", "be", "been", "being", "have", "has", "had", "do", "does",
         "did", "how", "what", "which", "who", "when", "where", "why", "can",
-        "could", "will", "would", "should", "tell", "explain",
+        "could", "will", "would", "should",
+        # English conversational triggers & framing meta-words
+        "tell", "explain", "describe", "show", "give", "overview", "summary",
+        "project", "projects", "solution", "solutions", "features", "benefits",
+        "details", "information", "purpose", "use", "works",
     }
 
     def _compute_grounding_score(self, question: str, results: List[dict]) -> float:
