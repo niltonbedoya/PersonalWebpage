@@ -246,7 +246,7 @@
       "smt.badge.diag.main": "Hardware &bull; Calibration",
       "smt.badge.diag.sub": "Nordson BT &bull; Electronics &amp; Load Cells",
       "smt.tag.diag": "Electromechanical Diagnostics",
-      "smt.card.diag.title": "Precision Maintenance &amp; Calibration",
+      "smt.card.diag.title": "Precision Calibration and Maintenance",
       "smt.card.diag.desc": "Direct intervention at electronic PCB level, power supplies, control buses, and load cell calibration on Nordson BT equipment.",
       "smt.sec.fairs": "Industry Presence &amp; Ecosystem",
       "smt.badge.setelec.main": "SETELEC Showcase",
@@ -334,7 +334,7 @@
       var key = el.getAttribute("data-i18n");
       if (!key || dict[key] === undefined) return;
       var text = dict[key];
-      if (el.getAttribute("data-i18n-html") === "true") {
+      if (el.getAttribute("data-i18n-html") === "true" || /<[a-z][\s\S]*>/i.test(text) || /&[a-z#0-9]+;/i.test(text)) {
         el.innerHTML = text;
       } else {
         el.textContent = text;
