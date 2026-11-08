@@ -14,6 +14,7 @@ S3. Panel web `/admin`: interfaz visual privada protegida mediante HTTP Basic Au
    - Visor de las últimas líneas de logs de `logs/app.log`.
 S4. Sistema de logs rotativo: `RotatingFileHandler` en `logs/app.log` (10 MB máx, 5 backups) con formato estructurado, registrando peticiones, bloqueos de seguridad y errores.
 S5. TDD: suite de tests unitarios e integrados comprobando autenticación `/admin`, registro de visitas en SQLite y rotación de logs sin regresiones sobre los 455 tests existentes.
+S6. Geolocalización granular de visitantes: capturar y persistir ciudad (`city`) y zona/región (`region`) junto con la IP y país (vía cabeceras Cloudflare `CF-IPCity` y `CF-Region`, con resolución de respaldo geoip cacheada), mostrándolas en una columna dedicada de Ubicación en el panel `/admin`.
 
 ## Tasks
 
@@ -22,7 +23,8 @@ T2. Crear módulo de base de datos de analíticas `backend/app/db/analytics.py` 
 T3. Crear configuración de logging rotativo `backend/app/core/logging_config.py`.
 T4. Implementar middleware de registro de visitas en `backend/main.py`.
 T5. Implementar router `/admin` protegido con HTTP Basic Auth en `backend/app/routers/admin.py` con tests en `backend/tests/test_api_admin.py`.
-T6. Ejecutar suite completa de tests, verificar 100% verde, registrar memoria en Engram, commit y push a `main`.
+T6. Ampliar esquema de base de datos analytics con `city` y `region`, resolver geoip granular y enriquecer la tabla del panel `/admin`.
+T7. Ejecutar suite completa de tests, verificar 100% verde, registrar memoria en Engram, commit y push a `main`.
 
 ## Log
 
@@ -31,4 +33,10 @@ L1. 2026-11-08: Panel de analíticas privado (/admin) y logging rotativo complet
 - S3: Creado router `/admin` protegido con HTTP Basic Auth (`ADMIN_USER`, `ADMIN_PASSWORD`) que renderiza dashboard visual con métricas, IPs reales, países, latencia y visor de logs en vivo.
 - S4: Configurado `backend/app/core/logging_config.py` con `RotatingFileHandler` en `logs/app.log` (10 MB máx, 5 copias) para diagnóstico bounded.
 - S5: Suite completa de pruebas expandida a 464 tests (9 nuevos tests en `test_analytics_db.py` y `test_api_admin.py`), 100% en verde sin regresiones.
+L2. 2026-11-08: Enriquecimiento de geolocalización granular (S6, T6, T7).
+- Extendido `backend/app/db/analytics.py` con soporte para `city` y `region` y migración automática e idempotente.
+- Creado `backend/app/core/geoip.py` para resolver ciudad y región desde cabeceras Cloudflare (`CF-IPCity`, `CF-Region`) y fallback cacheado en memoria.
+- Actualizado `backend/main.py` para inyectar `city` y `region` en `analytics_middleware`.
+- Actualizado `backend/app/routers/admin.py` con la columna "Ciudad / Zona" junto a la Dirección IP.
+- Tests actualizados y suite de 464 tests pasando 100% verde.
 

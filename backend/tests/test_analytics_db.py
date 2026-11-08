@@ -20,10 +20,12 @@ def test_analytics_db_lifecycle():
         db_file = Path(temp_dir) / "test_analytics.db"
         analytics = AnalyticsDB(db_path=str(db_file))
 
-        # Record 3 visits (2 distinct IPs)
+        # Record 3 visits (2 distinct IPs) with city and region
         analytics.record_visit(
             ip="192.168.1.50",
             country="ES",
+            city="Madrid",
+            region="Comunidad de Madrid",
             path="/static/pages/index.html",
             user_agent="Mozilla/5.0 (Windows NT 10.0)",
             status_code=200,
@@ -32,6 +34,8 @@ def test_analytics_db_lifecycle():
         analytics.record_visit(
             ip="192.168.1.50",
             country="ES",
+            city="Madrid",
+            region="Comunidad de Madrid",
             path="/chat/",
             user_agent="Mozilla/5.0 (Windows NT 10.0)",
             status_code=200,
@@ -40,6 +44,8 @@ def test_analytics_db_lifecycle():
         analytics.record_visit(
             ip="85.20.10.1",
             country="FR",
+            city="Paris",
+            region="Île-de-France",
             path="/static/pages/industrial-smt.html",
             user_agent="Mozilla/5.0 (iPhone; CPU iPhone OS 16_0)",
             status_code=200,
@@ -50,6 +56,8 @@ def test_analytics_db_lifecycle():
         assert len(visits) == 3
         assert visits[0]["ip"] == "85.20.10.1"  # most recent first
         assert visits[0]["country"] == "FR"
+        assert visits[0]["city"] == "Paris"
+        assert visits[0]["region"] == "Île-de-France"
 
         stats = analytics.get_stats()
         assert stats["total_visits"] == 3

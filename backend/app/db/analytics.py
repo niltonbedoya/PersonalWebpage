@@ -34,6 +34,8 @@ class AnalyticsDB:
                     timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
                     ip TEXT NOT NULL,
                     country TEXT DEFAULT 'XX',
+                    city TEXT DEFAULT '',
+                    region TEXT DEFAULT '',
                     path TEXT NOT NULL,
                     user_agent TEXT DEFAULT '',
                     status_code INTEGER DEFAULT 200,
@@ -41,6 +43,13 @@ class AnalyticsDB:
                 )
                 """
             )
+            # Idempotent column migrations if table existed prior to city/region support
+            cols = {row["name"] for row in conn.execute("PRAGMA table_info(visits)").fetchall()}
+            if "city" not in cols:
+                conn.execute("ALTER TABLE visits ADD COLUMN city TEXT DEFAULT ''")
+            if "region" not in cols:
+                conn.execute("ALTER TABLE visits ADD COLUMN region TEXT DEFAULT ''")
+
             conn.execute("CREATE INDEX IF NOT EXISTS idx_visits_timestamp ON visits(timestamp DESC)")
             conn.execute("CREATE INDEX IF NOT EXISTS idx_visits_ip ON visits(ip)")
 
@@ -52,15 +61,17 @@ class AnalyticsDB:
         user_agent: str,
         status_code: int = 200,
         response_time_ms: float = 0.0,
+        city: str = "",
+        region: str = "",
     ) -> None:
         """Insert a new visit record."""
         with self._get_connection() as conn:
             conn.execute(
                 """
-                INSERT INTO visits (ip, country, path, user_agent, status_code, response_time_ms)
-                VALUES (?, ?, ?, ?, ?, ?)
+                INSERT INTO visits (ip, country, city, region, path, user_agent, status_code, response_time_ms)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
                 """,
-                (ip, country or "XX", path, user_agent or "", status_code, response_time_ms),
+                (ip, country or "XX", city or "", region or "", path, user_agent or "", status_code, response_time_ms),
             )
 
     def get_recent_visits(self, limit: int = 100) -> List[Dict[str, Any]]:
@@ -68,7 +79,7 @@ class AnalyticsDB:
         with self._get_connection() as conn:
             cursor = conn.execute(
                 """
-                SELECT id, timestamp, ip, country, path, user_agent, status_code, response_time_ms
+                SELECT id, timestamp, ip, country, city, region, path, user_agent, status_code, response_time_ms
                 FROM visits
                 ORDER BY id DESC
                 LIMIT ?

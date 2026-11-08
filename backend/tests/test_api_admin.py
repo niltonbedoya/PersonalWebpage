@@ -58,7 +58,7 @@ def test_admin_api_logs():
 
 
 def test_main_app_records_cloudflare_visitor_ip():
-    """Visits with Cloudflare headers are recorded in analytics DB."""
+    """Visits with Cloudflare headers are recorded in analytics DB with city and region."""
     from backend.main import app as main_app
     from backend.app.db.analytics import analytics_db
 
@@ -68,6 +68,8 @@ def test_main_app_records_cloudflare_visitor_ip():
         headers={
             "CF-Connecting-IP": "203.0.113.195",
             "CF-IPCountry": "ES",
+            "CF-IPCity": "Valencia",
+            "CF-Region": "Valencian Community",
             "User-Agent": "Mozilla/5.0 TestBrowser",
         },
     )
@@ -76,5 +78,15 @@ def test_main_app_records_cloudflare_visitor_ip():
     matched = [v for v in visits if v["ip"] == "203.0.113.195"]
     assert len(matched) >= 1
     assert matched[0]["country"] == "ES"
+    assert matched[0]["city"] == "Valencia"
+    assert matched[0]["region"] == "Valencian Community"
     assert "/static/pages/index.html" in matched[0]["path"]
+
+    # Verify that the admin dashboard renders the city and region
+    admin_resp = main_client.get("/admin/", headers={"Authorization": VALID_AUTH})
+    assert admin_resp.status_code == 200
+    assert "Valencia" in admin_resp.text
+    assert "Valencian Community" in admin_resp.text
+    assert "Ciudad / Zona" in admin_resp.text
+
 

@@ -60,11 +60,23 @@ async def admin_dashboard(username: str = Depends(verify_admin)) -> HTMLResponse
     rows_html = ""
     for v in visits:
         status_color = "#10b981" if v["status_code"] < 400 else "#f59e0b" if v["status_code"] < 500 else "#ef4444"
-        ua_short = (v["user_agent"][:55] + "...") if len(v["user_agent"]) > 55 else v["user_agent"]
+        ua_short = (v["user_agent"][:50] + "...") if len(v["user_agent"]) > 50 else v["user_agent"]
+        city = v.get("city") or ""
+        region = v.get("region") or ""
+        if city and region:
+            loc_label = f'<span style="color: #f1f5f9; font-weight: 500;">{city}</span> <span style="color: #64748b; font-size: 0.75rem;">({region})</span>'
+        elif city:
+            loc_label = f'<span style="color: #f1f5f9; font-weight: 500;">{city}</span>'
+        elif region:
+            loc_label = f'<span style="color: #64748b; font-size: 0.75rem;">{region}</span>'
+        else:
+            loc_label = '<span style="color: #475569;">-</span>'
+
         rows_html += f"""
         <tr>
           <td style="color: #94a3b8; font-family: monospace; font-size: 0.85rem;">{v["timestamp"]}</td>
           <td><strong style="color: #38bdf8; font-family: monospace;">{v["ip"]}</strong></td>
+          <td>{loc_label}</td>
           <td><span style="background: #1e293b; padding: 2px 6px; border-radius: 4px; font-size: 0.8rem; font-weight: 600;">{v["country"]}</span></td>
           <td style="color: #cbd5e1; font-family: monospace; font-size: 0.85rem;">{v["path"]}</td>
           <td><span style="color: {status_color}; font-weight: bold; font-family: monospace;">{v["status_code"]}</span></td>
@@ -230,6 +242,7 @@ async def admin_dashboard(username: str = Depends(verify_admin)) -> HTMLResponse
           <tr>
             <th>Fecha / Hora</th>
             <th>Dirección IP</th>
+            <th>Ciudad / Zona</th>
             <th>País</th>
             <th>Página / Ruta</th>
             <th>Estado</th>
@@ -238,7 +251,7 @@ async def admin_dashboard(username: str = Depends(verify_admin)) -> HTMLResponse
           </tr>
         </thead>
         <tbody>
-          {rows_html if rows_html else '<tr><td colspan="7" style="text-align: center; color: #64748b; padding: 2rem;">Aún no hay visitas registradas.</td></tr>'}
+          {rows_html if rows_html else '<tr><td colspan="8" style="text-align: center; color: #64748b; padding: 2rem;">Aún no hay visitas registradas.</td></tr>'}
         </tbody>
       </table>
     </div>

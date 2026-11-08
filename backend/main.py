@@ -21,6 +21,7 @@ from backend.websockets import manager, websocket_route, websocket_status
 from backend.agent_ops_router import agent_ops_router
 from backend.app.core.security_headers import SecurityHardeningMiddleware
 from backend.app.core.logging_config import setup_logging
+from backend.app.core.geoip import resolve_visitor_location
 from backend.app.db.analytics import analytics_db
 
 # Inicializar logger rotativo bounded
@@ -53,13 +54,15 @@ async def analytics_middleware(request: Request, call_next):
         cf_ip = request.headers.get("cf-connecting-ip")
         fwd_ip = request.headers.get("x-forwarded-for")
         client_ip = cf_ip or (fwd_ip.split(",")[0].strip() if fwd_ip else None) or (request.client.host if request.client else "127.0.0.1")
-        country = request.headers.get("cf-ipcountry", "XX")
         user_agent = request.headers.get("user-agent", "")
 
         try:
+            country, city, region = await resolve_visitor_location(client_ip, dict(request.headers))
             analytics_db.record_visit(
                 ip=client_ip,
                 country=country,
+                city=city,
+                region=region,
                 path=path,
                 user_agent=user_agent,
                 status_code=response.status_code,

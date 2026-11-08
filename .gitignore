@@ -21,6 +21,10 @@ web/dist/
 *.sqlite*
 data/*.db
 
+# Logs
+logs/
+*.log
+
 # OS / editor
 Thumbs.db
 .DS_Store
