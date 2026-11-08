@@ -4,6 +4,7 @@ Main application assembling all routers, WebSocket support, and the multi-agent 
 """
 
 import os
+import time
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
@@ -13,11 +14,17 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from backend.app.routers import router, news_router, contact_router, health_router
+from backend.app.routers.admin import admin_router
 from backend.app.mcp.adapters import MCPRegistry
 from backend.app import models  # noqa: F401
 from backend.websockets import manager, websocket_route, websocket_status
 from backend.agent_ops_router import agent_ops_router
 from backend.app.core.security_headers import SecurityHardeningMiddleware
+from backend.app.core.logging_config import setup_logging
+from backend.app.db.analytics import analytics_db
+
+# Inicializar logger rotativo bounded
+setup_logging()
 
 # Create FastAPI app
 app = FastAPI(
@@ -30,6 +37,38 @@ app = FastAPI(
 
 # Inyectar middleware defensivo de cabeceras HTTP y rate limiting
 app.add_middleware(SecurityHardeningMiddleware)
+
+# Middleware de telemetría y registro de visitas por IP
+@app.middleware("http")
+async def analytics_middleware(request: Request, call_next):
+    start = time.perf_counter()
+    response = await call_next(request)
+    elapsed_ms = (time.perf_counter() - start) * 1000
+
+    path = request.url.path
+    # Filtrar estáticos secundarios para no saturar la base de datos de visitas
+    ignored_exts = (".css", ".js", ".png", ".jpg", ".jpeg", ".ico", ".svg", ".woff2", ".ttf")
+    if not any(path.endswith(ext) for ext in ignored_exts) and not path.startswith("/static/src/"):
+        # Extraer IP real (Cloudflare Tunnel o cliente)
+        cf_ip = request.headers.get("cf-connecting-ip")
+        fwd_ip = request.headers.get("x-forwarded-for")
+        client_ip = cf_ip or (fwd_ip.split(",")[0].strip() if fwd_ip else None) or (request.client.host if request.client else "127.0.0.1")
+        country = request.headers.get("cf-ipcountry", "XX")
+        user_agent = request.headers.get("user-agent", "")
+
+        try:
+            analytics_db.record_visit(
+                ip=client_ip,
+                country=country,
+                path=path,
+                user_agent=user_agent,
+                status_code=response.status_code,
+                response_time_ms=elapsed_ms,
+            )
+        except Exception:
+            pass  # El logging no debe jamás romper la respuesta al usuario
+
+    return response
 
 # Configurar CORS
 app.add_middleware(
@@ -68,6 +107,7 @@ app.include_router(router)
 app.include_router(news_router)
 app.include_router(contact_router)
 app.include_router(health_router)
+app.include_router(admin_router)
 
 # Agent operations endpoints under /api/v1/agents/* (F3, S6/S7)
 app.include_router(agent_ops_router)

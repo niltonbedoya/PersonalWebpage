@@ -1,7 +1,7 @@
 # Showcase Platform — Living Technical Portfolio
 
 [![CI/CD — Showcase Platform](https://github.com/niltonbedoya/PersonalWebpage/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/niltonbedoya/PersonalWebpage/actions/workflows/ci-cd.yml)
-[![Tests: 455 passed](https://img.shields.io/badge/tests-455%20passed-brightgreen.svg)](#roadmap-fases-bajo-gentle-ai)
+[![Tests: 464 passed](https://img.shields.io/badge/tests-464%20passed-brightgreen.svg)](#roadmap-fases-bajo-gentle-ai)
 [![Zero-Cost LLM](https://img.shields.io/badge/LLM-Zero--Cost%20Routing-blue.svg)](#matriz-de-agentes-runtime)
 [![Cloudflare Tunnel](https://img.shields.io/badge/SSL-Cloudflare%20Edge-orange.svg)](https://portfolio.services-nba.com/)
 
