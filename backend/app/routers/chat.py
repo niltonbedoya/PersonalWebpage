@@ -79,7 +79,6 @@ async def chat_endpoint(request: ChatRequest):
     # 3. Get response from the destination agent
     if destination == "Cerebrito":
         payload = await cerebrito.query(request.message)
-        response_text = payload.answer
         grounding_score = payload.grounding_score
         agent_name = "Cerebrito"
         agent_output = {
@@ -90,6 +89,17 @@ async def chat_endpoint(request: ChatRequest):
             "is_fully_grounded": payload.is_fully_grounded,
         }
         output_type = "rag"
+        if payload.is_fully_grounded:
+            response_text = payload.answer
+        else:
+            response_text = (
+                "No dispongo de detalles específicos sobre ese punto en el corpus verificado.\n\n"
+                "Para conocer la experiencia técnica de Nilton Bedoya, te sugiero consultar sobre:\n"
+                "• Electrónica SMT/THT (Inspección 3D Parmi/Marantz, Rayos X Matrix, hornos Ersa).\n"
+                "• Software & AI (Proyectos Tire Counter, Servicio de Tickets, CardioNutri, KRONENBLUMEN).\n"
+                "• Arquitectura y Metodología Gentle-AI de costo cero.\n\n"
+                "¿Te gustaría consultar sobre alguno de estos temas?"
+            )
     else:
         # Other destination agents (Centinela, etc.): generic routed response.
         response_text = "Mensaje recibido - enrutado a " + destination

@@ -9,6 +9,8 @@ Todos los logs son ASCII-only (regla de consola Windows cp1252).
 """
 
 import logging
+import re
+import unicodedata
 
 from backend.app.db import indexer
 from backend.app.db.schema import DEFAULT_DB_PATH
@@ -28,6 +30,14 @@ class Cerebrito:
     software basándose exclusivamente en el corpus indexado en SQLite-vec.
     Inferencia: Google AI Studio gemini-1.5-flash / gemini-2.0-flash.
     """
+
+    INTENT_ENRICHMENTS = [
+        ({"dedicas", "dedica", "dedicacion"}, "perfil profesional Nilton Bedoya", "perfil"),
+        ({"contactarte", "contactar", "contacto", "contactarle"}, "contacto profesional Nilton Bedoya linkedin", "contacto"),
+        ({"pick", "place"}, "limite alcance exclusion maquinaria pick place", "pick"),
+        ({"experiencia", "trayectoria"}, "perfil profesional Nilton Bedoya experiencia", "experiencia"),
+        ({"stack", "tecnologias", "tecnologia"}, "stack tecnologico arquitectura software", "stack"),
+    ]
 
     def __init__(self, knowledge_adapter: Any = None, db_path: str = None):
         self.name = "Cerebrito"
@@ -49,11 +59,27 @@ class Cerebrito:
         try:
             if context_chunks is None:
                 try:
-                    content_words = [
+                    all_tokens = self._tokenize(question)
+                    raw_content_words = [
                         w for w in question.split()
                         if not self._tokenize(w).issubset(self._STOPWORDS)
                     ]
-                    search_query = " ".join(content_words) if content_words else question
+                    # Check intent enrichments
+                    enrich = ""
+                    fallback_term = ""
+                    for trigger_set, enrich_str, anchor in self.INTENT_ENRICHMENTS:
+                        if all_tokens & trigger_set:
+                            enrich = enrich_str
+                            fallback_term = anchor
+                            break
+
+                    q_terms = [self._normalize_token(w) for w in raw_content_words]
+                    if not q_terms and fallback_term:
+                        q_terms = [fallback_term]
+
+                    search_query = (" ".join(q_terms) + " " + enrich).strip()
+                    if not search_query:
+                        search_query = question
                     results = indexer.search(search_query, db_path=self.db_path, top_k=6)
                 except Exception as search_exc:
                     # No indexable corpus available yet (e.g. default DB not
@@ -99,30 +125,58 @@ class Cerebrito:
             )
 
     def _generate_answer_from_chunks(self, question: str, chunks: List[dict]) -> str:
-        """Generate answer from retrieved knowledge base chunks."""
+        """Generate a concise, human-readable answer from knowledge base chunks."""
         if not chunks:
             return NO_SOURCES_ANSWER
 
-        sources = []
-        answer_parts = []
+        best_chunk = chunks[0]
+        title = best_chunk.get("title", "Corpus Técnico")
+        raw_content = best_chunk.get("content", "")
 
-        for i, chunk in enumerate(chunks[:5]):  # Top 5 chunks
-            content = chunk.get("content", "")
-            source = chunk.get("source", "unknown")
-            if source not in sources:
-                sources.append(source)
-            answer_parts.append(f"Fuente {i+1} ({source}): {content}")
+        # Clean markdown headings, bullets, and bold markers
+        lines = []
+        for line in raw_content.splitlines():
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            line = re.sub(r"^[-*•]\s*", "", line)
+            line = re.sub(r"\*\*([^*]+)\*\*", r"\1", line)
+            line = re.sub(r"`([^`]+)`", r"\1", line)
+            if len(line) > 15:
+                lines.append(line)
 
-        return "\n\n".join(answer_parts)
+        # Select first 2 clean statements for a crisp 2-3 line response
+        if lines:
+            summary = " ".join(lines[:2]).strip()
+        else:
+            summary = raw_content[:180].strip()
+
+        if not summary.endswith("."):
+            summary += "."
+
+        citation = f"\n\n*(Fuente: {title})*"
+        closing = "\n¿Te gustaría profundizar en algún detalle específico?"
+
+        return f"{summary}{citation}{closing}"
 
     @staticmethod
-    def _tokenize(text: str) -> set:
-        """Lowercase whitespace tokens with surrounding punctuation stripped."""
-        return {
-            token.strip(".,;:!?()[]\"'¿¡«»")
-            for token in str(text).lower().split()
-            if token.strip(".,;:!?()[]\"'¿¡«»")
-        }
+    def _normalize_token(token: str) -> str:
+        """Strip accents and lowercase for robust matching across ES/EN."""
+        nfkd = unicodedata.normalize("NFKD", str(token).lower())
+        return "".join(c for c in nfkd if not unicodedata.combining(c))
+
+    @classmethod
+    def _tokenize(cls, text: str) -> set:
+        """Lowercase, accent-stripped tokens with surrounding punctuation stripped."""
+        punctuation = ".,;:!?()[]\"'¿¡«»-–—"
+        tokens = set()
+        for raw_token in str(text).split():
+            clean = raw_token.strip(punctuation)
+            if clean:
+                norm = cls._normalize_token(clean)
+                if norm:
+                    tokens.add(norm)
+        return tokens
 
     # Common Spanish and English conversational and meta-question stopwords to
     # prevent lowering grounding score term coverage when queries are phrased naturally.
@@ -138,16 +192,18 @@ class Cerebrito:
         "funciona", "dime", "cuenta", "cuentame", "explica", "explicame", "habla",
         "hablame", "muestra", "muestrame", "resumen", "resumeme", "detalles",
         "informacion", "proyecto", "proyectos", "solucion", "soluciones", "aporta",
-        "sirve", "hace", "hacer", "hago", "usar", "uso", "usos", "objetivo", "proposito",
-        "caracteristicas", "ventajas", "beneficios",
+        "sirve", "hace", "hacer", "hago", "haces", "hacen", "usar", "uso", "usos",
+        "objetivo", "proposito", "caracteristicas", "ventajas", "beneficios",
         "te", "me", "nos", "le", "les", "puedo", "puede", "puedes", "podemos", "pueden",
-        "decir", "temas", "tema",
+        "decir", "temas", "tema", "tu", "tus", "mi", "mis", "tienes", "tiene", "tienen",
+        "tenemos", "eres", "son", "somos", "dedicas", "dedica", "dedican", "trabajas",
+        "trabaja", "trabajado", "saber", "conocer",
         # English articles, prepositions, conjunctions, auxiliary verbs
         "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of",
         "with", "by", "from", "up", "about", "into", "over", "after", "is", "are",
         "was", "were", "be", "been", "being", "have", "has", "had", "do", "does",
         "did", "how", "what", "which", "who", "when", "where", "why", "can",
-        "could", "will", "would", "should",
+        "could", "will", "would", "should", "your", "my", "our", "their", "you",
         # English conversational triggers & framing meta-words
         "tell", "explain", "describe", "show", "give", "overview", "summary",
         "project", "projects", "solution", "solutions", "features", "benefits",
@@ -166,18 +222,33 @@ class Cerebrito:
         if not all_terms or not results:
             return 0.0
 
-        content_terms = {t for t in all_terms if t not in self._STOPWORDS}
-        query_terms = content_terms or all_terms
+        raw_content = {t for t in all_terms if t not in self._STOPWORDS}
 
-        union = " ".join(chunk.get("content", "") for chunk in results).lower()
+        # Check intent enrichments for anchor terms if question was entirely stopwords
+        anchor_term = None
+        for trigger_set, _, anchor in self.INTENT_ENRICHMENTS:
+            if all_terms & trigger_set:
+                anchor_term = anchor
+                break
+
+        query_terms = raw_content if raw_content else ({anchor_term} if anchor_term else all_terms)
+
+        union = " ".join(chunk.get("content", "") for chunk in results)
         union_terms = self._tokenize(union)
-        coverage = len(query_terms & union_terms) / len(query_terms)
+
+        matched_terms = set()
+        for qt in query_terms:
+            if qt in union_terms:
+                matched_terms.add(qt)
+            elif len(qt) >= 5 and any(ut.startswith(qt[:5]) or qt.startswith(ut[:5]) for ut in union_terms if len(ut) >= 5):
+                matched_terms.add(qt)
+
+        coverage = len(matched_terms) / len(query_terms)
 
         distances = [chunk.get("distance", 0.0) for chunk in results]
-        dmin = min(distances)
-        dmax = max(distances)
+        dmin = min(distances) if distances else 0.0
+        dmax = max(distances) if distances else 0.0
         if dmax > dmin:
-            # Best (closest) hit is the most relevant; normalize its position.
             best_distance = min(distances)
             distance_quality = (dmax - best_distance) / (dmax - dmin)
         else:
