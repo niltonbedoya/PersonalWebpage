@@ -9,6 +9,7 @@
   <script src="/static/src/js/shared.js?v=20261108_dash_v11" defer></script>
   <script src="/static/src/js/i18n.js?v=20261108_dash_v11" defer></script>
   <script src="/static/src/js/drawer-rag.js?v=20261108_rag_v1" defer></script>
+  <script src="/static/src/js/news-feed.js?v=20261108_news_v1" defer></script>
 </head>
 <body data-i18n-title="hub.title" style="background: #090d16; color: #f8fafc;">
 
@@ -100,9 +101,11 @@
       </div>
     </div>
 
-    <div id="news-feed">
-      <h3 data-i18n="hub.news.title">Noticias SMT/THT</h3>
-      <p id="news-feed-content" data-i18n="hub.news.loading">Cargando noticias...</p>
+    <div id="news-feed" data-page-context="index">
+      <h3 data-i18n="hub.news.title">Radar Tecnol&oacute;gico &amp; Noticias Curadas</h3>
+      <div id="news-feed-content">
+        <p class="news-loading" data-i18n="hub.news.loading">Cargando noticias...</p>
+      </div>
     </div>
 
     <footer class="footer">

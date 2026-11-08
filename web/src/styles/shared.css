@@ -709,6 +709,117 @@ li::before {
   font-size: 0.95rem;
 }
 
+/* News Feed Tabs & Cards */
+.news-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.news-tab-btn {
+  background: var(--surface-light);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  padding: 0.45rem 0.9rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.news-tab-btn:hover {
+  border-color: var(--brand-cyan);
+  color: var(--text);
+}
+
+.news-tab-btn.active {
+  background: rgba(14, 165, 233, 0.15);
+  border-color: var(--brand-cyan);
+  color: var(--brand-cyan);
+  font-weight: 600;
+}
+
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.news-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(14, 165, 233, 0.4);
+}
+
+.news-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.news-card-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 9999px;
+  background: rgba(14, 165, 233, 0.12);
+  color: var(--brand-cyan);
+  text-transform: uppercase;
+}
+
+.news-card-date {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.news-card-title {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text);
+  margin: 0.25rem 0 0.5rem 0;
+  line-height: 1.35;
+}
+
+.news-card-summary {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.45;
+  margin-bottom: 0.75rem;
+}
+
+.news-card-tags {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.news-tag {
+  font-size: 0.7rem;
+  background: var(--surface-light);
+  color: var(--muted);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+}
+
+.news-loading, .news-empty {
+  font-size: 0.9rem;
+  color: var(--muted);
+  padding: 1rem 0;
+}
+
 /* ---------- Footer ---------- */
 .footer {
   border-top: 1px solid var(--border);

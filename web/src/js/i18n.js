@@ -59,8 +59,10 @@
       "hub.metric.rag.tag": "Score &ge; 0.85",
       "hub.metric.rag.title": "RAG con Grounding",
       "hub.metric.rag.desc": "Motor RAG sobre corpus local SQLite-vec con score de fundamentaci\u00f3n &ge; 0.85.",
-      "hub.news.title": "Noticias SMT/THT",
-      "hub.news.loading": "Cargando noticias...",
+      "hub.news.title": "Radar Tecnol\u00f3gico &amp; Noticias Curadas",
+      "hub.news.loading": "Cargando noticias curadas...",
+      "smt.news.title": "Noticias &amp; Radar Tecnol\u00f3gico SMT/THT",
+      "soft.news.title": "Radar Tecnol\u00f3gico &amp; Noticias AI/Software",
       "hub.footer.feeds": "Feeds contextuales: SMT/THT &middot; AI/Software",
 
       // SMT / Electronics Page
@@ -209,8 +211,10 @@
       "hub.metric.rag.tag": "Score &ge; 0.85",
       "hub.metric.rag.title": "RAG with Grounding",
       "hub.metric.rag.desc": "RAG engine over local SQLite-vec corpus with grounding score &ge; 0.85.",
-      "hub.news.title": "SMT/THT Industry News",
-      "hub.news.loading": "Loading news...",
+      "hub.news.title": "Technology Radar &amp; Curated News",
+      "hub.news.loading": "Loading curated news...",
+      "smt.news.title": "SMT/THT Industry &amp; Technology Radar",
+      "soft.news.title": "AI &amp; Software Technology Radar",
       "hub.footer.feeds": "Contextual feeds: SMT/THT &middot; AI/Software",
 
       // SMT / Electronics Page
