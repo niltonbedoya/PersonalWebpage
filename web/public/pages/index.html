@@ -122,6 +122,30 @@
       <h3 id="drawer-rag-title" data-i18n="drawer.title">Asistente T&eacute;cnico RAG</h3>
       <button type="button" class="btn drawer-close" id="drawer-rag-close" aria-label="Close drawer" aria-controls="drawer-rag">&times;</button>
     </div>
+    <div class="drawer-actions" style="padding: 0.5rem 1.25rem; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.15);">
+      <span style="font-size: 0.8rem; color: var(--muted);" data-i18n="drawer.cv_hint">&iquest;Buscas el perfil completo?</span>
+      <button type="button" class="btn btn-outline-soft" id="drawer-cv-toggle-btn" style="padding: 0.25rem 0.65rem; font-size: 0.8rem; border-color: var(--brand-cyan); color: var(--brand-cyan);" data-i18n="drawer.cv_button">📄 Solicitar CV</button>
+    </div>
+    <div id="drawer-cv-form-container" hidden style="padding: 1.25rem; background: var(--surface); border-bottom: 1px solid var(--border); overflow-y: auto;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+        <h4 style="margin: 0; font-size: 0.95rem; color: var(--brand-cyan);" data-i18n="cv_form.title">Solicitud de CV Oficial</h4>
+        <button type="button" id="drawer-cv-cancel-btn" style="background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1.1rem;">&times;</button>
+      </div>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1rem;" data-i18n="cv_form.subtitle">Completa los 5 datos para notificar directamente a Nilton Bedoya:</p>
+      <form id="drawer-cv-form" style="display: flex; flex-direction: column; gap: 0.65rem;">
+        <input type="text" id="cv-company" placeholder="Nombre de la empresa" required data-i18n-ph="cv_form.company" style="padding: 0.5rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 0.85rem;" />
+        <input type="text" id="cv-name" placeholder="Nombre de la persona de contacto" required data-i18n-ph="cv_form.name" style="padding: 0.5rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 0.85rem;" />
+        <input type="tel" id="cv-phone" placeholder="Tel&eacute;fono de contacto" required data-i18n-ph="cv_form.phone" style="padding: 0.5rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 0.85rem;" />
+        <input type="email" id="cv-email" placeholder="Correo electr&oacute;nico" required data-i18n-ph="cv_form.email" style="padding: 0.5rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 0.85rem;" />
+        <textarea id="cv-reason" placeholder="Motivo de la solicitud (vacante, proyecto, consultor&iacute;a...)" required rows="2" data-i18n-ph="cv_form.reason" style="padding: 0.5rem 0.75rem; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text); font-size: 0.85rem; resize: vertical;"></textarea>
+        <input type="text" id="cv-honeypot" style="display: none;" tabindex="-1" autocomplete="off" />
+        <div style="display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.25rem;">
+          <button type="button" class="btn btn-outline-soft" id="drawer-cv-close-btn" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;" data-i18n="cv_form.cancel">Cancelar</button>
+          <button type="submit" class="btn btn-gradient" id="drawer-cv-submit-btn" style="padding: 0.45rem 0.85rem; font-size: 0.85rem;" data-i18n="cv_form.submit">Enviar Solicitud</button>
+        </div>
+        <div id="drawer-cv-status" hidden style="font-size: 0.8rem; padding: 0.35rem 0.5rem; border-radius: 4px; margin-top: 0.25rem;"></div>
+      </form>
+    </div>
     <div class="drawer-messages" id="drawer-rag-messages" aria-live="polite">
       <div class="drawer-message drawer-message-assistant">
         <div class="drawer-message-label" data-i18n="drawer.assistant_label">Assistant</div>

@@ -71,7 +71,12 @@ class Mensajerito:
             # Generate summary notes
             summary_notes = f"Oportunidad detectada: {opportunity_type} - prioridad {priority}"
             if sender_name:
-                summary_notes += f" de {sender_name}"
+                company_suffix = f" ({form_data.get('company')})" if form_data and form_data.get("company") else ""
+                summary_notes += f" de {sender_name}{company_suffix}"
+            if form_data and form_data.get("company") and not sender_name:
+                summary_notes += f" de {form_data.get('company')}"
+            if form_data and form_data.get("recipient"):
+                summary_notes += f" [Destino: {form_data.get('recipient')}]"
 
             # Create lead alert payload
             payload = LeadAlertPayload(

@@ -40,6 +40,64 @@ class ChatRequest(BaseModel):
         "PROMPT_INJECTION",
     ] = "TECHNICAL_PROFILE"
     language: Optional[str] = "auto"
+    session_id: Optional[str] = "default"
+
+
+# In-memory session tracking for multi-turn conversations and CV slot filling
+chat_sessions: dict = {}
+
+
+def get_chat_session(session_id: str) -> dict:
+    if session_id not in chat_sessions:
+        chat_sessions[session_id] = {
+            "question_count": 0,
+            "cv_flow": {
+                "active": False,
+                "company": None,
+                "name": None,
+                "phone": None,
+                "email": None,
+                "reason": None,
+            },
+        }
+    return chat_sessions[session_id]
+
+
+def is_cv_request(text: str) -> bool:
+    import re
+    from backend.app.core.llm_client import _normalize_text
+    norm = _normalize_text(text)
+    patterns = [
+        r"\bcv\b",
+        r"\bcurriculum\b",
+        r"\bresume\b",
+        r"\bhoja de vida\b",
+        r"\bsolicitar cv\b",
+        r"\bpedir cv\b",
+        r"\benviar cv\b",
+        r"\bpasame el cv\b",
+        r"\bpasa el cv\b",
+        r"\bquiero el cv\b",
+    ]
+    return any(re.search(p, norm) for p in patterns)
+
+
+def is_personal_info_inquiry(text: str) -> bool:
+    import re
+    from backend.app.core.llm_client import _normalize_text
+    norm = _normalize_text(text)
+    patterns = [
+        r"\bdonde vive\b",
+        r"\bdonde vives\b",
+        r"\btelefono personal\b",
+        r"\btelefono de nilton\b",
+        r"\bcuanto cobra\b",
+        r"\bsalario\b",
+        r"\bemail personal\b",
+        r"\bcorreo personal\b",
+        r"\bdireccion\b",
+    ]
+    return any(re.search(p, norm) for p in patterns)
 
 
 class ChatResponse(BaseModel):
@@ -90,6 +148,157 @@ async def chat_endpoint(request: ChatRequest):
             audit_status="REJECTED",
         )
 
+    # 1.5. Session tracking & CV Request Slot-Filling Flow
+    session = get_chat_session(request.session_id or "default")
+    cv_flow = session["cv_flow"]
+
+    if is_cv_request(request.message) or cv_flow["active"]:
+        from backend.app.agents import Mensajerito
+        from backend.app.routers.contact import notifier_adapter
+
+        if not cv_flow["active"]:
+            cv_flow["active"] = True
+            cv_flow["company"] = None
+            cv_flow["name"] = None
+            cv_flow["phone"] = None
+            cv_flow["email"] = None
+            cv_flow["reason"] = None
+
+            if lang == "en":
+                response_text = (
+                    "To process your request for Nilton Bedoya's official CV, please provide a few details so he can review and follow up:\n\n"
+                    "1. What is the **name of your company** or organization?"
+                )
+            else:
+                response_text = (
+                    "Para tramitar la solicitud del CV oficial de Nilton Bedoya, te pediré unos datos para que él pueda contactarte:\n\n"
+                    "1. ¿Cuál es el **nombre de tu empresa** u organización?"
+                )
+            agent_output = {"agent": "Nexus", "response": response_text}
+            audit: AuditVerdict = await auditor.audit(agent_output, output_type="general")
+            return ChatResponse(
+                response=response_text,
+                agent="Nexus",
+                grounding_score=1.0,
+                audit_status=audit.status,
+            )
+
+        # Slot filling turn: fill the next missing slot
+        msg_clean = request.message.strip()
+        if cv_flow["company"] is None:
+            cv_flow["company"] = msg_clean
+        elif cv_flow["name"] is None:
+            cv_flow["name"] = msg_clean
+        elif cv_flow["phone"] is None:
+            cv_flow["phone"] = msg_clean
+        elif cv_flow["email"] is None:
+            cv_flow["email"] = msg_clean
+        elif cv_flow["reason"] is None:
+            cv_flow["reason"] = msg_clean
+
+        # Now check which slot is still missing
+        if cv_flow["company"] is None:
+            prompt = (
+                "1. What is the **name of your company**?"
+                if lang == "en"
+                else "1. ¿Cuál es el **nombre de la empresa**?"
+            )
+        elif cv_flow["name"] is None:
+            prompt = (
+                "Thank you. 2. What is the **contact person's name**?"
+                if lang == "en"
+                else "Gracias. 2. ¿Cuál es el **nombre de la persona de contacto**?"
+            )
+        elif cv_flow["phone"] is None:
+            prompt = (
+                "Understood. 3. What is your **contact phone number**?"
+                if lang == "en"
+                else "Entendido. 3. ¿Un **número de teléfono** de contacto?"
+            )
+        elif cv_flow["email"] is None:
+            prompt = (
+                "Great. 4. What is your **contact email address**?"
+                if lang == "en"
+                else "Perfecto. 4. ¿Cuál es tu **correo electrónico**?"
+            )
+        elif cv_flow["reason"] is None:
+            prompt = (
+                "Lastly, 5. What is the **reason for requesting the CV** (job offer, consulting, project)?"
+                if lang == "en"
+                else "Por último, 5. ¿Cuál es el **motivo de la solicitud** de CV (oferta de empleo, proyecto, consultoría)?"
+            )
+        else:
+            # All 5 slots collected! Dispatch email notification
+            mensajerito = Mensajerito(notifier_adapter=notifier_adapter)
+            transcript = (
+                f"Destinatario: niltonbedoya@hotmail.com. "
+                f"Tipo: Solicitud de CV Oficial via Chat RAG. "
+                f"Empresa: {cv_flow['company']}. "
+                f"Persona de Contacto: {cv_flow['name']}. "
+                f"Telefono: {cv_flow['phone']}. "
+                f"Email: {cv_flow['email']}. "
+                f"Motivo: {cv_flow['reason']}."
+            )
+            await mensajerito.evaluate(
+                transcript,
+                form_data={
+                    "name": cv_flow["name"],
+                    "email": cv_flow["email"],
+                    "company": cv_flow["company"],
+                    "phone": cv_flow["phone"],
+                    "reason": cv_flow["reason"],
+                    "recipient": "niltonbedoya@hotmail.com",
+                    "opportunity_type": "JOB_OFFER",
+                },
+            )
+
+            # Reset flow
+            cv_flow["active"] = False
+            cv_flow["company"] = None
+            cv_flow["name"] = None
+            cv_flow["phone"] = None
+            cv_flow["email"] = None
+            cv_flow["reason"] = None
+
+            if lang == "en":
+                prompt = (
+                    "Thank you very much! I have gathered all your details and sent a direct notification to Nilton Bedoya. "
+                    "Nilton will review the request and get in touch with you shortly."
+                )
+            else:
+                prompt = (
+                    "¡Muchas gracias! He recopilado todos los datos y enviado la solicitud de CV directamente a Nilton Bedoya. "
+                    "Nilton revisará la información y se pondrá en contacto contigo a la brevedad."
+                )
+
+        agent_output = {"agent": "Nexus", "response": prompt}
+        audit: AuditVerdict = await auditor.audit(agent_output, output_type="general")
+        return ChatResponse(
+            response=prompt,
+            agent="Nexus",
+            grounding_score=1.0,
+            audit_status=audit.status,
+        )
+
+    # Increment question count for normal conversation
+    session["question_count"] += 1
+
+    def _maybe_append_cv_note(text: str) -> str:
+        if session["question_count"] >= 5 or is_personal_info_inquiry(request.message):
+            if lang == "en":
+                note = (
+                    "\n\n*(Notice: If you are interested in Nilton's full profile or would like to discuss an opportunity, "
+                    "you can request his official CV directly in this chat or via the contact form).*"
+                )
+            else:
+                note = (
+                    "\n\n*(Nota: Si deseas consultar la trayectoria completa o información personal de Nilton Bedoya, "
+                    "puedes solicitar directamente su CV oficial en este chat o mediante el formulario de contacto).*"
+                )
+            if note not in text:
+                return text + note
+        return text
+
     # 2. Check for conversational openers (greetings / bot capability questions)
     lang_prompt = f"Respond in {('English' if lang == 'en' else 'Spanish')}. Keep it concise.\n\n" + CONVERSATIONAL_SYSTEM_PROMPT
 
@@ -98,6 +307,7 @@ async def chat_endpoint(request: ChatRequest):
         if llm_client.has_live_llm():
             live_response = await llm_client.generate_response(request.message, system_prompt=lang_prompt)
         response_text = live_response or get_deterministic_greeting(lang=lang)
+        response_text = _maybe_append_cv_note(response_text)
         agent_output = {"agent": "Nexus", "response": response_text}
         audit: AuditVerdict = await auditor.audit(agent_output, output_type="general")
         return ChatResponse(
@@ -112,6 +322,7 @@ async def chat_endpoint(request: ChatRequest):
         if llm_client.has_live_llm():
             live_response = await llm_client.generate_response(request.message, system_prompt=lang_prompt)
         response_text = live_response or get_deterministic_capability_intro(lang=lang)
+        response_text = _maybe_append_cv_note(response_text)
         agent_output = {"agent": "Nexus", "response": response_text}
         audit: AuditVerdict = await auditor.audit(agent_output, output_type="general")
         return ChatResponse(
@@ -190,6 +401,14 @@ async def chat_endpoint(request: ChatRequest):
         agent_name = destination
         agent_output = {"agent": destination, "response": response_text}
         output_type = "general"
+
+    # 4.5. Append CV suggestion if user asks personal details or exceeds 5 questions
+    response_text = _maybe_append_cv_note(response_text)
+    if isinstance(agent_output, dict):
+        if "response" in agent_output:
+            agent_output["response"] = response_text
+        elif "answer" in agent_output:
+            agent_output["answer"] = response_text
 
     # 5. Audit with Auditor (binary gate: APPROVED / REJECTED)
     audit: AuditVerdict = await auditor.audit(agent_output, output_type=output_type)

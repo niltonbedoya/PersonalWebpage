@@ -67,7 +67,9 @@ Preguntas sobre cómo está construida esta plataforma y la metodología de inge
 
 ---
 
-## 4. Consultas sobre Trayectoria Profesional y Contacto
+## 4. Consultas sobre Trayectoria Profesional, Privacidad y Solicitud de CV
 
 - ¿Cuál es la síntesis de la trayectoria profesional y áreas de especialización de Nilton Bedoya?
-- ¿Cómo se puede solicitar el currículum vitae o contactar para colaboraciones técnicas y profesionales?
+- ¿Cómo se puede solicitar el currículum vitae (CV) oficial o contactar para colaboraciones técnicas y profesionales?
+- ¿Cuál es el protocolo de privacidad y por qué se requiere indicar empresa, contacto, teléfono, correo y motivo para acceder al CV oficial?
+- ¿Qué sucede tras formular más de 5 preguntas sobre la trayectoria o al pedir información personal en el asistente RAG?

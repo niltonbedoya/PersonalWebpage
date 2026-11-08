@@ -60,4 +60,5 @@ Nilton Bedoya es un Ingeniero Senior con más de 15 años de experiencia técnic
 - **LinkedIn Oficial**: https://www.linkedin.com/in/nilton-bedoya-4b1402150
 - **GitHub Oficial**: https://github.com/niltonbedoya
 - **Portafolio Web (Dashboard)**: Plataforma técnica en vivo con selector bilingüe dinámico y asistente RAG integrado.
-- Para colaboraciones, consultoría o propuestas técnicas, puedes conectar directamente en LinkedIn o solicitar información mediante este asistente RAG.
+- Para colaboraciones, consultoría o propuestas técnicas, puedes conectar directamente en LinkedIn o solicitar el CV oficial mediante el formulario integrado en el asistente RAG (indicando empresa, persona de contacto, teléfono, correo y motivo de solicitud).
+- Política de privacidad y acceso al perfil: El CV oficial no se distribuye de forma automática en el chat público; cuando un usuario acumula más de 5 preguntas sobre trayectoria o solicita datos personales detallados, el asistente RAG le orienta a cursar la solicitud formal del CV oficial.

@@ -11,6 +11,12 @@
   var INPUT_ID = "drawer-rag-input";
   var SEND_ID = "drawer-rag-send";
   var CLOSE_ID = "drawer-rag-close";
+  var CV_CONTAINER_ID = "drawer-cv-form-container";
+  var CV_FORM_ID = "drawer-cv-form";
+  var CV_TOGGLE_ID = "drawer-cv-toggle-btn";
+  var CV_CANCEL_ID = "drawer-cv-cancel-btn";
+  var CV_CLOSE_ID = "drawer-cv-close-btn";
+  var CV_STATUS_ID = "drawer-cv-status";
 
   function el(id) {
     return document.getElementById(id);
@@ -82,6 +88,86 @@
     if (backdrop) { backdrop.classList.remove("open"); }
   }
 
+  function toggleCVForm(show) {
+    var container = el(CV_CONTAINER_ID);
+    if (!container) { return; }
+    if (typeof show === "boolean") {
+      container.hidden = !show;
+    } else {
+      container.hidden = !container.hidden;
+    }
+    var statusEl = el(CV_STATUS_ID);
+    if (statusEl) { statusEl.hidden = true; }
+  }
+
+  function onCVSubmit(event) {
+    event.preventDefault();
+    var companyEl = el("cv-company");
+    var nameEl = el("cv-name");
+    var phoneEl = el("cv-phone");
+    var emailEl = el("cv-email");
+    var reasonEl = el("cv-reason");
+    var honeypotEl = el("cv-honeypot");
+    var statusEl = el(CV_STATUS_ID);
+    var submitBtn = el("drawer-cv-submit-btn");
+
+    var company = companyEl ? companyEl.value.trim() : "";
+    var name = nameEl ? nameEl.value.trim() : "";
+    var phone = phoneEl ? phoneEl.value.trim() : "";
+    var email = emailEl ? emailEl.value.trim() : "";
+    var reason = reasonEl ? reasonEl.value.trim() : "";
+    var honeypot = honeypotEl ? honeypotEl.value.trim() : "";
+
+    if (!company || !name || !phone || !email || !reason) {
+      if (statusEl) {
+        statusEl.textContent = "Por favor completa todos los campos requeridos.";
+        statusEl.style.color = "#ef4444";
+        statusEl.hidden = false;
+      }
+      return;
+    }
+
+    if (submitBtn) { submitBtn.disabled = true; }
+    if (statusEl) {
+      statusEl.textContent = "Enviando solicitud...";
+      statusEl.style.color = "var(--brand-cyan)";
+      statusEl.hidden = false;
+    }
+
+    shared.apiRequest("/contact/cv-request", {
+      method: "POST",
+      body: {
+        company: company,
+        name: name,
+        phone: phone,
+        email: email,
+        reason: reason,
+        honeypot: honeypot
+      }
+    }).then(function (res) {
+      if (submitBtn) { submitBtn.disabled = false; }
+      toggleCVForm(false);
+      if (companyEl) companyEl.value = "";
+      if (nameEl) nameEl.value = "";
+      if (phoneEl) phoneEl.value = "";
+      if (emailEl) emailEl.value = "";
+      if (reasonEl) reasonEl.value = "";
+
+      var curLang = (window.portfolioI18n && window.portfolioI18n.getLanguage) ? window.portfolioI18n.getLanguage() : "es";
+      var msg = curLang === "en"
+        ? "Thank you! Your official CV request has been submitted directly to Nilton Bedoya. He will review your details and contact you shortly."
+        : "¡Muchas gracias! Tu solicitud de CV oficial ha sido enviada directamente a Nilton Bedoya. Nilton revisará los datos de tu empresa y te contactará a la brevedad.";
+      appendMessage(msg, "assistant");
+    }).catch(function (err) {
+      if (submitBtn) { submitBtn.disabled = false; }
+      if (statusEl) {
+        statusEl.textContent = err && err.message ? err.message : "Error al enviar la solicitud.";
+        statusEl.style.color = "#ef4444";
+        statusEl.hidden = false;
+      }
+    });
+  }
+
   function onSend(event) {
     event.preventDefault();
     hideError();
@@ -132,6 +218,16 @@
     if (closeBtn) { closeBtn.addEventListener("click", closeDrawer); }
     if (backdrop) { backdrop.addEventListener("click", closeDrawer); }
     if (form) { form.addEventListener("submit", onSend); }
+
+    var cvToggleBtn = el(CV_TOGGLE_ID);
+    var cvCancelBtn = el(CV_CANCEL_ID);
+    var cvCloseBtn = el(CV_CLOSE_ID);
+    var cvForm = el(CV_FORM_ID);
+
+    if (cvToggleBtn) { cvToggleBtn.addEventListener("click", function () { toggleCVForm(); }); }
+    if (cvCancelBtn) { cvCancelBtn.addEventListener("click", function () { toggleCVForm(false); }); }
+    if (cvCloseBtn) { cvCloseBtn.addEventListener("click", function () { toggleCVForm(false); }); }
+    if (cvForm) { cvForm.addEventListener("submit", onCVSubmit); }
   }
 
   window.drawerRag = { init: init };
