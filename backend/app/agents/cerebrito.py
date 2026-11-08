@@ -49,7 +49,12 @@ class Cerebrito:
         try:
             if context_chunks is None:
                 try:
-                    results = indexer.search(question, db_path=self.db_path, top_k=5)
+                    content_words = [
+                        w for w in question.split()
+                        if not self._tokenize(w).issubset(self._STOPWORDS)
+                    ]
+                    search_query = " ".join(content_words) if content_words else question
+                    results = indexer.search(search_query, db_path=self.db_path, top_k=6)
                 except Exception as search_exc:
                     # No indexable corpus available yet (e.g. default DB not
                     # built): degrade to empty results so the answer reports
@@ -133,8 +138,10 @@ class Cerebrito:
         "funciona", "dime", "cuenta", "cuentame", "explica", "explicame", "habla",
         "hablame", "muestra", "muestrame", "resumen", "resumeme", "detalles",
         "informacion", "proyecto", "proyectos", "solucion", "soluciones", "aporta",
-        "sirve", "hace", "usar", "uso", "usos", "objetivo", "proposito",
+        "sirve", "hace", "hacer", "hago", "usar", "uso", "usos", "objetivo", "proposito",
         "caracteristicas", "ventajas", "beneficios",
+        "te", "me", "nos", "le", "les", "puedo", "puede", "puedes", "podemos", "pueden",
+        "decir", "temas", "tema",
         # English articles, prepositions, conjunctions, auxiliary verbs
         "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of",
         "with", "by", "from", "up", "about", "into", "over", "after", "is", "are",
