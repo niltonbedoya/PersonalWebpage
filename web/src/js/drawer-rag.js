@@ -87,7 +87,7 @@
 
     shared.apiRequest("/chat", {
       method: "POST",
-      body: { message: message, intent_category: "rag" }
+      body: { message: message, intent_category: "TECHNICAL_PROFILE" }
     }).then(function (response) {
       var text = "";
       if (response && typeof response.response === "string") { text = response.response; }
