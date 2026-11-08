@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spoke Software &mdash; Soluciones IA &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
-  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_photos_v6">
-  <script src="/static/src/js/shared.js?v=20261108_photos_v6" defer></script>
+  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_python_v8">
+  <script src="/static/src/js/shared.js?v=20261108_python_v8" defer></script>
 </head>
 <body style="background: #090d16; color: #f8fafc;">
 
@@ -29,16 +29,56 @@
   </header>
 
   <div class="container">
-    <section class="hero">
-      <span class="hero-pill hero-pill-violet"><span class="status-dot"></span> Cyber-Intelligence &bull; Zero-Cost LLM Routing</span>
-      <h1>Spoke Software &mdash; <span class="hero-highlight">Ingenieria &amp; IA</span></h1>
-      <p>Casos de estudio de software industrial, sistemas multiagente desacoplados, arquitecturas limpias y demostraciones controladas con inferencia de costo cero.</p>
-      <p><em>v1 sin APIs vivas expuestas. Demostraciones pregrabadas y sanitizadas bajo diseno defensivo.</em></p>
+    <section class="hero hero-split">
+      <div class="hero-split-text">
+        <span class="hero-pill hero-pill-violet"><span class="status-dot"></span> Cyber-Intelligence &bull; Zero-Cost LLM Routing</span>
+        <h1>Spoke Software &mdash; <span class="hero-highlight">Ingenieria &amp; IA</span></h1>
+        <p>Casos de estudio de software industrial, sistemas multiagente desacoplados, arquitecturas limpias y demostraciones controladas con inferencia de costo cero.</p>
+        <p><em>v1 sin APIs vivas expuestas. Demostraciones pregrabadas y sanitizadas bajo diseno defensivo.</em></p>
+        <div style="margin-top: 1.25rem;">
+          <button class="btn btn-gradient" aria-controls="drawer-rag">Consultar al Asistente RAG</button>
+        </div>
+      </div>
+      <div class="hero-portrait-wrap">
+        <div class="code-window">
+          <div class="code-window-header">
+            <div class="code-window-dots">
+              <span class="dot dot-red"></span>
+              <span class="dot dot-yellow"></span>
+              <span class="dot dot-green"></span>
+            </div>
+            <span class="code-window-title">core/llm_routing.py</span>
+            <span class="code-window-badge">Python 3.12</span>
+          </div>
+          <div class="code-window-body">
+            <pre><code><span class="syn-dec">@router.post</span>(<span class="syn-str">"/chat"</span>, <span class="syn-prm">response_model</span>=<span class="syn-cls">AgentVerdict</span>)
+<span class="syn-kwd">async def</span> <span class="syn-fn">dispatch_request</span>(query: <span class="syn-cls">UserPrompt</span>):
+    <span class="syn-com"># Perimeter guardrail &lt; 150ms</span>
+    guard = <span class="syn-kwd">await</span> Centinela.<span class="syn-fn">evaluate</span>(query.text)
+    <span class="syn-kwd">if not</span> guard.allowed:
+        <span class="syn-kwd">return</span> guard.redirect()
+
+    <span class="syn-com"># Zero-cost dynamic LLM routing</span>
+    agent = Nexus.<span class="syn-fn">route</span>(query.intent)
+    <span class="syn-kwd">return await</span> agent.<span class="syn-fn">execute</span>(
+        <span class="syn-prm">primary</span>=<span class="syn-cls">Provider</span>.GOOGLE_AI,
+        <span class="syn-prm">fallback</span>=<span class="syn-cls">Provider</span>.GROQ
+    )</code></pre>
+          </div>
+        </div>
+      </div>
     </section>
 
     <h2>Casos de Estudio</h2>
     <div class="grid cols-2">
       <div class="card-soft fade-in">
+        <div class="photo-frame">
+          <img src="/static/assets/projects/tickets-dashboard.png" alt="Dashboard de Tickets y Despacho Tecnico">
+          <div class="photo-badge">
+            <span class="photo-badge-cyan">Field Service SaaS</span>
+            <span class="photo-badge-sub">M&eacute;tricas de Despacho &bull; SLAs</span>
+          </div>
+        </div>
         <div>
           <span class="code-tag">cs-tickets</span>
           <h3>Sistema de Tickets de Servicio</h3>
@@ -75,6 +115,13 @@
       </div>
 
       <div class="card-soft fade-in" style="animation-delay: 0.4s;">
+        <div class="photo-frame">
+          <img src="/static/assets/projects/cardionutri-home.png" alt="Panel Clinico Semanal CardioNutri">
+          <div class="photo-badge">
+            <span class="photo-badge-cyan">CardioNutri IoT</span>
+            <span class="photo-badge-sub">Telemetr&iacute;a Cl&iacute;nica &bull; React Native</span>
+          </div>
+        </div>
         <div>
           <span class="code-tag">cs-health</span>
           <h3>Plataforma IoT de Salud</h3>

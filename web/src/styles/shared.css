@@ -860,6 +860,88 @@ li::before {
   }
 }
 
+/* ---------- Code Editor Window (Hero Visual & Technical Artifact) ---------- */
+.code-window {
+  background: #0d131f;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 16px 36px -6px rgba(0, 0, 0, 0.7), 0 0 24px -2px rgba(139, 92, 246, 0.18);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.code-window:hover {
+  border-color: var(--brand-violet);
+  box-shadow: 0 20px 42px -6px rgba(0, 0, 0, 0.8), 0 0 32px 0 rgba(139, 92, 246, 0.3);
+  transform: translateY(-2px);
+}
+
+.code-window-header {
+  background: #080c14;
+  padding: 0.55rem 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.code-window-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.dot-red { background: #ef4444; }
+.dot-yellow { background: #f59e0b; }
+.dot-green { background: #10b981; }
+
+.code-window-title {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  font-weight: 500;
+}
+
+.code-window-badge {
+  background: rgba(139, 92, 246, 0.15);
+  color: var(--brand-violet-hover);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  border-radius: 4px;
+  font-size: 0.65rem;
+  padding: 0.1rem 0.4rem;
+  font-weight: 600;
+}
+
+.code-window-body {
+  padding: 1rem 1.15rem;
+  color: #cbd5e1;
+  overflow-x: auto;
+}
+
+.code-window-body pre {
+  margin: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+/* Syntax Highlighting */
+.syn-kwd { color: #c084fc; font-weight: 600; }
+.syn-fn  { color: #38bdf8; }
+.syn-str { color: #4ade80; }
+.syn-cls { color: #facc15; }
+.syn-com { color: #64748b; font-style: italic; }
+.syn-dec { color: #38bdf8; font-weight: 600; }
+.syn-prm { color: #fb923c; }
+
 /* ---------- Integrated Media & Photo Frames (Ergonomic & GPU Accelerated) ---------- */
 .photo-frame {
   position: relative;
