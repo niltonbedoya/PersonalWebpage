@@ -24,7 +24,14 @@ git reset --hard origin/main
 
 # 2. Reconstruir índice RAG
 log "Reconstruyendo índice RAG..."
-python3 -c "from backend.app.db.indexer import index_corpus; index_corpus()" || true
+if [ -f "${REPO_DIR}/venv/bin/python" ]; then
+  PYTHON_BIN="${REPO_DIR}/venv/bin/python"
+elif [ -f "${REPO_DIR}/.venv/bin/python" ]; then
+  PYTHON_BIN="${REPO_DIR}/.venv/bin/python"
+else
+  PYTHON_BIN="python3"
+fi
+${PYTHON_BIN} -c "from backend.app.db.indexer import index_corpus; index_corpus()" || true
 
 # 3. Reiniciar el servicio FastAPI (systemd user)
 log "Reiniciando servicio ${SERVICE_NAME}..."
