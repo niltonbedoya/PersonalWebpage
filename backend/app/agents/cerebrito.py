@@ -114,10 +114,28 @@ class Cerebrito:
     def _tokenize(text: str) -> set:
         """Lowercase whitespace tokens with surrounding punctuation stripped."""
         return {
-            token.strip(".,;:!?()[]\"'")
+            token.strip(".,;:!?()[]\"'¿¡«»")
             for token in str(text).lower().split()
-            if token.strip(".,;:!?()[]\"'")
+            if token.strip(".,;:!?()[]\"'¿¡«»")
         }
+
+    # Common Spanish and English conversational stopwords to prevent lowering
+    # grounding score term coverage when queries are phrased naturally.
+    _STOPWORDS = {
+        # Spanish
+        "de", "la", "el", "en", "y", "que", "como", "un", "una", "unos", "unas",
+        "por", "para", "con", "del", "al", "los", "las", "se", "es", "su", "sus",
+        "o", "u", "este", "esta", "estos", "estas", "a", "ante", "bajo", "cabe",
+        "desde", "hacia", "hasta", "segun", "sin", "so", "sobre", "tras", "cual",
+        "cuales", "quien", "quienes", "donde", "cuando", "cuanto", "cuanta",
+        "cuantos", "cuantas", "funciona", "dime", "cuenta", "explicame",
+        # English
+        "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", "of",
+        "with", "by", "from", "up", "about", "into", "over", "after", "is", "are",
+        "was", "were", "be", "been", "being", "have", "has", "had", "do", "does",
+        "did", "how", "what", "which", "who", "when", "where", "why", "can",
+        "could", "will", "would", "should", "tell", "explain",
+    }
 
     def _compute_grounding_score(self, question: str, results: List[dict]) -> float:
         """Deterministic grounding score in [0, 1] from retrieval quality.
@@ -127,9 +145,12 @@ class Cerebrito:
         the best hit is relative to the other hits). Both terms come from the
         real sqlite-vec search results; nothing is hardcoded.
         """
-        query_terms = self._tokenize(question)
-        if not query_terms or not results:
+        all_terms = self._tokenize(question)
+        if not all_terms or not results:
             return 0.0
+
+        content_terms = {t for t in all_terms if t not in self._STOPWORDS}
+        query_terms = content_terms or all_terms
 
         union = " ".join(chunk.get("content", "") for chunk in results).lower()
         union_terms = self._tokenize(union)

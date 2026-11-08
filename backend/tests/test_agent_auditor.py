@@ -87,3 +87,25 @@ def test_status_always_approved_or_rejected():
         verdict = _audit(agent, output, ot)
         assert verdict.status in ("APPROVED", "REJECTED"), f"invalid status {verdict.status!r} for {output}"
         assert isinstance(verdict, AuditVerdict)
+
+
+def test_auditor_avoids_substring_false_positives():
+    agent = Auditor()
+    valid_texts = [
+        "Aplicamos una metodología rigurosa de control de calidad.",
+        "Desarrollo de software inteligente con microservicios.",
+        "El objetivo es cumplir la meta de entregas acordada.",
+        "Implementado con Google AI Studio como proveedor de inferencia.",
+    ]
+    for text in valid_texts:
+        verdict = _audit(agent, {"answer": text}, output_type="general")
+        assert verdict.status == "APPROVED", f"Falsely rejected: {text} - {verdict.failure_reasons}"
+
+    invalid_texts = [
+        "Compre un Apple en la tienda.",
+        "Inversión en acciones de Tesla Motors.",
+        "Servidores alojados en Microsoft azure.",
+    ]
+    for text in invalid_texts:
+        verdict = _audit(agent, {"answer": text}, output_type="general")
+        assert verdict.status == "REJECTED", f"Should reject brand: {text}"

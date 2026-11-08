@@ -1,7 +1,7 @@
 """Auditor — Agente Auditor / QA: Binary Gatekeeper."""
 
 import logging
-
+import re
 from typing import List
 
 logger = logging.getLogger(__name__)
@@ -52,12 +52,33 @@ class Auditor:
                 status = "REJECTED"
 
             # 3. Check for real brand names (marcas reales no permitidas)
+            # Use regex whole-word boundaries so words like 'inteligente', 'metodología'
+            # or 'parámetro' are not falsely matched as 'intel' or 'meta'.
+            # Corporate brand 'meta' is checked as 'meta platforms' or 'meta ai',
+            # since 'meta' is a common Spanish noun (target/goal).
+            # 'google' is excluded when referencing approved provider 'google ai studio' / 'google cloud'.
             brand_patterns = [
-                "apple", "google", "microsoft", "samsung", "tesla", "amazon",
-                "meta", "facebook", "nvidia", "intel", "ibm", "oracle", "adobe",
-                "netflix", "spotify",
+                r"\bapple\b",
+                r"\bgoogle(?!\s+(?:ai\s+studio|cloud))\b",
+                r"\bmicrosoft\b",
+                r"\bsamsung\b",
+                r"\btesla\b",
+                r"\bamazon\b",
+                r"\bmeta\s+(?:platforms|inc|ai|quest)\b",
+                r"\bfacebook\b",
+                r"\bnvidia\b",
+                r"\bintel\b",
+                r"\bibm\b",
+                r"\boracle\b",
+                r"\badobe\b",
+                r"\bnetflix\b",
+                r"\bspotify\b",
             ]
-            detected_brands = [b for b in brand_patterns if b in output_str]
+            detected_brands = []
+            for bp in brand_patterns:
+                m = re.search(bp, output_str, re.IGNORECASE)
+                if m:
+                    detected_brands.append(m.group(0))
             if detected_brands:
                 failure_reasons.append(
                     f"Real brand name detected: {', '.join(detected_brands)}"

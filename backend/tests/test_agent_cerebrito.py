@@ -64,6 +64,17 @@ def test_grounding_score_from_related_chunks_is_high():
     assert payload.is_fully_grounded is True
 
 
+def test_grounding_score_with_conversational_stopwords_retains_high_score():
+    agent = Cerebrito()
+    payload = _run(
+        agent,
+        "¿Cómo funciona la soldadura por onda THT en el horno con pasta y temperatura?",
+        RELATED_CHUNKS,
+    )
+    assert payload.grounding_score >= 0.85
+    assert payload.is_fully_grounded is True
+
+
 def test_grounding_score_from_unrelated_chunks_is_low():
     # A hardcoded grounding_score (e.g. 0.9) would wrongly satisfy >= 0.85
     # here; the score must drop below 0.85 when chunks share no query terms.
