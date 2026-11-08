@@ -8,6 +8,10 @@ REPO_DIR="${REPO_DIR:-${HOME}/Proyectos/PersonalWebpage}"
 SERVICE_NAME="${SERVICE_NAME:-personalwebpage.service}"
 LOG_FILE="${HOME}/personalwebpage-deploy.log"
 
+USER_ID="$(id -u)"
+export XDG_RUNTIME_DIR="${XDG_RUNTIME_DIR:-/run/user/${USER_ID}}"
+export DBUS_SESSION_BUS_ADDRESS="${DBUS_SESSION_BUS_ADDRESS:-unix:path=/run/user/${USER_ID}/bus}"
+
 log() {
   echo "[$(date '+%Y-%m-%d %H:%M:%S')] $*" | tee -a "${LOG_FILE}"
 }
@@ -35,11 +39,11 @@ ${PYTHON_BIN} -c "from backend.app.db.indexer import index_corpus; index_corpus(
 
 # 3. Reiniciar el servicio FastAPI (systemd user)
 log "Reiniciando servicio ${SERVICE_NAME}..."
-systemctl --user restart "${SERVICE_NAME}" || sudo systemctl restart "${SERVICE_NAME}" || true
+systemctl --user restart "${SERVICE_NAME}" || sudo -n systemctl restart "${SERVICE_NAME}" || true
 
 # 4. Verificar que el servicio esté vivo
 sleep 2
-if systemctl --user is-active --quiet "${SERVICE_NAME}" || systemctl is-active --quiet "${SERVICE_NAME}"; then
+if systemctl --user is-active --quiet "${SERVICE_NAME}" || sudo -n systemctl is-active --quiet "${SERVICE_NAME}"; then
   log "OK: Servicio ${SERVICE_NAME} está activo."
 else
   log "ERROR: El servicio ${SERVICE_NAME} no pudo iniciarse."
