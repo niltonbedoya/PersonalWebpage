@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spoke Industrial &mdash; SMT/THT &mdash; Nilton Bedoya</title>
   <link rel="icon" type="image/x-icon" href="/static/assets/logos/logo_icon.ico">
-  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_photos_v5">
-  <script src="/static/src/js/shared.js?v=20261108_photos_v5" defer></script>
+  <link rel="stylesheet" href="/static/src/styles/shared.css?v=20261108_photos_v6">
+  <script src="/static/src/js/shared.js?v=20261108_photos_v6" defer></script>
 </head>
 <body style="background: #090d16; color: #f8fafc;">
 
@@ -29,34 +29,55 @@
   </header>
 
   <div class="container">
-    <section class="hero">
-      <span class="hero-pill"><span class="status-dot"></span> Cleanroom Engineering &bull; High Reliability</span>
-      <h1>Spoke Industrial &mdash; <span class="hero-highlight">SMT/THT</span></h1>
-      <p>Maquinaria de inspeccion optica 3D, rayos X en linea, sistemas termicos, soldadura, handling y metalurgia para procesos avanzados de manufactura electronica.</p>
-      <p><em>Limite de alcance: exclusion estricta de maquinaria Pick & Place.</em></p>
+    <section class="hero hero-split">
+      <div class="hero-split-text">
+        <span class="hero-pill"><span class="status-dot"></span> Cleanroom Engineering &bull; High Reliability</span>
+        <h1>Spoke Industrial &mdash; <span class="hero-highlight">SMT/THT</span></h1>
+        <p>Maquinaria de inspeccion optica 3D, rayos X en linea, ensayos destructivos y no destructivos de adherencia (Bond Testing), sistemas termicos, soldadura, handling y metalurgia para manufactura electronica de alta fiabilidad.</p>
+        <p><em>Limite de alcance: exclusion estricta de maquinaria Pick & Place.</em></p>
+      </div>
+      <div class="hero-portrait-wrap">
+        <div class="hero-portrait-frame">
+          <img src="/static/assets/photos/cleanroom-high-level-gowning.jpg" alt="Nilton Bedoya en esclusa de sala limpia de alta pureza" class="hero-portrait-img">
+          <div class="photo-badge">
+            <span class="photo-badge-cyan">Sala Limpia Alta Pureza &bull; Gowning</span>
+            <span class="photo-badge-sub">Protocolos ISO &bull; ESD Safe</span>
+          </div>
+        </div>
+      </div>
     </section>
 
-    <h2>Sistemas de Inspeccion</h2>
+    <h2>Sistemas de Inspeccion y Ensayo de Fiabilidad</h2>
     <div class="grid cols-3">
       <div class="card">
+        <div class="photo-frame">
+          <img src="/static/assets/photos/smt-cad-pcb-stencil-engineering.jpg" alt="Preparacion Gerber para Inspeccion PARMI 3D SPI">
+          <div class="photo-badge">
+            <span class="photo-badge-cyan">PARMI 3D SPI</span>
+            <span class="photo-badge-sub">Programacion Gerber &bull; Automocion</span>
+          </div>
+        </div>
         <span class="tag-tech tag-cyan">3D SPI &middot; AOI &middot; PSI</span>
         <h3>Parmi</h3>
         <ul>
-          <li>3D SPI &mdash; inspeccion volumetrica de pasta de soldar</li>
+          <li>3D SPI &mdash; inspeccion volumetrica de pasta y programacion Gerber</li>
           <li>3D AOI &mdash; inspeccion de componentes y calidad de soldadura</li>
           <li>3D PSI &mdash; inspeccion de conformal coating y espesores</li>
         </ul>
       </div>
+
       <div class="card">
         <span class="tag-tech tag-cyan">Optica 2D</span>
         <h3>Marantz</h3>
         <p>Inspeccion optica 2D pre-reflow y post-reflow de componentes SMD y THT en lineas de alta cadencia.</p>
       </div>
+
       <div class="card">
         <span class="tag-tech tag-cyan">Soldadura THT</span>
         <h3>Ersa VERSAEYE</h3>
         <p>Inspeccion optica especializada de uniones de soldadura selectiva y wave soldering con control angular.</p>
       </div>
+
       <div class="card">
         <div class="photo-frame">
           <img src="/static/assets/photos/smt-matrix-xray-inspection.jpg" alt="Inspeccion Matrix Rayos X AXI">
@@ -69,14 +90,21 @@
         <h3>Matrix</h3>
         <p>Inspeccion por Rayos X en linea (AXI) para soldaduras ocultas (BGA, QFN, calculo automatizado de voiding).</p>
       </div>
+
       <div class="card">
         <div class="photo-frame">
-          <img src="/static/assets/photos/smt-cad-pcb-stencil-engineering.jpg" alt="Ingenieria de Stencils y Prototipado MPM">
+          <img src="/static/assets/photos/smt-nordson-bond-tester-bench.jpg" alt="Nordson DAGE Stellar 4000 Bond Tester">
           <div class="photo-badge">
-            <span class="photo-badge-cyan">CAD &bull; Stencils</span>
-            <span class="photo-badge-sub">Prototipado PCB &bull; Automocion</span>
+            <span class="photo-badge-cyan">Nordson DAGE</span>
+            <span class="photo-badge-sub">Stellar 4000 &bull; Bond Testing</span>
           </div>
         </div>
+        <span class="tag-tech tag-cyan">Wire Pull &middot; Ball Shear</span>
+        <h3>Nordson DAGE</h3>
+        <p>Ensayos destructivos y no destructivos de adherencia mecanica (Wire Pull, Ball Shear, Cold Bump Pull) para validacion de fiabilidad de interconexiones.</p>
+      </div>
+
+      <div class="card">
         <span class="tag-tech tag-cyan">Screen Printing</span>
         <h3>MPM</h3>
         <p>Impresoras de pasta de alta precision (AccuFlex, Momentum), alineacion por vision y control reologico continuo.</p>
@@ -123,11 +151,25 @@
       </div>
     </div>
 
-    <h2>Handling y Automatizacion</h2>
-    <div class="card">
-      <span class="tag-tech tag-cyan">SMEMA &middot; Line Automation</span>
-      <h3>Sistemas de Transporte y Control</h3>
-      <p>Cargadores, descargadores, buffers FIFO/LIFO, cintas transportadoras sincronizadas, diagnostico y programacion de PLCs industriales para operacion 24/7 sin paradas.</p>
+    <h2>Handling, Automatizacion y Diagnostico Hardware</h2>
+    <div class="grid cols-2">
+      <div class="card">
+        <span class="tag-tech tag-cyan">SMEMA &middot; Line Automation</span>
+        <h3>Sistemas de Transporte y Control</h3>
+        <p>Cargadores, descargadores, buffers FIFO/LIFO, cintas transportadoras sincronizadas, diagnostico y programacion de PLCs industriales para operacion 24/7 sin paradas.</p>
+      </div>
+      <div class="card">
+        <div class="photo-frame">
+          <img src="/static/assets/photos/smt-nordson-bond-tester-internals.jpg" alt="Diagnostico de electronica y calibracion Nordson DAGE">
+          <div class="photo-badge">
+            <span class="photo-badge-cyan">Hardware &bull; Calibracion</span>
+            <span class="photo-badge-sub">Nordson DAGE &bull; Electronica &amp; Celdas</span>
+          </div>
+        </div>
+        <span class="tag-tech tag-cyan">Diagnostico Electromecanico</span>
+        <h3>Mantenimiento y Calibracion de Precision</h3>
+        <p>Intervencion directa a nivel de placa electronica, fuentes de alimentacion, buses de control y calibracion de celda de carga en equipos criticos.</p>
+      </div>
     </div>
 
     <h2>Presencia y Ecosistema Industrial</h2>
