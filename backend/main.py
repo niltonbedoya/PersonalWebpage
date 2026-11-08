@@ -6,7 +6,8 @@ Main application assembling all routers, WebSocket support, and the multi-agent 
 import os
 from pathlib import Path
 
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
+from fastapi.responses import RedirectResponse
 import asyncio
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -85,8 +86,11 @@ async def websocket_status_endpoint(websocket: WebSocket):
 
 # Root endpoint
 @app.get("/")
-async def root():
-    """Root endpoint returning basic app info."""
+async def root(request: Request):
+    """Root endpoint: redirects browser to the interactive dashboard, returns JSON for API clients."""
+    accept = request.headers.get("accept", "")
+    if "text/html" in accept or "*/*" in accept:
+        return RedirectResponse(url="/static/pages/index.html", status_code=307)
     return {
         "message": "Showcase Platform API with WebSockets",
         "version": "0.1.0",

@@ -179,7 +179,21 @@ def test_html_pages_parse_without_unclosed_tags(client: TestClient, page: str):
     _assert_well_formed(body, page)
 
 
-# --- /health ---------------------------------------------------------------
+# --- Root redirect to dashboard -------------------------------------------
+
+def test_root_redirects_browser_to_index_html(client: TestClient):
+    response = client.get("/", headers={"accept": "text/html"}, follow_redirects=False)
+    assert response.status_code == 307
+    assert response.headers["location"] == "/static/pages/index.html"
+
+
+def test_root_returns_json_for_api_clients(client: TestClient):
+    response = client.get("/", headers={"accept": "application/json"})
+    assert response.status_code == 200
+    data = response.json()
+    assert "message" in data
+    assert "Showcase Platform" in data["message"]
+
 
 def test_health_returns_ok_agents_contracts_zero_cost(client: TestClient):
     response = _get(client, "/health")
