@@ -63,8 +63,6 @@ async def chat_endpoint(request: ChatRequest):
 
     if not verdict.is_allowed:
         # Blocked by guardrail -> guardrail redirect, audit REJECTED.
-        # The guardrail itself rejected the prompt, so the binary gate is
-        # REJECTED regardless of the redirect text's general-output assessment.
         return ChatResponse(
             response=verdict.redirect_message
             or "Solicitud bloqueada por el guardrail.",
@@ -73,10 +71,48 @@ async def chat_endpoint(request: ChatRequest):
             audit_status="REJECTED",
         )
 
-    # 2. Route to destination agent (Nexus routing map)
+    # 2. Check for conversational openers (greetings / bot capability questions)
+    from backend.app.core.llm_client import (
+        LLMClient,
+        is_greeting,
+        is_capability_inquiry,
+        get_deterministic_greeting,
+        get_deterministic_capability_intro,
+    )
+    llm_client = LLMClient()
+
+    if is_greeting(request.message):
+        live_response = None
+        if llm_client.has_live_llm():
+            live_response = await llm_client.generate_response(request.message)
+        response_text = live_response or get_deterministic_greeting()
+        agent_output = {"agent": "Nexus", "response": response_text}
+        audit: AuditVerdict = await auditor.audit(agent_output, output_type="general")
+        return ChatResponse(
+            response=response_text,
+            agent="Nexus",
+            grounding_score=1.0,
+            audit_status=audit.status,
+        )
+
+    if is_capability_inquiry(request.message):
+        live_response = None
+        if llm_client.has_live_llm():
+            live_response = await llm_client.generate_response(request.message)
+        response_text = live_response or get_deterministic_capability_intro()
+        agent_output = {"agent": "Nexus", "response": response_text}
+        audit: AuditVerdict = await auditor.audit(agent_output, output_type="general")
+        return ChatResponse(
+            response=response_text,
+            agent="Nexus",
+            grounding_score=1.0,
+            audit_status=audit.status,
+        )
+
+    # 3. Route to destination agent (Nexus routing map)
     destination = await nexus.route(request.intent_category, {})
 
-    # 3. Get response from the destination agent
+    # 4. Get response from the destination agent
     if destination == "Cerebrito":
         payload = await cerebrito.query(request.message)
         grounding_score = payload.grounding_score
@@ -92,7 +128,13 @@ async def chat_endpoint(request: ChatRequest):
         if payload.is_fully_grounded:
             response_text = payload.answer
         else:
-            response_text = (
+            live_response = None
+            if llm_client.has_live_llm():
+                live_response = await llm_client.generate_response(
+                    request.message,
+                    rag_context="\n".join(c.get("content", "") for c in payload.cited_sources) if payload.cited_sources else None
+                )
+            response_text = live_response or (
                 "No dispongo de detalles específicos sobre ese punto en el corpus verificado.\n\n"
                 "Para conocer la experiencia técnica de Nilton Bedoya, te sugiero consultar sobre:\n"
                 "• Electrónica SMT/THT (Inspección 3D Parmi/Marantz, Rayos X Matrix, hornos Ersa).\n"
@@ -108,7 +150,7 @@ async def chat_endpoint(request: ChatRequest):
         agent_output = {"agent": destination, "response": response_text}
         output_type = "general"
 
-    # 4. Audit with Auditor (binary gate: APPROVED / REJECTED)
+    # 5. Audit with Auditor (binary gate: APPROVED / REJECTED)
     audit: AuditVerdict = await auditor.audit(agent_output, output_type=output_type)
 
     return ChatResponse(

@@ -104,3 +104,35 @@ def test_chat_invalid_intent_category_returns_422():
     )
 
     assert resp.status_code == 422, resp.text
+
+
+# --- Conversational openers (Greetings & Capabilities) ---------------------
+
+
+def test_chat_greeting_returns_warm_guided_response():
+    """Greeting messages return a warm conversational response from Nexus."""
+    resp = client.post(
+        "/chat/",
+        json={"message": "Hola, ¿cómo estás?", "intent_category": "TECHNICAL_PROFILE"},
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["agent"] == "Nexus"
+    assert data["audit_status"] == "APPROVED"
+    assert "Hola" in data["response"] or "asistente" in data["response"]
+    assert "No dispongo de detalles" not in data["response"]
+
+
+def test_chat_capability_inquiry_returns_capabilities():
+    """Asking what the bot can do returns a guided overview of the portfolio."""
+    resp = client.post(
+        "/chat/",
+        json={"message": "¿Quién eres y qué haces?", "intent_category": "TECHNICAL_PROFILE"},
+    )
+    assert resp.status_code == 200, resp.text
+    data = resp.json()
+    assert data["agent"] == "Nexus"
+    assert data["audit_status"] == "APPROVED"
+    assert "asistente" in data["response"] or "portfolio" in data["response"]
+    assert "Electrónica" in data["response"] or "Software" in data["response"]
+
