@@ -153,6 +153,19 @@ def test_each_page_has_drawer_trigger(client: TestClient, page: str):
     assert 'aria-controls="drawer-rag"' in body, f"{page}: drawer trigger missing"
 
 
+@pytest.mark.parametrize("page", list(PAGES.values()))
+def test_each_page_has_mobile_bottom_navigation(client: TestClient, page: str):
+    body = _get(client, page).text
+    assert 'class="mobile-bottom-nav"' in body, f"{page}: mobile bottom navigation missing"
+
+
+def test_index_has_editorial_mobile_entrypoint(client: TestClient):
+    body = _get(client, PAGES["index"]).text
+    assert 'class="mobile-editorial-hero"' in body
+    assert 'class="mobile-editorial-actions"' in body
+    assert 'data-i18n="mobile.editorial.title"' in body
+
+
 # --- Page-specific content --------------------------------------------------
 
 def test_index_has_news_feed_container(client: TestClient):

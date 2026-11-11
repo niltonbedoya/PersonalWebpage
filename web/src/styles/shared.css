@@ -1027,6 +1027,12 @@ li::before {
   background: #090d16;
 }
 
+/* ---------- Mobile Editorial Entry Point ---------- */
+.mobile-editorial-hero,
+.mobile-bottom-nav {
+  display: none;
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 768px) {
   .brand-header-inner {
@@ -1128,6 +1134,84 @@ li::before {
     border-radius: 10px;
   }
 
+  .mobile-editorial-hero {
+    display: block;
+    padding: 1rem 0 0.25rem;
+  }
+
+  .mobile-editorial-kicker {
+    color: var(--muted);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .mobile-editorial-hero h1 {
+    max-width: 18rem;
+    margin-top: 0.55rem;
+    font-size: clamp(2rem, 10vw, 2.65rem);
+    line-height: 1.02;
+    letter-spacing: -0.055em;
+  }
+
+  .mobile-editorial-hero h1 span {
+    color: var(--brand-cyan);
+  }
+
+  .mobile-editorial-hero > p {
+    margin-top: 0.9rem;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .mobile-editorial-feature {
+    margin-top: 1.1rem;
+    padding: 1rem;
+    border: 1px solid rgba(14, 165, 233, 0.28);
+    border-radius: 16px;
+    background: linear-gradient(135deg, #13283a, #171d39);
+  }
+
+  .mobile-editorial-feature > span {
+    color: #7dd3fc;
+    font-size: 0.66rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .mobile-editorial-feature strong {
+    display: block;
+    margin-top: 0.45rem;
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  .mobile-editorial-feature p {
+    margin-top: 0.45rem;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .mobile-editorial-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    margin-top: 0.9rem;
+  }
+
+  .mobile-editorial-actions .btn {
+    justify-content: center;
+    min-height: 46px;
+    padding-inline: 0.7rem;
+    text-align: center;
+  }
+
+  .mobile-editorial-hero + .hero {
+    margin-top: 1.1rem;
+  }
+
   .hero-split {
     gap: 1rem;
   }
@@ -1205,6 +1289,58 @@ li::before {
     width: 100%;
     max-width: 100vw;
     border-left: none;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 150;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.25rem;
+    padding: 0.6rem 0.7rem calc(0.7rem + env(safe-area-inset-bottom));
+    background: rgba(9, 13, 22, 0.95);
+    border-top: 1px solid var(--border);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .mobile-bottom-nav a,
+  .mobile-bottom-nav button {
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    min-height: 42px;
+    padding: 0.2rem 0.1rem;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .mobile-bottom-nav a.active,
+  .mobile-bottom-nav a:hover,
+  .mobile-bottom-nav button:hover {
+    color: var(--text);
+  }
+
+  .mobile-bottom-nav span {
+    color: currentColor;
+    font-size: 0.58rem;
+    line-height: 1;
+  }
+
+  .mobile-bottom-nav small {
+    font-size: 0.66rem;
+    line-height: 1;
+  }
+
+  body {
+    padding-bottom: 4.8rem;
   }
 
   #drawer-rag-messages {
