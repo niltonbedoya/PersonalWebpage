@@ -160,6 +160,16 @@ def test_index_has_news_feed_container(client: TestClient):
     assert 'id="news-feed"' in body, "index.html: news-feed container missing"
 
 
+def test_shared_styles_include_editorial_mobile_layout(client: TestClient):
+    css = _get(client, "/static/src/styles/shared.css").text
+    assert "@media (max-width: 640px)" in css
+    assert ".brand-header-inner" in css
+    assert ".hero-split" in css
+    assert ".news-grid" in css
+    assert "#drawer-rag" in css
+    assert "overflow-x: hidden" in css
+
+
 def test_industrial_smt_has_scope_boundary_alert(client: TestClient):
     body = _get(client, PAGES["industrial-smt"]).text
     assert "Pick & Place" in body, "industrial-smt.html: scope boundary alert missing"
