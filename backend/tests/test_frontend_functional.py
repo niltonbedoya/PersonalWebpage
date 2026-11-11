@@ -166,6 +166,15 @@ def test_index_has_editorial_mobile_entrypoint(client: TestClient):
     assert 'data-i18n="mobile.editorial.title"' in body
 
 
+def test_mobile_chat_composer_is_explicitly_visible(client: TestClient):
+    body = _get(client, PAGES["index"]).text
+    css = _get(client, "/static/src/styles/shared.css").text
+    assert 'id="drawer-rag-input"' in body
+    assert 'aria-label="Technical portfolio question"' in body
+    assert "caret-color: var(--brand-cyan)" in css
+    assert "height: 100dvh" in css
+
+
 # --- Page-specific content --------------------------------------------------
 
 def test_index_has_news_feed_container(client: TestClient):
