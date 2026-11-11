@@ -186,3 +186,32 @@ def test_news_items_contain_sub_categories_and_valid_source_urls(client: TestCli
     for item in items:
         assert item["source_url"].startswith("https://")
 
+
+def test_news_endpoint_prefers_daily_cache(monkeypatch, client: TestClient):
+    from backend.app.routers import news as news_module
+
+    cached_item = {
+        "id": "live-ai-001",
+        "category": "AI_SOFTWARE",
+        "sub_category": "ai_models",
+        "title": "Daily live AI update",
+        "title_es": "Actualizacion diaria de AI",
+        "title_en": "Daily live AI update",
+        "source_url": "https://example.com/live-ai",
+        "published_at": "2026-11-11T08:00:00+01:00",
+        "summary": "Daily live update.",
+        "summary_es": "Actualizacion diaria.",
+        "summary_en": "Daily live update.",
+        "tags": ["ai-models"],
+    }
+    monkeypatch.setattr(
+        news_module._news_cache,
+        "items",
+        lambda lang, category: [cached_item] if category == "AI_SOFTWARE" else [],
+    )
+
+    response = client.get("/news/?category=AI_SOFTWARE&lang=en")
+
+    assert response.status_code == 200
+    assert response.json()[0]["id"] == "live-ai-001"
+

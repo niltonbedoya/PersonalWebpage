@@ -98,7 +98,8 @@ python -m backend.main
 
 - `GET  /health` — estado global + agentes activos
 - `POST /chat` — chat orquestado por Nexus (guardrail → RAG → auditoría)
-- `GET  /news` — feed curado por Radarito
+- `GET  /news` — feed RSS curado por Radarito, actualizado diariamente a
+  las 08:00 (`Europe/Madrid`) con caché persistente y respaldo offline
 - `POST /contact` — formulario seguro (honeypot + antispam)
 - `WS   /ws/{agent_name}` — canal en tiempo real por agente
 

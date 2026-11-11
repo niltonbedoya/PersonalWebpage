@@ -37,11 +37,17 @@ else
 fi
 ${PYTHON_BIN} -c "from backend.app.db.indexer import index_corpus; index_corpus()" || true
 
-# 3. Reiniciar el servicio FastAPI (systemd user)
+# 3. Actualizar noticias RSS antes de reiniciar. Si la red falla, el backend
+# conserva el cache anterior y mantiene las noticias curadas de respaldo.
+log "Actualizando cache diario de noticias..."
+${PYTHON_BIN} -m backend.app.services.news_refresh || \
+  log "ADVERTENCIA: No se pudo actualizar noticias; se conserva el cache anterior."
+
+# 4. Reiniciar el servicio FastAPI (systemd user)
 log "Reiniciando servicio ${SERVICE_NAME}..."
 systemctl --user restart "${SERVICE_NAME}" || sudo -n systemctl restart "${SERVICE_NAME}" || true
 
-# 4. Verificar que el servicio esté vivo
+# 5. Verificar que el servicio esté vivo
 sleep 2
 if systemctl --user is-active --quiet "${SERVICE_NAME}" || sudo -n systemctl is-active --quiet "${SERVICE_NAME}"; then
   log "OK: Servicio ${SERVICE_NAME} está activo."
@@ -50,7 +56,7 @@ else
   exit 1
 fi
 
-# 5. Health check rápido (si curl está disponible)
+# 6. Health check rápido (si curl está disponible)
 if command -v curl >/dev/null 2>&1; then
   log "Probando endpoint /health..."
   HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://127.0.0.1:8000/health || true)

@@ -133,6 +133,9 @@ Todos los proyectos se presentan como *Case Studies* técnicos estructurados (Pr
 * **Centinela & Mensajerito:** **Groq Cloud** (`llama-3.1-8b-instant`). Velocidad de procesamiento extrema en inferencia LPU (<150 ms) para guardrails y extracción de leads.
 * **Cerebrito & Auditor:** **Google AI Studio** (`gemini-1.5-flash` / `gemini-2.0-flash`). Extensa ventana de contexto, gran precisión analítica y estricto seguimiento de instrucciones para grounding y auditoría.
 * **Radarito:** **Cloudflare Workers AI** / **OpenRouter Free Tier** (`qwen-2.5-7b` o `deepseek-chat`). Generación estructurada de JSON y síntesis neutral de noticias en tareas programadas.
+  La caché RSS bilingüe se actualiza diariamente a las 08:00 en la zona
+  `Europe/Madrid`; si una fuente falla, se conserva la última caché válida y
+  las noticias curadas estáticas permanecen como respaldo final.
 
 ### 4.3. Servidores MCP de Dominio
 

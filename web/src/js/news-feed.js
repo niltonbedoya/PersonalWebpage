@@ -175,8 +175,8 @@
       // a. 1 noticia sobre empresas de fabricación de circuitos impresos/integrados (pcb_manufacturing)
       // b. 2 noticias de empresas con las que trabajo (partner_equipment: PARMI, ERSA, NORDSON, MARANTZ)
       Promise.all([
-        fetch("/news/?category=SMD_INSPECTION&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch("/news/?category=THT_SOLDERING&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; })
+        fetch("/news/?category=SMD_INSPECTION&lang=" + lang + "&limit=50").then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=THT_SOLDERING&lang=" + lang + "&limit=50").then(function (r) { return r.json(); }).catch(function () { return []; })
       ]).then(function (results) {
         var allIndustrial = (results[0] || []).concat(results[1] || []);
         var pcbNews = sortByDateDesc(allIndustrial.filter(function (x) { return x.sub_category === "pcb_manufacturing"; }));
@@ -195,7 +195,7 @@
       // DESARROLLO DE SOFTWARE AI — 3 Noticias:
       // a. 1 noticia sobre skills, frameworks, MCPs (skills_frameworks_mcps)
       // b. 2 noticias sobre modelos y novedades de AI (ai_models)
-      fetch("/news/?category=AI_SOFTWARE&lang=" + lang)
+      fetch("/news/?category=AI_SOFTWARE&lang=" + lang + "&limit=50")
         .then(function (res) {
           if (!res.ok) throw new Error("HTTP " + res.status);
           return res.json();
@@ -221,9 +221,9 @@
       // b. 1 noticia de empresas con las que trabajo (partner_equipment: PARMI, ERSA, NORDSON, MARANTZ)
       // c. 1 noticia de AI en general (skills, frameworks o modelos)
       Promise.all([
-        fetch("/news/?category=SMD_INSPECTION&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch("/news/?category=THT_SOLDERING&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; }),
-        fetch("/news/?category=AI_SOFTWARE&lang=" + lang).then(function (r) { return r.json(); }).catch(function () { return []; })
+        fetch("/news/?category=SMD_INSPECTION&lang=" + lang + "&limit=50").then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=THT_SOLDERING&lang=" + lang + "&limit=50").then(function (r) { return r.json(); }).catch(function () { return []; }),
+        fetch("/news/?category=AI_SOFTWARE&lang=" + lang + "&limit=50").then(function (r) { return r.json(); }).catch(function () { return []; })
       ]).then(function (results) {
         var allHardware = (results[0] || []).concat(results[1] || []);
         var allAI = results[2] || [];

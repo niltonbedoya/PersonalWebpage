@@ -5,6 +5,7 @@ Main application assembling all routers, WebSocket support, and the multi-agent 
 
 import os
 import time
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
@@ -23,9 +24,20 @@ from backend.app.core.security_headers import SecurityHardeningMiddleware
 from backend.app.core.logging_config import setup_logging
 from backend.app.core.geoip import resolve_visitor_location
 from backend.app.db.analytics import analytics_db
+from backend.app.services.news_refresh import daily_news_scheduler
 
 # Inicializar logger rotativo bounded
 setup_logging()
+
+@asynccontextmanager
+async def lifespan(_: FastAPI):
+    """Manage the daily Radarito scheduler with the application lifecycle."""
+    daily_news_scheduler.start()
+    try:
+        yield
+    finally:
+        await daily_news_scheduler.stop()
+
 
 # Create FastAPI app
 app = FastAPI(
@@ -34,6 +46,7 @@ app = FastAPI(
     version="0.1.0",
     docs_url="/api/docs",
     redoc_url="/api/redoc",
+    lifespan=lifespan,
 )
 
 # Inyectar middleware defensivo de cabeceras HTTP y rate limiting

@@ -1,8 +1,8 @@
 """News router — Radarito curated feed endpoint.
 
 Returns NewsItemPayload-conformant items per category.
-Offline, deterministic, no network.
-All items link directly to exact articles, blog posts, and official announcements.
+Daily RSS items are preferred when the runtime cache is available.
+The deterministic curated list remains the offline fallback.
 """
 
 from fastapi import APIRouter, HTTPException, Query, Body
@@ -12,6 +12,7 @@ import logging
 
 from backend.app.agents import Radarito
 from backend.app.models import NewsItemPayload
+from backend.app.services.news_refresh import DEFAULT_NEWS_CACHE
 
 logger = logging.getLogger(__name__)
 
@@ -19,6 +20,7 @@ news_router = APIRouter(prefix="/news", tags=["news"])
 
 _radarito = Radarito()
 _seeded = False
+_news_cache = DEFAULT_NEWS_CACHE
 
 
 # Deterministic, curated news items linking directly to exact articles & releases:
@@ -220,7 +222,8 @@ async def news_endpoint(
         raise HTTPException(status_code=422, detail="Field 'category' is required via query param or body")
     logger.info("News request for category: %s, limit: %s, lang: %s", selected_category, selected_limit, lang)
     _ensure_seed()
-    raw_items = [item for item in _SEED_ITEMS[selected_category]]
+    live_items = _news_cache.items(lang or "es", selected_category)
+    raw_items = live_items or [item for item in _SEED_ITEMS[selected_category]]
     if selected_limit is not None:
         raw_items = raw_items[: selected_limit]
 
