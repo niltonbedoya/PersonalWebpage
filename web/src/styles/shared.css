@@ -1105,6 +1105,12 @@ li::before {
     padding-bottom: 0.1rem;
   }
 
+  /* The bottom navigation owns page switching on phones; keep the header
+     focused on identity, language, and the assistant action. */
+  .brand-nav .nav-link {
+    display: none;
+  }
+
   .brand-nav::-webkit-scrollbar {
     display: none;
   }

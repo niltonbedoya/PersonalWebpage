@@ -181,6 +181,8 @@ def test_shared_styles_include_editorial_mobile_layout(client: TestClient):
     assert ".news-grid" in css
     assert "#drawer-rag" in css
     assert "overflow-x: hidden" in css
+    assert ".brand-nav .nav-link" in css
+    assert ".brand-nav .nav-link {" in css
 
 
 def test_industrial_smt_has_scope_boundary_alert(client: TestClient):
