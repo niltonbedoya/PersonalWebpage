@@ -13,7 +13,7 @@ El perfil de hardware abarca procesos de ensamblaje, inspección avanzada, contr
 
 Preguntas que puedes formular:
 - **Inspección Óptica 3D y SPI**:
-  - ¿Qué experiencia tiene Nilton Bedoya con sistemas Parmi (3D SPI, 3D AOI y 3D PSI)?
+  - ¿Qué experiencia tiene Nilton Bedoya con sistemas Parmi (3D SPI, 3D AOI y PCI para inspección de barnizado)?
   - ¿Cómo se configuran los umbrales de inspección de pasta de soldar (altura, volumen y coplanaridad)?
   - ¿Cómo funciona la inspección óptica 2D en equipos Marantz para componentes SMD y THT?
 - **Inspección por Rayos X (AXI) e Integridad de Uniones**:

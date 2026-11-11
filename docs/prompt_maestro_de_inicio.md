@@ -24,7 +24,7 @@ El sistema implementa una **Arquitectura Multiagente en Dos Capas (Dual-Layer)**
   - Split Cards de navegación modular hacia los dos spokes principales.
   - Métricas de ingeniería consolidadas.
 - **Spoke 1 - Vertical Industrial & SMT/THT (`/industrial-smt`):**
-  - *Maquinaria de Inspección:* Parmi (3D SPI, 3D AOI, 3D PSI), Marantz (2D SMD/THT pre/post-reflow), Matrix (AXI Rayos X en línea), Ersa (VERSAEYE), ALeader (origen histórico).
+  - *Maquinaria de Inspección:* Parmi (3D SPI, 3D AOI, PCI para inspección de barnizado), Marantz (2D SMD/THT pre/post-reflow), Matrix (AXI Rayos X en línea), Ersa (VERSAEYE), ALeader (origen histórico).
   - *Sistemas Térmicos & Soldadura:* Ersa (Soldadura Selectiva, Ola, Refusión), Electrovert (Vectra, Refusión).
   - *Serigrafía & Deposición:* MPM (AccuFlex, Momentum).
   - *Handling & Automatización:* Cargadores, descargadores, buffers, transportadores, diagnóstico de PLCs.

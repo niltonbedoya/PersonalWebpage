@@ -81,7 +81,7 @@ _COMMON_WORDS = {
     "Que", "Quien", "Quienes", "Cuyo", "Cuya", "Cuyos", "Cuyas",
     # Common technical/domain terms that are capitalized but not brands
     "Pick", "Place", "Pick", "Place", "Smt", "Tht", "Bga", "Qfn", "Qfp",
-    "Spi", "Aoi", "Psi", "Pcb", "Plc", "Hmi", "Oem", "Erp", "Crm", "Api",
+    "Spi", "Aoi", "Pci", "Pcb", "Plc", "Hmi", "Oem", "Erp", "Crm", "Api",
     "Iot", "Ui", "Ux", "Csv", "Pdf", "Sql", "Sla", "Oee", "DpmO", "FpY",
     "Mtbf", "Mttr", "Tal", "Led", "Leds", "Dross", "Flux", "Fluxes",
     "Ipc", "Ethernet", "Rayos", "Rayos X", "Rayosx", "AxI", "Axi", "Xrf",
@@ -247,7 +247,7 @@ _COMMON_WORDS = {
 # Two-word phrases that are approved-technical content, not brand leaks.
 _COMMON_TWO_WORD = {
     "Pick Place", "Rayos X", "Time Above", "Above Liquidus", "Ramp-to-Soak",
-    "Time Above", "Liquidus", "Modelos AccuFlex", "PSI Inspection", "Plataforma IoT",
+    "Time Above", "Liquidus", "Modelos AccuFlex", "PCI Inspection", "Plataforma IoT",
     "Modulo OCR", "First Pass", "Pass Yield", "Para SAC305", "APIs Viv", "APIs viv",
 }
 
@@ -382,3 +382,11 @@ def test_corpus_is_not_empty():
     """The gate must scan at least one file, otherwise it vacuously passes."""
     files = _md_files()
     assert files, f"No *.md files found under {CORPUS_DIR}"
+
+
+def test_parmi_uses_pci_for_conformal_coating_inspection():
+    """PARMI conformal-coating inspection is PCI, never PSI."""
+    text = _read_text(CORPUS_DIR / "smt_inspection_parmi.md")
+    assert "PSI" not in text
+    assert "PCI" in text
+    assert "barnizado" in text.lower()

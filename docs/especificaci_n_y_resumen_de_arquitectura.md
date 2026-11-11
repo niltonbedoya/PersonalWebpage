@@ -54,7 +54,7 @@ Para evitar sobrecarga cognitiva entre audiencias industriales y de software, se
 ### 2.1. Spoke Industrial: Taxonomía de Maquinaria y Procesos
 
 * **Sistemas de Inspección Óptica & Dimensional:**
-  * **Parmi:** 3D SPI (inspección pasta), 3D AOI (inspección componentes/soldadura), 3D PSI (inspección conformal coating).
+  * **Parmi:** 3D SPI (inspección de pasta), 3D AOI (inspección de componentes/soldadura), PCI (inspección de barnizado conformal).
   * **Marantz:** Inspección 2D pre-reflow y post-reflow (componentes SMD y THT).
   * **Ersa:** *VERSAEYE* (inspección óptica de soldadura).
   * **ALeader:** Equipos 2D fundacionales (mención histórica contenida).

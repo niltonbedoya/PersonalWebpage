@@ -1,7 +1,7 @@
-# Parmi — 3D SPI, 3D AOI, 3D PSI Inspection Systems
+# Parmi — 3D SPI, 3D AOI y PCI para inspeccion de barnizado
 
 ## Alcance y aplicacion
-Documento tecnico de referencia para los sistemas de inspeccion 3D de la marca Parmi, utilizados en lineas de ensamblaje SMT/THT. Cubre inspeccion de pasta de soldar (SPI), inspeccion optica automática de componentes y soldadura (AOI) e inspeccion de revestimiento conformal (PSI). Contenido tecnico sanitizado sin datos de clientes ni credenciales.
+Documento tecnico de referencia para los sistemas de inspeccion de la marca Parmi, utilizados en lineas de ensamblaje SMT/THT. Cubre inspeccion de pasta de soldar (SPI), inspeccion optica automática de componentes y soldadura (AOI) e inspeccion de barnizado conformal (PCI). Contenido tecnico sanitizado sin datos de clientes ni credenciales.
 
 ## 3D SPI — Inspeccion de pasta de soldar
 - Funcion: verificacion de volumen, area, altura y posicion de depositos de pasta de soldar antes del colocacion de componentes.
@@ -17,14 +17,14 @@ Documento tecnico de referencia para los sistemas de inspeccion 3D de la marca P
 - Resolucion minima: depende de la configuracion de optica, tipicamente capaz de resolver componentes 0201 y mas pequeños con camaras de alta resolucion.
 - Velocidad de inspeccion: expresada en cm2 por segundo, variable segun la densidad de componentes y el umbral de defecto configurado.
 
-## 3D PSI — Inspeccion de revestimiento conformal
-- Funcion: verificacion de cobertura, espesor y uniformidad del revestimiento conformal aplicado sobre ensamblajes electronicos.
-- Metodo: escaneo optico 3D que mide la altura del filme de revestimiento sobre componentes y pistas, detectando zonas sin cobertura, espesor excesivo y contaminacion bajo el revestimiento.
+## PCI — Inspeccion de barnizado conformal
+- Funcion: verificacion de cobertura, espesor y uniformidad del barnizado conformal aplicado sobre ensamblajes electronicos.
+- Metodo: inspeccion optica con iluminacion UV y blanca, con medicion de espesor mediante sensor de altura, para detectar zonas sin cobertura, burbujas y espesor fuera de tolerancia.
 - Parametros clave: espesor de pelicula (micras), cobertura porcentual de la superficie objetivo, presencia de burbujas o grietas, adherencia del material.
 - Aplicacion: proteccion de ensamblajes expuestos a humedad, polvo y agentes quimicos en entornos industriales y automotrices.
 
 ## Flujo de control de calidad
-El flujo tipico en una linea SMT combina los tres sistemas en secuencia: SPI despues de la serigrafia, AOI despues del colocacion y despues del reflow, y PSI despues de la aplicacion de revestimiento conformal cuando este sea requerido. Los resultados de cada estacion se registran en el historial de trazas de la placa para analisis de tendencia y acciones correctivas.
+El flujo tipico en una linea SMT combina los tres sistemas en secuencia: SPI despues de la serigrafia, AOI despues del colocacion y despues del reflow, y PCI despues de la aplicacion de barnizado conformal cuando este sea requerido. Los resultados de cada estacion se registran en el historial de trazas de la placa para analisis de tendencia y acciones correctivas.
 
 ## Limitaciones del alcance
 Este documento no cubre maquinas de insercion Pick & Place, fuera del alcance definido por la spec del proyecto. No se incluyen nombres de clientes, numeros de serie, direcciones de correo electronico, credenciales ni claves de API.
